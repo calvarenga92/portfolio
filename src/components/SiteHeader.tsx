@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { nav, site } from "@/content/site";
+import { Logo } from "./Logo";
 import { Container } from "./primitives";
 
 /**
@@ -13,9 +14,13 @@ export function SiteHeader() {
       <Container className="flex h-16 items-center justify-between gap-6">
         <Link
           href="/"
-          className="text-sm font-semibold tracking-[-0.01em] text-ink hover:text-signal"
+          aria-label={`${site.shortName} — início`}
+          className="flex items-center gap-3 text-ink transition-colors hover:text-signal"
         >
-          {site.shortName}
+          <Logo size={34} />
+          <span className="hidden text-sm font-semibold tracking-[-0.01em] sm:inline">
+            {site.shortName}
+          </span>
         </Link>
 
         <nav aria-label="Seções do site" className="hidden items-center gap-7 md:flex">

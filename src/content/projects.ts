@@ -103,6 +103,18 @@ export const projects: Project[] = [
       { label: "Testes, sendo 4 de integração", value: "26", numeric: true },
     ],
     links: [{ label: "Código no GitHub", href: "https://github.com/vic-clau/edit-IA" }],
+    /**
+     * Ilustração, não captura: a esteira roda em linha de comando e cospe um
+     * arquivo FCPXML, então não existe tela para fotografar. O desenho mostra
+     * o que ela entrega — cortes sugeridos, silêncio detectado, legenda — sem
+     * fingir ser um produto que ela não é.
+     */
+    cover: {
+      src: "/projetos/esteira-video.png",
+      alt: "Timeline de edição com cortes sugeridos, forma de onda do áudio e trilha de legenda",
+      width: 942,
+      height: 896,
+    },
     caseStudy: [
       {
         kind: "prose",
