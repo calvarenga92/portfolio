@@ -3,17 +3,17 @@ import type { Principle, Service } from "./types";
 export const headline = ["Desenho a interface", "e respondo por ela", "em produção."];
 
 export const intro =
-  "Desenvolvedor front-end sênior, 12 anos de mercado e origem em design. Trabalho em produto onde a tela não pode falhar: investimentos, e-commerce e pagamento.";
+  "Claudio Alvarenga, desenvolvedor full stack. 12 anos de mercado e origem em design. Trabalho em produto onde a tela não pode falhar: investimentos, e-commerce e pagamento.";
 
 export const services: Service[] = [
   {
-    title: "Interface nova, do desenho ao ar",
+    title: "Interface do desenho ao ar",
     body: "Eu desenho a tela e implemento. Sem a ida e volta entre quem desenha e quem programa, e sem protótipo bonito que não se sustenta quando vira código.",
     accent: "signal",
     icon: "interface",
   },
   {
-    title: "Evolução de produto no ar",
+    title: "Evolução de produto existente",
     body: "Mexer no que já tem usuário sem parar o que funciona: entrega em partes, liberada aos poucos, com volta rápida se algo sair diferente do esperado.",
     accent: "signal",
     icon: "entrega",

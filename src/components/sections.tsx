@@ -148,7 +148,7 @@ export function Method() {
             />
 
             <h3
-              className={`mt-5 text-xl font-semibold leading-snug tracking-[-0.015em] ${
+              className={`mt-5 text-balance text-xl font-semibold leading-snug tracking-[-0.015em] ${
                 accentText[principle.accent]
               }`}
             >
@@ -174,6 +174,14 @@ export function Method() {
 export function StackSection() {
   return (
     <Section id="stack" title="Stack" icon="stack" accent="craft">
+      <p className="mb-12 max-w-[72ch] text-lg leading-[1.6] text-ink">
+        Front-end é onde eu sou profundo: arquitetura, interface e qualidade do
+        que vai para o usuário. No back-end eu entrego integração, automação e
+        manutenção de legado — Java e Spring no e-commerce da Raia Drogasil,
+        Python em automação própria, Node no nível de ferramenta. Arquitetura de
+        serviço é terreno que eu acompanho, não que eu desenho sozinho.
+      </p>
+
       <div className="grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
         {stack.map((group) => {
           const color = group.accent ? accentText[group.accent] : "text-ink-faint";

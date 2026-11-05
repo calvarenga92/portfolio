@@ -117,12 +117,24 @@ export const projects: Project[] = [
       { label: "Módulo no GitHub", href: "https://github.com/calvarenga92/finance-workspace-portfolio-mfe" },
     ],
     cover: {
-      src: "/projetos/finance-workspace.webp",
-      alt: "Portal de produtos financeiros com menu de módulos à esquerda e a carteira do cliente carregada como módulo remoto",
+      src: "/projetos/micro-frontend.webp",
+      alt: "Tela de um sistema com um módulo separado encaixando dentro dela por um conector",
       width: 1000,
-      height: 442,
+      height: 1000,
     },
     caseStudy: [
+      {
+        kind: "images",
+        title: "A aplicação no ar",
+        images: [
+          {
+            src: "/projetos/finance-workspace.webp",
+            alt: "Portal de produtos financeiros com menu de módulos à esquerda e a carteira do cliente carregada como módulo remoto",
+            width: 1000,
+            height: 442,
+          },
+        ],
+      },
       {
         kind: "prose",
         title: "O problema",

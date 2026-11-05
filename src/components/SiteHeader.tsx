@@ -7,11 +7,11 @@ import { Container } from "./primitives";
 export function SiteHeader() {
   return (
     <header className="fixed inset-x-0 top-0 z-40 border-b border-rule bg-base/85 backdrop-blur-md">
-      <Container className="flex h-16 items-center justify-between gap-6">
+      <Container className="flex h-20 items-center justify-between gap-6">
         <Link
           href="/"
           aria-label={`${site.shortName} — início`}
-          className="flex items-center gap-3 text-ink transition-colors hover:text-signal"
+          className="flex items-center text-ink transition-colors hover:text-signal"
         >
           {logo.src ? (
             <Image
@@ -20,14 +20,11 @@ export function SiteHeader() {
               width={logo.width}
               height={logo.height}
               priority
-              className="h-[38px] w-auto"
+              className="h-[52px] w-auto"
             />
           ) : (
-            <Logo size={38} />
+            <Logo size={52} />
           )}
-          <span className="hidden text-sm font-semibold tracking-[-0.01em] sm:inline">
-            {site.shortName}
-          </span>
         </Link>
 
         <nav aria-label="Seções do site" className="hidden items-center gap-7 md:flex">
