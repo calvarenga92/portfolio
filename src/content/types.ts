@@ -42,7 +42,7 @@ export type Project = {
   tagline: string;
   year: string;
 
-  status?: string;
+  status?: { label: string; tone: "ativo" | "entregue" };
   role: string;
   stack: string[];
 

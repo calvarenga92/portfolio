@@ -7,6 +7,7 @@ export const projects: Project[] = [
     tagline:
       "Marketplace de NFT onde o valor é inteiro de 18 casas e o checkout não cobra duas vezes.",
     year: "2026",
+    status: { label: "Entregue", tone: "entregue" },
     role: "Front-end e arquitetura de interface",
     stack: ["React 19", "TypeScript", "TanStack Query", "Tailwind", "Playwright", "Vite"],
     metrics: [
@@ -81,6 +82,82 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "finance-workspace",
+    name: "Finance Workspace",
+    tagline:
+      "Duas aplicações construídas e publicadas separadamente que se montam numa tela só — e o container continua de pé quando a outra cai.",
+    year: "2026",
+    status: { label: "Entregue", tone: "entregue" },
+    role: "Arquitetura e implementação das duas pontas",
+    stack: ["React 18", "TypeScript", "Vite", "Module Federation", "Docker"],
+    metrics: [
+      {
+        label: "Aplicações independentes compondo a mesma tela",
+        value: "2",
+        numeric: true,
+      },
+      {
+        label: "Quando o módulo remoto não responde, o container mostra",
+        value: "aviso, não tela branca",
+      },
+      {
+        label: "O módulo remoto só é baixado",
+        value: "quando a rota é aberta",
+      },
+    ],
+    links: [
+      { label: "Ver no ar", href: "https://finance-workspace-shell.vercel.app" },
+      { label: "Container no GitHub", href: "https://github.com/calvarenga92/finance-workspace-shell" },
+      { label: "Módulo no GitHub", href: "https://github.com/calvarenga92/finance-workspace-portfolio-mfe" },
+    ],
+    cover: {
+      src: "/projetos/finance-workspace.webp",
+      alt: "Portal de produtos financeiros com menu de módulos à esquerda e a carteira do cliente carregada como módulo remoto",
+      width: 1000,
+      height: 442,
+    },
+    caseStudy: [
+      {
+        kind: "prose",
+        title: "O problema",
+        body: [
+          "Em produto grande, vários times mexem na mesma interface. Quando tudo vive num projeto só, uma equipe espera a outra para publicar, um erro em uma área derruba a tela inteira e qualquer mudança exige subir o sistema completo. É o cenário que eu vi de perto em plataforma de investimentos.",
+          "A saída é quebrar a interface em partes independentes. Só que aí aparece o problema de verdade: elas precisam continuar parecendo uma aplicação só para quem usa, sem o usuário perceber a costura.",
+        ],
+      },
+      {
+        kind: "prose",
+        title: "As decisões",
+        body: [
+          "Separei em duas aplicações com build e publicação próprios: um container, responsável pela estrutura, pelo menu e pelas rotas, e um módulo de carteira de investimentos, responsável apenas pela sua feature. Cada uma vive no seu repositório e vai ao ar sem depender da outra.",
+          "O container descobre o módulo em tempo de execução, não em tempo de build. É isso que permite publicar a carteira sem republicar o portal — se fosse resolvido no build, a independência seria só aparente.",
+          "React e ReactDOM são compartilhados entre as duas, em vez de cada uma carregar a sua cópia. Sem isso o usuário baixaria a mesma biblioteca duas vezes, e duas instâncias de React na mesma página quebram estado e contexto.",
+          "O módulo só é baixado quando a rota dele é aberta. Quem entra e fica na visão geral nunca paga o custo da carteira.",
+        ],
+      },
+      {
+        kind: "prose",
+        title: "O que acontece quando quebra",
+        body: [
+          "Essa é a parte que separa demonstração de arquitetura utilizável. Se o módulo remoto estiver fora do ar, o container não cai junto: ele captura a falha e mostra um aviso no lugar daquele pedaço da tela. O menu continua funcionando e as outras áreas seguem acessíveis.",
+          "Em arquitetura distribuída a pergunta não é se uma parte vai cair — é o que o usuário vê quando ela cai.",
+        ],
+      },
+      {
+        kind: "ledger",
+        title: "Resumo",
+        lines: [
+          { label: "Aplicações independentes", value: "2", numeric: true },
+          { label: "Descoberta do módulo", value: "em tempo de execução" },
+          { label: "Bibliotecas compartilhadas", value: "React e ReactDOM" },
+          { label: "Carregamento do módulo", value: "sob demanda, por rota" },
+          { label: "Falha do remoto", value: "aviso no lugar do bloco" },
+          { label: "Empacotamento", value: "Docker nas duas pontas" },
+        ],
+      },
+    ],
+  },
+  {
 
     slug: "edit-ia",
     name: "Esteira de edição de vídeo automatizada",
@@ -88,7 +165,7 @@ export const projects: Project[] = [
       "Transcreve o áudio, marca o que sobra e devolve a timeline pronta. Só passou a ser usada quando aprendeu a mostrar menos.",
 
     year: "desde 2025",
-    status: "Em evolução",
+    status: { label: "Em evolução", tone: "ativo" },
     role: "Autoria e manutenção",
     stack: ["Python", "ffmpeg", "faster-whisper", "FCPXML", "pytest"],
     metrics: [
