@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { nav, site } from "@/content/site";
+import Image from "next/image";
+import { logo, nav, site } from "@/content/site";
 import { Logo } from "./Logo";
 import { Container } from "./primitives";
 
@@ -17,7 +18,18 @@ export function SiteHeader() {
           aria-label={`${site.shortName} — início`}
           className="flex items-center gap-3 text-ink transition-colors hover:text-signal"
         >
-          <Logo size={34} />
+          {logo.src ? (
+            <Image
+              src={logo.src}
+              alt=""
+              width={logo.width}
+              height={logo.height}
+              priority
+              className="h-[34px] w-auto"
+            />
+          ) : (
+            <Logo size={34} />
+          )}
           <span className="hidden text-sm font-semibold tracking-[-0.01em] sm:inline">
             {site.shortName}
           </span>

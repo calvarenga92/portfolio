@@ -26,6 +26,23 @@ export const contact = {
   linkedinLabel: "linkedin.com/in/cralvarenga",
 } as const;
 
+/**
+ * Marca do cabeçalho.
+ *
+ * Com `src` preenchido, o arquivo de /public é usado. Com `src` em null, o
+ * monograma desenhado em código entra no lugar. O ponto de troca fica aqui
+ * de propósito: trocar a marca não deveria exigir mexer em componente.
+ *
+ * Para um arquivo próprio: SVG é o ideal, porque escala sem borrar em
+ * qualquer tamanho. Em PNG, 512×512 com fundo transparente, e lembrando que
+ * a marca aparece sobre fundo escuro.
+ */
+export const logo = {
+  src: null as string | null,
+  width: 40,
+  height: 40,
+} as const;
+
 export const nav = [
   { href: "#trabalho", label: "Trabalho" },
   { href: "#experiencia", label: "Experiência" },
