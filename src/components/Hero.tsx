@@ -54,9 +54,13 @@ export function Hero() {
           style={{ animationDelay: "500ms" }}
         >
           {services.map((service) => (
-            <article key={service.title} className="bg-surface p-6 sm:p-7">
-              <Icon name={service.icon} size={24} className={accentText[service.accent]} />
-              <h2 className="mt-4 text-lg font-semibold leading-snug tracking-[-0.015em] text-ink">
+            <article key={service.title} className="bg-surface p-7 sm:p-8">
+              <Icon name={service.icon} size={34} className={accentText[service.accent]} />
+              <h2
+                className={`mt-5 text-lg font-semibold leading-snug tracking-[-0.015em] ${
+                  accentText[service.accent]
+                }`}
+              >
                 {service.title}
               </h2>
               <p className="mt-3 text-base leading-[1.6] text-ink-soft">{service.body}</p>
