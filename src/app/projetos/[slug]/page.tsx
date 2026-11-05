@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Button } from "@/components/Button";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/sections";
 import { Container, Ledger } from "@/components/primitives";
@@ -45,109 +45,116 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
     <>
       <SiteHeader />
 
-      <main id="conteudo" className="pt-32 pb-20 sm:pt-40">
+      <main id="conteudo" className="pt-36 pb-24 sm:pt-40">
         <Container>
-          <Link
-            href="/#trabalho"
-            className="text-sm text-ink-soft transition-colors hover:text-signal"
-          >
+          <Button href="/#trabalho" variant="outline" icon="arrow-left">
             Voltar para o trabalho
-          </Link>
+          </Button>
 
-          <h1 className="mt-8 max-w-[18ch] text-[clamp(2.25rem,6vw,3.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]">
+          <h1 className="mt-10 text-[clamp(2.5rem,7vw,4.5rem)] font-semibold leading-[1.0] tracking-[-0.035em]">
             {project.name}
           </h1>
 
-          <p className="mt-6 max-w-[58ch] text-lg leading-[1.6] text-ink-soft">
+          {/* A chamada ocupa a largura toda: ela é a frase que resume o case e
+              quebrar em duas linhas curtas a fazia parecer legenda. */}
+          <p className="mt-6 text-[clamp(1.125rem,2.2vw,1.5rem)] leading-[1.45] text-ink-soft">
             {project.tagline}
           </p>
 
-          <dl className="mt-10 grid max-w-[44rem] gap-x-10 gap-y-5 sm:grid-cols-3">
+          {/* Ficha técnica em três colunas de mesma largura, ocupando a medida
+              inteira. Os rótulos subiram de tamanho porque eram pequenos
+              demais para o papel que têm: são eles que orientam a leitura. */}
+          <dl className="mt-12 grid gap-x-10 gap-y-8 border-t border-rule pt-8 sm:grid-cols-3">
             <div>
-              <dt className="text-xs text-ink-faint">Ano</dt>
-              <dd className="tnum mt-1 text-sm text-ink">{project.year}</dd>
+              <dt className="text-sm text-ink-faint">Ano</dt>
+              <dd className="tnum mt-2 text-lg text-ink">{project.year}</dd>
             </div>
             <div>
-              <dt className="text-xs text-ink-faint">Papel</dt>
-              <dd className="mt-1 text-sm text-ink">{project.role}</dd>
+              <dt className="text-sm text-ink-faint">Papel</dt>
+              <dd className="mt-2 text-lg leading-snug text-ink">{project.role}</dd>
             </div>
             <div>
-              <dt className="text-xs text-ink-faint">Stack</dt>
-              <dd className="mt-1 text-sm leading-relaxed text-ink">
+              <dt className="text-sm text-ink-faint">Stack</dt>
+              <dd className="mt-2 text-lg leading-snug text-ink">
                 {project.stack.join(", ")}
               </dd>
             </div>
           </dl>
 
           {project.links && project.links.length > 0 && (
-            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
+            <div className="mt-10 flex flex-wrap gap-3">
               {project.links.map((link) => (
-                <a
+                <Button
                   key={link.href}
                   href={link.href}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="border-b border-signal pb-0.5 text-sm font-medium text-signal transition-colors hover:border-ink hover:text-ink"
+                  variant="solid"
+                  external
+                  icon="arrow-up-right"
                 >
                   {link.label}
-                </a>
+                </Button>
               ))}
             </div>
           )}
         </Container>
 
+        {/* Cada bloco ocupa a largura inteira: o título fica numa coluna à
+            esquerda e o corpo na coluna larga à direita. Enche a tela sem
+            esticar a linha de texto além do que se lê de um fôlego — acima de
+            uns 80 caracteres o olho perde a linha ao voltar para a esquerda.
+            No celular as duas colunas viram uma só, na ordem natural. */}
         <div className="mt-20 space-y-16 sm:mt-24 sm:space-y-20">
           {project.caseStudy.map((block) => (
             <Container key={block.title}>
-              <div className="border-t border-rule pt-8">
-                <h2 className="text-xl font-semibold tracking-[-0.02em]">{block.title}</h2>
+              <section className="grid gap-6 border-t border-rule pt-10 lg:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:gap-16">
+                <h2 className="text-2xl font-semibold leading-tight tracking-[-0.02em] lg:text-[1.75rem]">
+                  {block.title}
+                </h2>
 
-                {block.kind === "prose" && (
-                  <div className="mt-6 max-w-[62ch] space-y-5 text-base leading-[1.7] text-ink-soft">
-                    {block.body.map((paragraph) => (
-                      <p key={paragraph.slice(0, 32)}>{paragraph}</p>
-                    ))}
-                  </div>
-                )}
+                <div>
+                  {block.kind === "prose" && (
+                    <div className="max-w-[72ch] space-y-6 text-lg leading-[1.65] text-ink-soft">
+                      {block.body.map((paragraph) => (
+                        <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+                      ))}
+                    </div>
+                  )}
 
-                {block.kind === "ledger" && (
-                  <div className="mt-6 max-w-[44rem]">
-                    <Ledger lines={block.lines} />
-                  </div>
-                )}
+                  {block.kind === "ledger" && <Ledger lines={block.lines} />}
 
-                {block.kind === "images" && (
-                  <div className="mt-6 grid gap-6 sm:grid-cols-2">
-                    {block.images.map((image) => (
-                      <figure
-                        key={image.src}
-                        className="overflow-hidden rounded-sm border border-rule bg-surface"
-                      >
-                        <Image
-                          src={image.src}
-                          alt={image.alt}
-                          width={image.width}
-                          height={image.height}
-                          sizes="(min-width: 640px) 32rem, 100vw"
-                          className="w-full object-cover object-top"
-                        />
-                      </figure>
-                    ))}
-                  </div>
-                )}
-              </div>
+                  {block.kind === "images" && (
+                    <div className="grid gap-6 sm:grid-cols-2">
+                      {block.images.map((image) => (
+                        <figure
+                          key={image.src}
+                          className="overflow-hidden rounded-sm border border-rule bg-surface"
+                        >
+                          <Image
+                            src={image.src}
+                            alt={image.alt}
+                            width={image.width}
+                            height={image.height}
+                            sizes="(min-width: 640px) 40rem, 100vw"
+                            className="w-full object-cover object-top"
+                          />
+                        </figure>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </section>
             </Container>
           ))}
         </div>
 
         <Container>
-          <div className="mt-20 border-t border-rule pt-10">
-            <Link
-              href="/#contato"
-              className="border-b border-signal pb-0.5 text-base font-medium text-signal transition-colors hover:border-ink hover:text-ink"
-            >
+          <div className="mt-24 flex flex-col items-center gap-5 border-t border-rule pt-16 text-center">
+            <p className="max-w-[40ch] text-xl leading-snug text-ink">
+              Tem um projeto onde a interface precisa aguentar produção?
+            </p>
+            <Button href="/#contato" variant="solid">
               Falar sobre um projeto
-            </Link>
+            </Button>
           </div>
         </Container>
       </main>

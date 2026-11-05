@@ -1,7 +1,7 @@
 import { experiences } from "@/content/experience";
 import { learning, method } from "@/content/profile";
 import { projects } from "@/content/projects";
-import { contact } from "@/content/site";
+import { contact, site } from "@/content/site";
 import { stack } from "@/content/stack";
 import { ProjectList } from "./ProjectList";
 import { Container, Prose, Section } from "./primitives";
@@ -151,9 +151,8 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-rule py-10">
       <Container>
-        <p className="text-sm text-ink-faint">
-          Feito em Next.js e TypeScript. São Paulo,{" "}
-          <span className="tnum">{new Date().getFullYear()}</span>.
+        <p className="text-base text-ink-faint">
+          Desenvolvido por {site.name}. São Paulo, Brasil.
         </p>
       </Container>
     </footer>
