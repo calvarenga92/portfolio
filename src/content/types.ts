@@ -57,6 +57,8 @@ export type Project = {
   /** Uma linha, lida em 2 segundos na listagem. */
   tagline: string;
   year: string;
+  /** Marca projeto vivo, ex. "Em evolução". Ausente, nada é exibido. */
+  status?: string;
   role: string;
   stack: string[];
   /** Números que sustentam o case. Até 3 — mais que isso vira ruído. */

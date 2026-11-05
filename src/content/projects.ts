@@ -13,7 +13,7 @@ export const projects: Project[] = [
     name: "Kurio",
     tagline:
       "Marketplace de NFT onde o valor é inteiro de 18 casas e o checkout não cobra duas vezes.",
-    year: "2025",
+    year: "2026",
     role: "Front-end e arquitetura de interface",
     stack: ["React 19", "TypeScript", "TanStack Query", "Tailwind", "Playwright", "Vite"],
     metrics: [
@@ -94,7 +94,9 @@ export const projects: Project[] = [
     name: "Esteira de edição de vídeo automatizada",
     tagline:
       "Transcreve o áudio, marca o que sobra e devolve a timeline pronta. Só passou a ser usada quando aprendeu a mostrar menos.",
-    year: "2025",
+    /** Projeto vivo: o rótulo diz desde quando, não quando acabou. */
+    year: "desde 2025",
+    status: "Em evolução",
     role: "Autoria e manutenção",
     stack: ["Python", "ffmpeg", "faster-whisper", "FCPXML", "pytest"],
     metrics: [

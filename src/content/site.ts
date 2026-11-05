@@ -20,6 +20,8 @@ export const contact = {
   email: "calvarenga92@gmail.com",
   phoneLabel: "(11) 98949-0162",
   phoneHref: "+5511989490162",
+  /** wa.me abre a conversa direto, no app ou no navegador, sem salvar contato. */
+  whatsapp: "https://wa.me/5511989490162",
   github: "https://github.com/calvarenga92",
   githubLabel: "github.com/calvarenga92",
   linkedin: "https://linkedin.com/in/cralvarenga",

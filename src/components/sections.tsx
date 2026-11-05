@@ -1,11 +1,12 @@
 import { experiences } from "@/content/experience";
-import { learning, method } from "@/content/profile";
+import { method } from "@/content/profile";
 import { projects } from "@/content/projects";
 import { contact, site } from "@/content/site";
 import { stack } from "@/content/stack";
 import { ProjectList } from "./ProjectList";
 import { Container, Section, accentText } from "./primitives";
 import { Icon } from "./icons";
+import { BrandIcon, hasBrand } from "./BrandIcon";
 
 export function Work() {
   return (
@@ -201,12 +202,6 @@ export function Method() {
         ))}
       </div>
 
-      {/* A declaração de lacuna fica fora da grade de propósito: ela não é
-          mais um princípio, é a contrapartida deles. */}
-      <div className="mt-10 rounded-sm border border-signal-dim bg-surface p-7 sm:p-8">
-        <h3 className="text-lg font-semibold text-ink">{learning.title}</h3>
-        <p className="mt-3 text-base leading-[1.7] text-ink-soft">{learning.body}</p>
-      </div>
     </Section>
   );
 }
@@ -237,12 +232,13 @@ export function StackSection() {
                 {group.items.map((item) => (
                   <li
                     key={item}
-                    className={`rounded-sm border px-2.5 py-1 text-sm ${
+                    className={`flex items-center gap-2 rounded-sm border px-2.5 py-1.5 text-sm ${
                       group.muted
                         ? "border-rule text-ink-faint"
-                        : `border-rule-strong bg-surface text-ink-soft`
+                        : "border-rule-strong bg-surface text-ink-soft"
                     }`}
                   >
+                    {hasBrand(item) && <BrandIcon label={item} size={16} useBrandColor />}
                     {item}
                   </li>
                 ))}
@@ -255,37 +251,84 @@ export function StackSection() {
   );
 }
 
+/** O que eu faço do lado da pesquisa e da interface, em linguagem de negócio. */
+const praticasUX = [
+  "Teste de usabilidade com usuário final",
+  "Mapa de calor e leitura de funil",
+  "Análise de abandono em produção",
+  "Auditoria de acessibilidade",
+  "Design system e biblioteca de componentes",
+  "Protótipo navegável em código, não só em tela estática",
+];
+
 export function Contact() {
+  /**
+   * Cada canal abre direto onde a pessoa já está: o WhatsApp pelo wa.me, que
+   * inicia a conversa sem obrigar a salvar o número; o e-mail pelo mailto, que
+   * abre o cliente de e-mail com o endereço preenchido.
+   *
+   * O LinkedIn usa ícone genérico de propósito: a empresa pediu a remoção da
+   * marca dos pacotes de ícones, então aqui vale o nome escrito, que é
+   * identificação e não reprodução do logo.
+   */
   const channels = [
-    { label: contact.email, href: `mailto:${contact.email}`, icon: "email" as const },
-    { label: contact.phoneLabel, href: `tel:${contact.phoneHref}`, icon: "telefone" as const },
-    { label: contact.linkedinLabel, href: contact.linkedin, icon: "linkedin" as const },
-    { label: contact.githubLabel, href: contact.github, icon: "github" as const },
+    { label: "WhatsApp", detail: contact.phoneLabel, href: contact.whatsapp, brand: "WhatsApp", icon: null },
+    { label: "E-mail", detail: contact.email, href: `mailto:${contact.email}`, brand: null, icon: "email" as const },
+    { label: "LinkedIn", detail: contact.linkedinLabel, href: contact.linkedin, brand: null, icon: "perfil" as const },
+    { label: "GitHub", detail: contact.githubLabel, href: contact.github, brand: "GitHub", icon: null },
   ];
 
   return (
     <Section id="contato" title="Vamos conversar" icon="contato" accent="signal">
-      <p className="max-w-[52ch] text-lg leading-[1.6] text-ink-soft">
-        Estou aberto a vaga efetiva e a projeto por PJ. Se o seu time precisa de
-        alguém que desenha a interface e responde por ela depois do deploy, me
-        chame.
-      </p>
+      <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-16">
+        <div>
+          <p className="text-xl leading-[1.55] text-ink">
+            Estou aberto a vaga efetiva, projeto por PJ e freelancer. Se o seu
+            time precisa de alguém que desenha a interface, valida com usuário e
+            responde por ela depois que entra no ar, me chame.
+          </p>
 
-      <ul className="mt-10 grid gap-x-10 gap-y-4 sm:grid-cols-2">
-        {channels.map((channel) => (
-          <li key={channel.href}>
-            <a
-              href={channel.href}
-              target={channel.href.startsWith("http") ? "_blank" : undefined}
-              rel={channel.href.startsWith("http") ? "noreferrer noopener" : undefined}
-              className="group inline-flex items-center gap-3 rounded-sm border border-rule bg-surface px-4 py-3 text-base text-ink transition-colors hover:border-signal hover:text-signal"
-            >
-              <Icon name={channel.icon} size={20} className="text-ink-faint group-hover:text-signal" />
-              {channel.label}
-            </a>
-          </li>
-        ))}
-      </ul>
+          <ul className="mt-8 flex flex-wrap gap-2">
+            {praticasUX.map((pratica) => (
+              <li
+                key={pratica}
+                className="rounded-sm border border-rule-strong bg-surface px-3 py-1.5 text-sm text-ink-soft"
+              >
+                {pratica}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 lg:content-start">
+          {channels.map((channel) => (
+            <li key={channel.href}>
+              <a
+                href={channel.href}
+                target={channel.href.startsWith("http") ? "_blank" : undefined}
+                rel={channel.href.startsWith("http") ? "noreferrer noopener" : undefined}
+                className="group flex items-center gap-4 rounded-sm border border-rule bg-surface px-5 py-4 transition-colors hover:border-signal"
+              >
+                <span className="text-ink-faint transition-colors group-hover:text-signal">
+                  {channel.brand ? (
+                    <BrandIcon label={channel.brand} size={22} />
+                  ) : (
+                    channel.icon && <Icon name={channel.icon} size={22} />
+                  )}
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-base font-medium text-ink transition-colors group-hover:text-signal">
+                    {channel.label}
+                  </span>
+                  <span className="block truncate text-sm text-ink-faint">
+                    {channel.detail}
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </Section>
   );
 }

@@ -20,6 +20,7 @@ export type IconName =
   | "codigo"
   | "email"
   | "telefone"
+  | "perfil"
   | "github"
   | "linkedin";
 
@@ -104,6 +105,13 @@ const paths: Record<IconName, React.ReactNode> = {
     <>
       <rect x="2.5" y="4.5" width="15" height="11" rx="1.5" />
       <path d="m2.5 6 7.5 5 7.5-5" />
+    </>
+  ),
+  // Silhueta de pessoa: perfil profissional, sem marca de nenhuma rede.
+  perfil: (
+    <>
+      <circle cx="10" cy="7" r="3.2" />
+      <path d="M3.8 17c0-3.1 2.8-5.3 6.2-5.3s6.2 2.2 6.2 5.3" />
     </>
   ),
   telefone: (
