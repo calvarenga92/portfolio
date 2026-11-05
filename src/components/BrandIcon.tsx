@@ -2,6 +2,12 @@ import * as simpleIcons from "simple-icons";
 
 const brandKeyByLabel: Record<string, string> = {
   React: "siReact",
+  "React 18": "siReact",
+  "React 19": "siReact",
+  Vite: "siVite",
+  Docker: "siDocker",
+  pytest: "siPytest",
+
   "React Native": "siReact",
   "Next.js": "siNextdotjs",
   TypeScript: "siTypescript",

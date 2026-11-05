@@ -7,7 +7,7 @@ import { Container } from "./primitives";
 export function SiteHeader() {
   return (
     <header className="fixed inset-x-0 top-0 z-40 border-b border-rule bg-base/85 backdrop-blur-md">
-      <Container className="flex h-20 items-center justify-between gap-6">
+      <Container className="flex h-24 items-center justify-between gap-6">
         <Link
           href="/"
           aria-label={`${site.shortName} — início`}
@@ -20,10 +20,10 @@ export function SiteHeader() {
               width={logo.width}
               height={logo.height}
               priority
-              className="h-[52px] w-auto"
+              className="h-[68px] w-auto"
             />
           ) : (
-            <Logo size={52} />
+            <Logo size={68} />
           )}
         </Link>
 

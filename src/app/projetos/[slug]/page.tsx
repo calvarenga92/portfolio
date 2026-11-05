@@ -50,7 +50,11 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
             Voltar para o trabalho
           </Button>
 
-          <h1 className="mt-10 text-[clamp(2.5rem,7vw,4.5rem)] font-semibold leading-[1.0] tracking-[-0.035em]">
+          {project.codename && (
+            <p className="mt-10 text-sm text-ink-faint">{project.codename}</p>
+          )}
+
+          <h1 className="mt-3 text-balance text-[clamp(2.25rem,6vw,4rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
             {project.name}
           </h1>
 
