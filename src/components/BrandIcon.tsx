@@ -21,6 +21,8 @@ const brandKeyByLabel: Record<string, string> = {
   Python: "siPython",
   ffmpeg: "siFfmpeg",
   "Java (legado)": "siOpenjdk",
+  Java: "siOpenjdk",
+  Spring: "siSpring",
   NestJS: "siNestjs",
   Prisma: "siPrisma",
   "Node.js": "siNodedotjs",
