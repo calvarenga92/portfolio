@@ -13,6 +13,12 @@
 
   --color-signal: #fd7901;
   --color-signal-dim: #70380a;
+  --color-paper: #e6e2de;
+  --color-paper-rule: #c9c2bb;
+  --color-paper-ink: #1f2a25;
+  --color-paper-soft: #4f5955;
+  --color-paper-signal: #8f4400;
+
   --color-probe: #56c5dd;
   --color-live: #5fd39a;
   --color-craft: #b092ee;

@@ -39,7 +39,7 @@ export const nav = [
 export const portrait = {
   src: "/claudio.jpg",
   alt: "Claudio Alvarenga",
-  width: 400,
-  height: 400,
+  width: 399,
+  height: 399,
   enabled: true,
 } as const;
