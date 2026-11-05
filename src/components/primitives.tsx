@@ -1,5 +1,14 @@
 import type { ReactNode } from "react";
-import type { LedgerLine } from "@/content/types";
+import type { Accent, LedgerLine } from "@/content/types";
+import { Icon, type IconName } from "./icons";
+
+/** Tailwind precisa ver a classe inteira, então nada de montar string. */
+export const accentText: Record<Accent, string> = {
+  signal: "text-signal",
+  probe: "text-probe",
+  live: "text-live",
+  craft: "text-craft",
+};
 
 /**
  * Três primitivos e nada além. Tudo no site é composto a partir daqui, para
@@ -29,11 +38,16 @@ export function Container({
 export function Section({
   id,
   title,
+  icon,
+  accent = "signal",
   children,
   className = "",
 }: {
   id: string;
   title: string;
+  /** O ícone resume a seção antes da leitura e marca o início do bloco. */
+  icon?: IconName;
+  accent?: Accent;
   children: ReactNode;
   className?: string;
 }) {
@@ -46,12 +60,15 @@ export function Section({
       className={`border-t border-rule py-20 sm:py-28 ${className}`}
     >
       <Container>
-        <h2
-          id={headingId}
-          className="max-w-[20ch] text-2xl font-semibold leading-[1.1] tracking-[-0.02em] sm:text-3xl"
-        >
-          {title}
-        </h2>
+        <div className="flex items-center gap-3.5">
+          {icon && <Icon name={icon} size={26} className={accentText[accent]} />}
+          <h2
+            id={headingId}
+            className="text-2xl font-semibold leading-[1.1] tracking-[-0.02em] sm:text-3xl"
+          >
+            {title}
+          </h2>
+        </div>
         <div className="mt-10 sm:mt-14">{children}</div>
       </Container>
     </section>

@@ -4,11 +4,12 @@ import { projects } from "@/content/projects";
 import { contact, site } from "@/content/site";
 import { stack } from "@/content/stack";
 import { ProjectList } from "./ProjectList";
-import { Container, Prose, Section } from "./primitives";
+import { Container, Section, accentText } from "./primitives";
+import { Icon } from "./icons";
 
 export function Work() {
   return (
-    <Section id="trabalho" title="Trabalho">
+    <Section id="trabalho" title="Trabalho" icon="trabalho" accent="signal">
       <ProjectList projects={projects} />
     </Section>
   );
@@ -44,7 +45,7 @@ function durationLabel(startISO: string, endISO?: string): string {
  */
 export function ExperienceTimeline() {
   return (
-    <Section id="experiencia" title="Experiência">
+    <Section id="experiencia" title="Experiência" icon="experiencia" accent="live">
       <ol>
         {experiences.map((job, index) => {
           const current = !job.endISO;
@@ -159,16 +160,52 @@ export function ExperienceTimeline() {
 
 export function Method() {
   return (
-    <Section id="metodo" title={method.title}>
-      <Prose>
-        {method.body.map((paragraph) => (
-          <p key={paragraph.slice(0, 32)}>{paragraph}</p>
-        ))}
-      </Prose>
+    <Section id="metodo" title={method.title} icon="metodo" accent="probe">
+      {/* Duas colunas ocupando a largura inteira. Em quatro blocos curtos a
+          grade é mais honesta que o texto corrido: quem só varre os títulos
+          leva as quatro teses, e quem quer o caso lê o corpo. */}
+      <div className="grid gap-px overflow-hidden rounded-sm border border-rule bg-rule lg:grid-cols-2">
+        {method.principles.map((principle) => (
+          <article key={principle.title} className="flex flex-col bg-surface p-7 sm:p-8">
+            <Icon
+              name={principle.icon}
+              size={24}
+              className={accentText[principle.accent]}
+            />
 
-      <div className="mt-12 max-w-[62ch] border-l-2 border-signal-dim pl-5">
-        <h3 className="text-base font-semibold text-ink">{learning.title}</h3>
-        <p className="mt-2 text-base leading-[1.7] text-ink-soft">{learning.body}</p>
+            <h3 className="mt-5 text-xl font-semibold leading-snug tracking-[-0.015em] text-ink">
+              {principle.title}
+            </h3>
+
+            <p className="mt-4 flex-1 text-base leading-[1.7] text-ink-soft">
+              {principle.body}
+            </p>
+
+            {principle.figure && (
+              <div className="mt-6 border-t border-rule pt-5">
+                <p
+                  className={`leading-none ${
+                    principle.figure.numeric
+                      ? `tnum text-3xl font-medium ${accentText[principle.accent]}`
+                      : "text-xl font-medium text-ink"
+                  }`}
+                >
+                  {principle.figure.value}
+                </p>
+                <p className="mt-2 text-sm leading-snug text-ink-faint">
+                  {principle.figure.label}
+                </p>
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+
+      {/* A declaração de lacuna fica fora da grade de propósito: ela não é
+          mais um princípio, é a contrapartida deles. */}
+      <div className="mt-10 rounded-sm border border-signal-dim bg-surface p-7 sm:p-8">
+        <h3 className="text-lg font-semibold text-ink">{learning.title}</h3>
+        <p className="mt-3 text-base leading-[1.7] text-ink-soft">{learning.body}</p>
       </div>
     </Section>
   );
@@ -176,31 +213,43 @@ export function Method() {
 
 export function StackSection() {
   return (
-    <Section id="stack" title="Stack">
-      <div className="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-        {stack.map((group) => (
-          <div key={group.title} className="border-t border-rule pt-5">
-            <h3
-              className={`text-sm font-semibold ${
-                group.muted ? "text-ink-faint" : "text-ink"
-              }`}
-            >
-              {group.title}
-            </h3>
-            <ul className="mt-3 space-y-1.5">
-              {group.items.map((item) => (
-                <li
-                  key={item}
-                  className={`text-sm leading-relaxed ${
-                    group.muted ? "text-ink-faint" : "text-ink-soft"
+    <Section id="stack" title="Stack" icon="stack" accent="craft">
+      <div className="grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        {stack.map((group) => {
+          const color = group.accent ? accentText[group.accent] : "text-ink-faint";
+
+          return (
+            <div key={group.title} className="border-t border-rule pt-6">
+              <div className="flex items-center gap-2.5">
+                {group.icon && <Icon name={group.icon} size={20} className={color} />}
+                <h3
+                  className={`text-base font-semibold ${
+                    group.muted ? "text-ink-faint" : "text-ink"
                   }`}
                 >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+                  {group.title}
+                </h3>
+              </div>
+
+              {/* Etiquetas com a cor do grupo no contorno: a categoria fica
+                  legível de longe, sem precisar ler item por item. */}
+              <ul className="mt-4 flex flex-wrap gap-2">
+                {group.items.map((item) => (
+                  <li
+                    key={item}
+                    className={`rounded-sm border px-2.5 py-1 text-sm ${
+                      group.muted
+                        ? "border-rule text-ink-faint"
+                        : `border-rule-strong bg-surface text-ink-soft`
+                    }`}
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
       </div>
     </Section>
   );
@@ -208,14 +257,14 @@ export function StackSection() {
 
 export function Contact() {
   const channels = [
-    { label: contact.email, href: `mailto:${contact.email}` },
-    { label: contact.phoneLabel, href: `tel:${contact.phoneHref}` },
-    { label: contact.linkedinLabel, href: contact.linkedin },
-    { label: contact.githubLabel, href: contact.github },
+    { label: contact.email, href: `mailto:${contact.email}`, icon: "email" as const },
+    { label: contact.phoneLabel, href: `tel:${contact.phoneHref}`, icon: "telefone" as const },
+    { label: contact.linkedinLabel, href: contact.linkedin, icon: "linkedin" as const },
+    { label: contact.githubLabel, href: contact.github, icon: "github" as const },
   ];
 
   return (
-    <Section id="contato" title="Vamos conversar">
+    <Section id="contato" title="Vamos conversar" icon="contato" accent="signal">
       <p className="max-w-[52ch] text-lg leading-[1.6] text-ink-soft">
         Estou aberto a vaga efetiva e a projeto por PJ. Se o seu time precisa de
         alguém que desenha a interface e responde por ela depois do deploy, me
@@ -229,8 +278,9 @@ export function Contact() {
               href={channel.href}
               target={channel.href.startsWith("http") ? "_blank" : undefined}
               rel={channel.href.startsWith("http") ? "noreferrer noopener" : undefined}
-              className="inline-block border-b border-rule-strong pb-1 text-base text-ink transition-colors hover:border-signal hover:text-signal"
+              className="group inline-flex items-center gap-3 rounded-sm border border-rule bg-surface px-4 py-3 text-base text-ink transition-colors hover:border-signal hover:text-signal"
             >
+              <Icon name={channel.icon} size={20} className="text-ink-faint group-hover:text-signal" />
               {channel.label}
             </a>
           </li>
