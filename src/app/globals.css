@@ -22,8 +22,21 @@
   --color-ink-soft: #94a59b;
   --color-ink-faint: #76877d;
 
+  /* Sinalização.
+     Cada cor tem um significado fixo, como num painel de instrumento: ela
+     informa, não decora. Se a mesma cor aparecer em duas categorias, ela
+     deixa de dizer qualquer coisa — então nenhuma se repete.
+       signal  âmbar   estado atual, número que sustenta argumento
+       probe   ciano   medição, teste, qualidade
+       live    verde   produção, no ar, entrega
+       craft   violeta interface, design
+     Contraste sobre --color-base: signal 9.7:1 · probe 9.2:1 ·
+     live 10.4:1 · craft 7.4:1. Todos acima do piso AA. */
   --color-signal: #f2b134;
   --color-signal-dim: #6d5319;
+  --color-probe: #56c5dd;
+  --color-live: #5fd39a;
+  --color-craft: #b092ee;
 
   --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", monospace;
