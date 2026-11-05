@@ -141,13 +141,14 @@ export function Method() {
       <div className="grid gap-5 lg:grid-cols-2">
         {method.principles.map((principle) => (
           <article key={principle.title} className="flex flex-col rounded-2xl bg-paper p-7 sm:p-8">
-            <Icon name={principle.icon} size={34} className="text-paper-signal" />
+            <div className="flex items-center gap-3">
+              <Icon name={principle.icon} size={30} className="text-paper-signal" />
+              <h3 className="text-balance text-xl font-semibold leading-snug tracking-[-0.015em] text-paper-ink">
+                {principle.title}
+              </h3>
+            </div>
 
-            <h3 className="mt-5 text-balance text-xl font-semibold leading-snug tracking-[-0.015em] text-paper-signal">
-              {principle.title}
-            </h3>
-
-            <p className="mt-4 flex-1 text-base leading-[1.7] text-paper-soft">
+            <p className="mt-5 flex-1 text-base leading-[1.7] text-paper-soft">
               {principle.body}
             </p>
 

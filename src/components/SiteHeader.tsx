@@ -27,22 +27,22 @@ export function SiteHeader() {
           )}
         </Link>
 
-        <nav aria-label="Seções do site" className="hidden items-center gap-7 md:flex">
+        <nav aria-label="Seções do site" className="hidden items-center gap-8 md:flex">
           {nav.map((item) => (
             <Link
               key={item.href}
               href={`/${item.href}`}
-              className="text-sm text-ink-soft transition-colors hover:text-ink"
+              className="text-base text-ink-soft transition-colors hover:text-ink"
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <p className="flex items-center gap-2 text-sm text-ink-soft">
+        <p className="flex items-center gap-2.5 text-base text-ink-soft">
           <span
             aria-hidden="true"
-            className="beacon inline-block size-1.5 shrink-0 rounded-full bg-signal"
+            className="beacon inline-block size-2 shrink-0 rounded-full bg-live"
           />
           <span className="hidden sm:inline">Disponível para projetos</span>
           <span className="sm:hidden">Disponível</span>
@@ -56,7 +56,7 @@ export function SiteHeader() {
         <ul className="flex gap-6 overflow-x-auto px-6 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {nav.map((item) => (
             <li key={item.href} className="shrink-0">
-              <Link href={`/${item.href}`} className="text-sm text-ink-soft">
+              <Link href={`/${item.href}`} className="text-base text-ink-soft">
                 {item.label}
               </Link>
             </li>

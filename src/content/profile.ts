@@ -7,19 +7,19 @@ export const intro =
 
 export const services: Service[] = [
   {
-    title: "Interface do desenho ao ar",
+    title: "Interface do zero ao ar",
     body: "Eu desenho a tela e implemento. Sem a ida e volta entre quem desenha e quem programa, e sem protótipo bonito que não se sustenta quando vira código.",
     accent: "signal",
     icon: "interface",
   },
   {
-    title: "Evolução de produto existente",
+    title: "Evolução de produto",
     body: "Mexer no que já tem usuário sem parar o que funciona: entrega em partes, liberada aos poucos, com volta rápida se algo sair diferente do esperado.",
     accent: "signal",
     icon: "entrega",
   },
   {
-    title: "Qualidade antes do usuário",
+    title: "Qualidade na construção",
     body: "Teste automatizado, acessibilidade e velocidade tratados durante a construção, e não como última etapa antes de entregar.",
     accent: "signal",
     icon: "qualidade",
