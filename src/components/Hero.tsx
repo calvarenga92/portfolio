@@ -8,7 +8,7 @@ export function Hero() {
   return (
     <div className="pt-40 pb-20 sm:pt-44 sm:pb-28">
       <Container>
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start lg:gap-16">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-16">
           <div>
             <h1 className="text-[clamp(2.5rem,7vw,4.5rem)] font-semibold leading-[0.98] tracking-[-0.035em]">
               {headline.map((line, i) => (
@@ -53,12 +53,14 @@ export function Hero() {
           style={{ animationDelay: "500ms" }}
         >
           {services.map((service) => (
-            <article key={service.title} className="rounded-2xl bg-paper p-7 sm:p-8">
-              <Icon name={service.icon} size={34} className="text-paper-signal" />
-              <h2 className="mt-5 text-balance text-lg font-semibold leading-snug tracking-[-0.015em] text-paper-signal">
-                {service.title}
-              </h2>
-              <p className="mt-3 text-base leading-[1.6] text-paper-soft">{service.body}</p>
+            <article key={service.title} className="rounded-2xl border border-rule bg-surface p-7 sm:p-8">
+              <div className="flex items-center gap-3">
+                <Icon name={service.icon} size={26} className="text-signal" />
+                <h2 className="text-balance text-lg font-semibold leading-snug tracking-[-0.015em] text-signal">
+                  {service.title}
+                </h2>
+              </div>
+              <p className="mt-4 text-base leading-[1.6] text-ink-soft">{service.body}</p>
             </article>
           ))}
         </div>
