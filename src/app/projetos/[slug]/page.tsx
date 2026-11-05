@@ -82,7 +82,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
           </dl>
 
           {project.links && project.links.length > 0 && (
-            <div className="mt-10 flex flex-wrap gap-3">
+            <div className="mt-10 flex flex-wrap justify-center gap-3">
               {project.links.map((link) => (
                 <Button
                   key={link.href}
@@ -149,7 +149,9 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
 
         <Container>
           <div className="mt-24 flex flex-col items-center gap-5 border-t border-rule pt-16 text-center">
-            <p className="max-w-[40ch] text-xl leading-snug text-ink">
+            {/* Sem medida máxima: a frase é curta e cabe numa linha só nas
+                telas largas. Em telas estreitas ela quebra naturalmente. */}
+            <p className="text-[clamp(1.25rem,2.4vw,1.75rem)] leading-snug text-ink">
               Tem um projeto onde a interface precisa aguentar produção?
             </p>
             <Button href="/#contato" variant="solid">
