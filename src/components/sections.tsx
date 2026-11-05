@@ -33,7 +33,7 @@ function durationLabel(startISO: string, endISO?: string): string {
 
 export function ExperienceTimeline() {
   return (
-    <Section id="experiencia" title="Experiência" icon="experiencia" accent="live">
+    <Section id="experiencia" title="Experiência" icon="experiencia" accent="signal">
       <ol>
         {experiences.map((job, index) => {
           const current = !job.endISO;
@@ -137,7 +137,7 @@ export function ExperienceTimeline() {
 
 export function Method() {
   return (
-    <Section id="metodo" title={method.title} icon="metodo" accent="probe">
+    <Section id="metodo" title={method.title} icon="metodo" accent="signal">
       <div className="grid gap-5 lg:grid-cols-2">
         {method.principles.map((principle) => (
           <article key={principle.title} className="flex flex-col rounded-2xl bg-paper p-7 sm:p-8">
@@ -166,7 +166,7 @@ export function Method() {
 
 export function StackSection() {
   return (
-    <Section id="stack" title="Stack" icon="stack" accent="craft">
+    <Section id="stack" title="Stack" icon="stack" accent="signal">
       <p className="mb-12 max-w-[72ch] text-lg leading-[1.6] text-ink">
         Front-end é onde eu sou profundo: arquitetura, interface e qualidade do
         que vai para o usuário. No back-end eu entrego integração, automação e

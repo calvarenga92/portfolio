@@ -3,7 +3,7 @@ import type { StackGroup } from "./types";
 export const stack: StackGroup[] = [
   {
     title: "Interface",
-    accent: "craft",
+    accent: "signal",
     icon: "interface",
     items: ["React", "Next.js", "TypeScript", "Tailwind", "React Native", "Design Systems"],
   },
@@ -15,19 +15,19 @@ export const stack: StackGroup[] = [
   },
   {
     title: "Qualidade",
-    accent: "probe",
+    accent: "signal",
     icon: "qualidade",
     items: ["Playwright", "Jest", "React Testing Library", "Acessibilidade (WCAG)", "Code review"],
   },
   {
     title: "Entrega",
-    accent: "live",
+    accent: "signal",
     icon: "entrega",
     items: ["Vercel", "Git e GitHub", "Feature flags", "Micro-frontends"],
   },
   {
     title: "No back-end",
-    accent: "live",
+    accent: "signal",
     icon: "codigo",
     items: ["Java", "Spring", "Python", "Node.js", "APIs e integrações", "ffmpeg"],
   },
