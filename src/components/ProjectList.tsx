@@ -14,7 +14,7 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                 href={`/projetos/${project.slug}`}
                 tabIndex={-1}
                 aria-hidden="true"
-                className="block overflow-hidden rounded-xl border border-rule-strong bg-surface"
+                className="block self-start overflow-hidden rounded-xl border border-rule-strong bg-surface"
               >
                 <Image
                   src={project.cover.src}
@@ -22,7 +22,7 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                   width={project.cover.width}
                   height={project.cover.height}
                   sizes="(min-width: 1024px) 22rem, 100vw"
-                  className="h-full w-full object-cover object-top"
+                  className="h-auto w-full"
                 />
               </Link>
             ) : (
