@@ -29,7 +29,7 @@ export const logo = {
 } as const;
 
 export const nav = [
-  { href: "#trabalho", label: "Trabalho" },
+  { href: "#trabalho", label: "Projetos" },
   { href: "#experiencia", label: "Experiência" },
   { href: "#metodo", label: "Método" },
   { href: "#stack", label: "Stack" },

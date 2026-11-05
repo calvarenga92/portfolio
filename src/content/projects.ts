@@ -20,16 +20,22 @@ export const projects: Project[] = [
       { label: "Código no GitHub", href: "https://github.com/calvarenga92/calvarenga-jungle-nft" },
     ],
     cover: {
-      src: "/projetos/kurio-home.jpg",
-      alt: "Página inicial do Kurio, com a chamada principal e a peça em destaque",
-      width: 942,
-      height: 896,
+      src: "/projetos/kurio-marketplace.webp",
+      alt: "Vitrine de loja em miniatura com três telas expondo peças de arte digital",
+      width: 1000,
+      height: 1000,
     },
     caseStudy: [
       {
         kind: "images",
         title: "As telas",
         images: [
+          {
+            src: "/projetos/kurio-home.jpg",
+            alt: "Página inicial do Kurio, com a chamada principal e a peça em destaque",
+            width: 942,
+            height: 896,
+          },
           {
             src: "/projetos/kurio-mercado.jpg",
             alt: "Tela de mercado do Kurio: filtros por coleção, faixa de preço e disponibilidade",
