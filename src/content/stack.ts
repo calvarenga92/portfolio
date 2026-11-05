@@ -26,9 +26,10 @@ export const stack: StackGroup[] = [
     items: ["Vercel", "Git e GitHub", "Feature flags", "Micro-frontends"],
   },
   {
-    title: "Fora do front",
+    title: "No back-end",
+    accent: "live",
     icon: "codigo",
-    items: ["Python", "ffmpeg", "Java (legado)"],
+    items: ["Java", "Spring", "Python", "Node.js", "APIs e integrações", "ffmpeg"],
   },
   {
     title: "Aprendendo agora",

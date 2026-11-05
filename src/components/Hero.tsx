@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { headline, intro, services } from "@/content/profile";
-import { portrait, site } from "@/content/site";
+import { portrait } from "@/content/site";
 import { Container, accentText } from "./primitives";
 import { Icon } from "./icons";
 
@@ -32,7 +32,7 @@ export function Hero() {
 
           {portrait.enabled && (
             <div
-              className="rise order-first w-40 shrink-0 sm:w-52 lg:order-none lg:w-[21rem]"
+              className="rise order-first w-36 shrink-0 sm:w-44 lg:order-none lg:w-[15rem]"
               style={{ animationDelay: "160ms" }}
             >
               <Image
@@ -41,10 +41,9 @@ export function Hero() {
                 width={portrait.width}
                 height={portrait.height}
                 priority
-                sizes="(min-width: 1024px) 21rem, (min-width: 640px) 13rem, 10rem"
-                className="aspect-square w-full rounded-2xl object-cover shadow-[0_0_70px_-18px_rgba(230,237,232,0.38)]"
+                unoptimized
+                className="aspect-square w-full rounded-2xl object-cover"
               />
-              <p className="mt-3 text-sm leading-relaxed text-ink-faint">{site.location}</p>
             </div>
           )}
         </div>

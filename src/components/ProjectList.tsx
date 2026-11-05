@@ -67,16 +67,16 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                   <span
                     className={`inline-flex items-center gap-2 rounded-sm border px-2.5 py-1 text-xs ${
                       project.status.tone === "ativo"
-                        ? "border-live/40 text-live"
-                        : "border-probe/40 text-probe"
+                        ? "border-probe/40 text-probe"
+                        : "border-live/40 text-live"
                     }`}
                   >
                     <span
                       aria-hidden="true"
                       className={
                         project.status.tone === "ativo"
-                          ? "beacon size-1.5 rounded-full bg-live"
-                          : "size-1.5 rounded-full bg-probe"
+                          ? "beacon size-1.5 rounded-full bg-probe"
+                          : "size-1.5 rounded-full bg-live"
                       }
                     />
                     {project.status.label}
