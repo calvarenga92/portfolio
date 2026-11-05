@@ -64,9 +64,22 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                 </h3>
                 <span className="tnum text-sm text-ink-faint">{project.year}</span>
                 {project.status && (
-                  <span className="inline-flex items-center gap-2 rounded-sm border border-live/40 px-2.5 py-1 text-xs text-live">
-                    <span aria-hidden="true" className="beacon size-1.5 rounded-full bg-live" />
-                    {project.status}
+                  <span
+                    className={`inline-flex items-center gap-2 rounded-sm border px-2.5 py-1 text-xs ${
+                      project.status.tone === "ativo"
+                        ? "border-live/40 text-live"
+                        : "border-probe/40 text-probe"
+                    }`}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={
+                        project.status.tone === "ativo"
+                          ? "beacon size-1.5 rounded-full bg-live"
+                          : "size-1.5 rounded-full bg-probe"
+                      }
+                    />
+                    {project.status.label}
                   </span>
                 )}
               </div>
