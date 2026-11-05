@@ -4,8 +4,12 @@ export const site = {
   name: "Claudio Alvarenga",
   shortName: "Claudio Alvarenga",
   role: "Desenvolvedor Front-end Sênior",
-  /** Troque para o domínio final antes do deploy — afeta OG, sitemap e JSON-LD. */
-  url: "https://claudioalvarenga.dev",
+  /**
+   * Domínio de produção. Alimenta canonical, Open Graph, sitemap e JSON-LD —
+   * se estiver errado, a prévia do link e o SEO saem furados. Ao registrar um
+   * domínio próprio, troque aqui e na Vercel no mesmo dia.
+   */
+  url: "https://claudio-alvarenga.vercel.app",
   locale: "pt-BR",
   description:
     "Desenvolvedor front-end sênior com 12 anos de mercado e origem em UX. React, Next.js e TypeScript em produtos de alta carga — XP e Raia Drogasil.",
