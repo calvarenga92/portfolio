@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfólio — Claudio Alvarenga
 
-## Getting Started
+Site pessoal. Next.js com App Router, TypeScript e Tailwind, sem back-end e sem CMS:
+todo o conteúdo é TypeScript tipado, o build gera HTML estático e o deploy é a Vercel.
 
-First, run the development server:
+## Rodando
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
+npm run build   # build de produção
+npm start       # serve o build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Como o projeto está organizado
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+  content/      conteúdo tipado — texto, números, imagens
+    types.ts    contratos
+    site.ts     identidade, contato, navegação, retrato
+    profile.ts  manchete, apresentação, método
+    experience.ts
+    projects.ts projetos e cases
+    stack.ts
+  components/
+    primitives.tsx   Container, Section, Ledger, Prose
+    SiteHeader.tsx
+    Hero.tsx
+    ProjectList.tsx
+    sections.tsx     seções da página inicial
+  app/
+    page.tsx              página única com âncoras
+    projetos/[slug]/      uma página por case, gerada em build
+    opengraph-image.tsx   imagem de pré-visualização do link
+    sitemap.ts, robots.ts
+  fonts/        Archivo e IBM Plex Mono em woff2, servidos pelo próprio domínio
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+A regra que sustenta a estrutura: **componente não inventa conteúdo e conteúdo não
+conhece layout.** Para mudar um texto ou um número, mexa só em `src/content/`. Se um
+dia a origem virar MDX ou CMS, os componentes continuam consumindo os mesmos tipos.
 
-## Learn More
+## Decisões
 
-To learn more about Next.js, take a look at the following resources:
+**Conteúdo em `.ts` e não em MDX.** Dois projetos e três empregos não justificam um
+pipeline de markdown. TypeScript dá verificação em build: campo obrigatório que falta
+quebra o `npm run build`, não a página em produção.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Fontes self-hosted.** Tira uma conexão a terceiro do caminho crítico do LCP, não
+manda IP de visitante para o Google e torna o build independente de rede externa.
+Archivo entra como fonte variável — um arquivo cobre os pesos de 100 a 900.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Mono só em número.** `IBM Plex Mono` fica restrita a cifra, contagem e data, com
+`font-variant-numeric: tabular-nums` para a coluna de valor alinhar. Mono em rótulo
+de texto é decoração.
 
-## Deploy on Vercel
+**Sem alternância de tema.** Uma paleta só, escura, com contraste medido: `ink` 15.1:1,
+`ink-soft` 7.0:1, `ink-faint` 4.8:1 e `signal` 9.7:1 sobre o fundo. Todos acima do piso
+AA, incluindo o texto de 12px.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Navegação no celular sem menu escondido.** A faixa rola na horizontal em vez de
+colapsar atrás de um botão: sem estado para gerenciar, sem JavaScript, e os destinos
+ficam visíveis.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Movimento contínuo em um elemento só.** O ponto de disponibilidade no cabeçalho
+pulsa porque é estado; o resto do movimento é uma única entrada no carregamento.
+Tudo desligado em `prefers-reduced-motion`.
+
+## Trocando o conteúdo
+
+| O quê | Onde |
+| --- | --- |
+| Texto do topo, apresentação, método | `src/content/profile.ts` |
+| Empregos | `src/content/experience.ts` |
+| Projetos e cases | `src/content/projects.ts` |
+| Stack | `src/content/stack.ts` |
+| Contato, domínio, navegação | `src/content/site.ts` |
+| Foto | substituir `public/claudio.jpg` |
+| Imagens de projeto | `public/projetos/` e o bloco `images` do case |
+
+Antes do deploy, troque `site.url` em `src/content/site.ts` para o domínio final —
+ele alimenta canonical, Open Graph, sitemap e dados estruturados.
+
+## Deploy
+
+Push para o GitHub, importar o repositório na Vercel e aceitar os padrões. Não há
+variável de ambiente para configurar.
