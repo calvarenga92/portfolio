@@ -55,6 +55,13 @@ export type Project = {
 
 export type Accent = "signal" | "probe" | "live" | "craft";
 
+export type Service = {
+  title: string;
+  body: string;
+  accent: Accent;
+  icon: "interface" | "entrega" | "qualidade";
+};
+
 export type Principle = {
   title: string;
   body: string;
