@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { headline, intro, services } from "@/content/profile";
 import { portrait } from "@/content/site";
-import { Container, accentText } from "./primitives";
+import { Container } from "./primitives";
 import { Icon } from "./icons";
 
 export function Hero() {
@@ -32,7 +32,7 @@ export function Hero() {
 
           {portrait.enabled && (
             <div
-              className="rise order-first w-36 shrink-0 sm:w-44 lg:order-none lg:w-[15rem]"
+              className="rise order-first w-36 shrink-0 sm:w-44 lg:order-none lg:w-[17rem]"
               style={{ animationDelay: "160ms" }}
             >
               <Image
@@ -49,20 +49,16 @@ export function Hero() {
         </div>
 
         <div
-          className="rise mt-16 grid gap-px overflow-hidden rounded-xl border border-rule bg-rule lg:grid-cols-3"
+          className="rise mt-16 grid gap-5 lg:grid-cols-3"
           style={{ animationDelay: "500ms" }}
         >
           {services.map((service) => (
-            <article key={service.title} className="bg-surface p-7 sm:p-8">
-              <Icon name={service.icon} size={34} className={accentText[service.accent]} />
-              <h2
-                className={`mt-5 text-lg font-semibold leading-snug tracking-[-0.015em] ${
-                  accentText[service.accent]
-                }`}
-              >
+            <article key={service.title} className="rounded-2xl bg-paper p-7 sm:p-8">
+              <Icon name={service.icon} size={34} className="text-paper-signal" />
+              <h2 className="mt-5 text-balance text-lg font-semibold leading-snug tracking-[-0.015em] text-paper-signal">
                 {service.title}
               </h2>
-              <p className="mt-3 text-base leading-[1.6] text-ink-soft">{service.body}</p>
+              <p className="mt-3 text-base leading-[1.6] text-paper-soft">{service.body}</p>
             </article>
           ))}
         </div>

@@ -138,29 +138,21 @@ export function ExperienceTimeline() {
 export function Method() {
   return (
     <Section id="metodo" title={method.title} icon="metodo" accent="probe">
-      <div className="grid gap-px overflow-hidden rounded-sm border border-rule bg-rule lg:grid-cols-2">
+      <div className="grid gap-5 lg:grid-cols-2">
         {method.principles.map((principle) => (
-          <article key={principle.title} className="flex flex-col bg-surface p-7 sm:p-8">
-            <Icon
-              name={principle.icon}
-              size={34}
-              className={accentText[principle.accent]}
-            />
+          <article key={principle.title} className="flex flex-col rounded-2xl bg-paper p-7 sm:p-8">
+            <Icon name={principle.icon} size={34} className="text-paper-signal" />
 
-            <h3
-              className={`mt-5 text-balance text-xl font-semibold leading-snug tracking-[-0.015em] ${
-                accentText[principle.accent]
-              }`}
-            >
+            <h3 className="mt-5 text-balance text-xl font-semibold leading-snug tracking-[-0.015em] text-paper-signal">
               {principle.title}
             </h3>
 
-            <p className="mt-4 flex-1 text-base leading-[1.7] text-ink-soft">
+            <p className="mt-4 flex-1 text-base leading-[1.7] text-paper-soft">
               {principle.body}
             </p>
 
-            <p className="mt-6 flex items-start gap-3 border-t border-rule pt-5 text-base leading-[1.5] text-ink">
-              <Icon name="resultado" size={20} className="mt-0.5 text-signal" />
+            <p className="mt-6 flex items-start gap-3 border-t border-paper-rule pt-5 text-base leading-[1.5] text-paper-ink">
+              <Icon name="resultado" size={20} className="mt-0.5 text-paper-signal" />
               {principle.result}
             </p>
           </article>
