@@ -28,40 +28,46 @@ export const method: { title: string; principles: Principle[] } = {
   title: "Como eu trabalho",
   principles: [
     {
-      title: "Migração grande se faz em fatia",
-      body: "Na XP a primeira tentativa de trocar o monolito Angular foi big-bang e virou incidente: jornada inteira fora do ar, sem forma de reverter sem deploy. Depois disso defendi feature flag por jornada, e passamos a migrar com legado e novo rodando lado a lado. O ganho não foi técnico, foi de experiência — o usuário parou de ser cobaia de release.",
+      title: "Troca de sistema sem derrubar quem está usando",
+      body: "Substituir uma plataforma inteira de uma vez é a forma mais cara de descobrir um erro: quando algo quebra, quebra para todo mundo ao mesmo tempo. Prefiro migrar uma área por vez, com o sistema antigo e o novo funcionando lado a lado, e liberar a versão nova primeiro para uma parte dos usuários. Se o resultado piorar, ela volta ao normal na hora.",
       accent: "live" as const,
       icon: "entrega" as const,
-      figure: { label: "Para desligar uma jornada", value: "segundos" },
+      figure: {
+        label: "É o tempo para tirar do ar uma área com problema, sem esperar por uma nova publicação do sistema",
+        value: "segundos",
+      },
     },
     {
-      title: "Correto e legível não são a mesma coisa",
-      body: "Uma suíte de 78 testes end-to-end em Playwright pegou cinco defeitos reais antes da produção, e um deles era estouro de layout: o comportamento passava, a tela estava ilegível. Teste funcional sozinho não enxerga isso.",
+      title: "Tela certa e tela utilizável não são a mesma coisa",
+      body: "Teste automatizado comum verifica se o botão responde, não se a pessoa consegue ler o que está na frente dela. Em um marketplace que construí, a bateria de testes barrou cinco problemas antes de chegarem ao usuário — e um deles era um texto vazando para fora da tela em telas menores: tudo funcionava, nada se lia.",
       accent: "probe" as const,
       icon: "qualidade" as const,
-      figure: { label: "Defeitos pegos antes da produção", value: "5", numeric: true },
+      figure: {
+        label: "Problemas que chegariam ao usuário final e foram barrados antes do lançamento",
+        value: "5",
+        numeric: true,
+      },
     },
     {
-      title: "Dinheiro não é float",
-      body: "No Kurio o valor é inteiro de 18 casas e o checkout é idempotente por tentativa, então retry de rede não vira cobrança dobrada. É o tipo de decisão que ninguém elogia e que, quando falta, custa caro.",
+      title: "Em produto que cobra, a conta precisa fechar",
+      body: "Dois erros clássicos custam dinheiro de verdade. O primeiro é a sobra de centavo, que some numa venda e aparece quando são milhares. O segundo é o usuário com internet instável que aperta o botão de pagar duas vezes — e paga duas vezes. Resolvo os dois na arquitetura, antes de existir tela: o sistema reconhece a segunda tentativa como a mesma e não cobra de novo.",
       accent: "signal" as const,
       icon: "dados" as const,
-      figure: { label: "Casas decimais no valor, sem float", value: "18", numeric: true },
+      figure: {
+        label: "Cobranças duplicadas quando o usuário repete o pagamento",
+        value: "zero",
+      },
     },
     {
-      title: "Decisão de design se defende com dado",
-      body: "Instrumentei jornadas com dataLayer para enxergar onde o usuário abandonava, e usei feature flag para expor a versão nova a uma fatia antes de abrir para todo mundo. Opinião é ponto de partida; número é o que encerra a discussão.",
+      title: "Decisão de interface se defende com dado, não com opinião",
+      body: "Acho que a tela ficou melhor não é argumento. Eu meço onde a pessoa desiste no meio do caminho, coloco a versão nova no ar para uma parte dos usuários e comparo o comportamento real das duas antes de abrir para todos. Número encerra discussão que reunião não encerra.",
       accent: "craft" as const,
       icon: "metodo" as const,
+      figure: {
+        label: "Onde o usuário desiste, medido no uso real e não suposto em reunião",
+        value: "funil medido",
+      },
     },
   ],
 };
 
-/**
- * Honestidade declarada. Raro em portfólio e deliberado: separa quem entrega
- * de quem lista palavra-chave, e evita entrevista que morre na etapa 5.
- */
-export const learning = {
-  title: "Onde eu ainda não entrego sozinho",
-  body: "Back-end de arquitetura — NestJS com DI, guards e pipes, ORM com migration em produção — eu leio e acompanho, mas não entreguei. Em inglês leio e escrevo bem; reunião falada com stakeholder estrangeiro ainda é limitação e está em evolução ativa. Prefiro dizer antes do que descobrirmos juntos depois.",
-};

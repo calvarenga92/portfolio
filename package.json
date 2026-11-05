@@ -11,7 +11,8 @@
   "dependencies": {
     "next": "^15.5.29",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "simple-icons": "^16.36.0"
   },
   "comment:overrides": "O Next 15.5.29 ainda traz postcss 8.4.31, abaixo do patch do GHSA de XSS e leitura de arquivo. O npm so resolve subindo para o Next 16, que e major. Como o conserto esta na mesma linha semver do postcss, forcamos a versao corrigida aqui em vez de trocar de major. Remover este override quando o Next passar a trazer 8.5.23 ou maior.",
   "overrides": {

@@ -43,7 +43,7 @@ export function Hero() {
 
           {portrait.enabled && (
             <div
-              className="rise order-first w-32 shrink-0 sm:w-40 lg:order-none lg:w-48"
+              className="rise order-first w-40 shrink-0 sm:w-52 lg:order-none lg:w-[21rem]"
               style={{ animationDelay: "160ms" }}
             >
               <Image
@@ -52,10 +52,10 @@ export function Hero() {
                 width={portrait.width}
                 height={portrait.height}
                 priority
-                sizes="(min-width: 1024px) 12rem, (min-width: 640px) 10rem, 8rem"
+                sizes="(min-width: 1024px) 21rem, (min-width: 640px) 13rem, 10rem"
                 className="aspect-square w-full rounded-sm object-cover ring-1 ring-rule-strong"
               />
-              <p className="mt-3 text-xs leading-relaxed text-ink-faint">{site.location}</p>
+              <p className="mt-3 text-sm leading-relaxed text-ink-faint">{site.location}</p>
             </div>
           )}
         </div>
