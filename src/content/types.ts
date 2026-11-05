@@ -67,7 +67,7 @@ export type Principle = {
   body: string;
   accent: Accent;
   icon: "entrega" | "qualidade" | "dados" | "metodo";
-  figure?: LedgerLine;
+  result: string;
 };
 
 export type StackGroup = {
