@@ -1,4 +1,4 @@
-import type { LedgerLine } from "./types";
+import type { LedgerLine, Principle } from "./types";
 
 /**
  * Hero e seção de método.
@@ -18,13 +18,42 @@ export const ledger: LedgerLine[] = [
   { label: "Tempo para desligar uma jornada sem deploy", value: "segundos" },
 ];
 
-export const method = {
+/**
+ * Cada princípio era um parágrafo de um texto corrido, e cada um já começava
+ * com a própria tese. Separá-los em blocos não mudou o conteúdo — só revelou
+ * a estrutura que estava lá, e permite que a seção seja varrida pelos títulos
+ * por quem não vai ler tudo.
+ */
+export const method: { title: string; principles: Principle[] } = {
   title: "Como eu trabalho",
-  body: [
-    "Migração grande se faz em fatia. Na XP a primeira tentativa de trocar o monolito Angular foi big-bang e virou incidente: jornada inteira fora do ar, sem forma de reverter sem deploy. Depois disso defendi feature flag por jornada, e passamos a migrar com legado e novo rodando lado a lado. O ganho não foi técnico, foi de experiência — o usuário parou de ser cobaia de release.",
-    "Interface correta e interface legível são coisas diferentes. Uma suíte de 78 testes E2E em Playwright pegou cinco defeitos reais antes da produção, e um deles era estouro de layout: o comportamento passava, a tela estava ilegível. Teste funcional sozinho não vê isso.",
-    "Dinheiro não é float. No Kurio o valor é inteiro de 18 casas e o checkout é idempotente por tentativa, então retry de rede não vira cobrança dobrada. É o tipo de decisão que ninguém elogia e que, quando falta, custa caro.",
-    "Decisão de design se defende com dado. Instrumentei jornadas com dataLayer para enxergar onde o usuário abandonava, e usei flag para expor versão nova a uma fatia antes de abrir para todo mundo. Opinião é ponto de partida; número é o que encerra a discussão.",
+  principles: [
+    {
+      title: "Migração grande se faz em fatia",
+      body: "Na XP a primeira tentativa de trocar o monolito Angular foi big-bang e virou incidente: jornada inteira fora do ar, sem forma de reverter sem deploy. Depois disso defendi feature flag por jornada, e passamos a migrar com legado e novo rodando lado a lado. O ganho não foi técnico, foi de experiência — o usuário parou de ser cobaia de release.",
+      accent: "live" as const,
+      icon: "entrega" as const,
+      figure: { label: "Para desligar uma jornada", value: "segundos" },
+    },
+    {
+      title: "Correto e legível não são a mesma coisa",
+      body: "Uma suíte de 78 testes end-to-end em Playwright pegou cinco defeitos reais antes da produção, e um deles era estouro de layout: o comportamento passava, a tela estava ilegível. Teste funcional sozinho não enxerga isso.",
+      accent: "probe" as const,
+      icon: "qualidade" as const,
+      figure: { label: "Defeitos pegos antes da produção", value: "5", numeric: true },
+    },
+    {
+      title: "Dinheiro não é float",
+      body: "No Kurio o valor é inteiro de 18 casas e o checkout é idempotente por tentativa, então retry de rede não vira cobrança dobrada. É o tipo de decisão que ninguém elogia e que, quando falta, custa caro.",
+      accent: "signal" as const,
+      icon: "dados" as const,
+      figure: { label: "Casas decimais no valor, sem float", value: "18", numeric: true },
+    },
+    {
+      title: "Decisão de design se defende com dado",
+      body: "Instrumentei jornadas com dataLayer para enxergar onde o usuário abandonava, e usei feature flag para expor a versão nova a uma fatia antes de abrir para todo mundo. Opinião é ponto de partida; número é o que encerra a discussão.",
+      accent: "craft" as const,
+      icon: "metodo" as const,
+    },
   ],
 };
 
