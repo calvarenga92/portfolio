@@ -1,7 +1,8 @@
 import Image from "next/image";
-import { headline, intro, ledger } from "@/content/profile";
+import { headline, intro, services } from "@/content/profile";
 import { portrait, site } from "@/content/site";
-import { Container, Ledger } from "./primitives";
+import { Container, accentText } from "./primitives";
+import { Icon } from "./icons";
 
 export function Hero() {
   return (
@@ -48,8 +49,19 @@ export function Hero() {
           )}
         </div>
 
-        <div className="rise mt-16" style={{ animationDelay: "500ms" }}>
-          <Ledger lines={ledger} />
+        <div
+          className="rise mt-16 grid gap-px overflow-hidden rounded-xl border border-rule bg-rule lg:grid-cols-3"
+          style={{ animationDelay: "500ms" }}
+        >
+          {services.map((service) => (
+            <article key={service.title} className="bg-surface p-6 sm:p-7">
+              <Icon name={service.icon} size={24} className={accentText[service.accent]} />
+              <h2 className="mt-4 text-lg font-semibold leading-snug tracking-[-0.015em] text-ink">
+                {service.title}
+              </h2>
+              <p className="mt-3 text-base leading-[1.6] text-ink-soft">{service.body}</p>
+            </article>
+          ))}
         </div>
       </Container>
     </div>

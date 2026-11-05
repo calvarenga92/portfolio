@@ -1,14 +1,29 @@
-import type { LedgerLine, Principle } from "./types";
+import type { Principle, Service } from "./types";
 
 export const headline = ["Desenho a interface", "e respondo por ela", "em produção."];
 
 export const intro =
-  "Front-end sênior, 12 anos de mercado, origem em UX. Trabalhei onde erro de interface vira incidente financeiro: investimentos na XP e e-commerce na Raia Drogasil. Hoje atendo como PJ pela Gengi, em São Paulo.";
+  "Desenvolvedor front-end sênior, 12 anos de mercado e origem em design. Trabalho em produto onde a tela não pode falhar: investimentos, e-commerce e pagamento.";
 
-export const ledger: LedgerLine[] = [
-  { label: "Anos construindo interface em produção", value: "12", numeric: true },
-  { label: "Monolito Angular substituído por micro-frontends", value: "jornada a jornada" },
-  { label: "Tempo para desligar uma jornada sem deploy", value: "segundos" },
+export const services: Service[] = [
+  {
+    title: "Interface nova, do desenho à publicação",
+    body: "Eu desenho a tela e implemento. Sem a ida e volta entre quem desenha e quem programa, e sem protótipo bonito que não se sustenta quando vira código.",
+    accent: "craft",
+    icon: "interface",
+  },
+  {
+    title: "Evolução de produto que já está no ar",
+    body: "Mexer no que já tem usuário sem parar o que funciona: entrega em partes, liberada aos poucos, com volta rápida se algo sair diferente do esperado.",
+    accent: "live",
+    icon: "entrega",
+  },
+  {
+    title: "Qualidade antes de chegar no usuário",
+    body: "Teste automatizado, acessibilidade e velocidade tratados durante a construção, e não como última etapa antes de entregar.",
+    accent: "probe",
+    icon: "qualidade",
+  },
 ];
 
 export const method: { title: string; principles: Principle[] } = {
