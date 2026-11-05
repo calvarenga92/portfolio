@@ -10,7 +10,7 @@ import { BrandIcon, hasBrand } from "./BrandIcon";
 
 export function Work() {
   return (
-    <Section id="trabalho" title="Trabalho" icon="trabalho" accent="signal">
+    <Section id="trabalho" title="Projetos recentes" icon="trabalho" accent="signal">
       <ProjectList projects={projects} />
     </Section>
   );
