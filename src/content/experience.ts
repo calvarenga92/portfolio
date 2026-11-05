@@ -1,5 +1,12 @@
 import type { Experience } from "./types";
 
+/*
+ * Pendente: números reais de Gengi e XP que só o Claudio sabe — quantas
+ * jornadas foram migradas do monolito, quantas squads consumiam o Design
+ * System, tamanho do time, quantos produtos entregues como PJ. Preencher em
+ * `figures` quando confirmados. Enquanto não vierem, a linha não aparece.
+ */
+
 /** Ordem cronológica inversa — a UI não reordena, só renderiza. */
 export const experiences: Experience[] = [
   {
@@ -26,6 +33,9 @@ export const experiences: Experience[] = [
     location: "São Paulo, híbrido",
     summary:
       "Seis anos em plataforma de investimentos, onde erro de interface tem custo financeiro direto.",
+    figures: [
+      { label: "Anos de React Native no aplicativo", value: "3", numeric: true },
+    ],
     highlights: [
       "Substituição de monolito Angular por micro-frontends, migrando jornada a jornada com legado e novo em produção ao mesmo tempo.",
       "Feature flags por jornada depois de um incidente de big-bang, permitindo desligar uma jornada sem deploy.",
@@ -54,6 +64,9 @@ export const experiences: Experience[] = [
     location: "São Paulo, presencial",
     summary:
       "Onde a transição de web design para desenvolvimento aconteceu, dentro do e-commerce DrogaRaia e Drogasil.",
+    figures: [
+      { label: "Bandeiras de e-commerce atendidas", value: "2", numeric: true },
+    ],
     highlights: [
       "Front-end e integrações no e-commerce das duas bandeiras, com tráfego de varejo nacional.",
       "Java com PrimeFaces e Spring Faces no lado servidor das telas.",

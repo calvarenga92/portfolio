@@ -88,10 +88,12 @@ export const projects: Project[] = [
     ],
   },
   {
+    // O slug continua "edit-ia" de propósito: é o nome do repositório e
+    // mudá-lo quebraria qualquer link já compartilhado para este case.
     slug: "edit-ia",
-    name: "edit-IA",
+    name: "Esteira de edição de vídeo automatizada",
     tagline:
-      "Esteira de edição de vídeo que só virou útil quando passou a mostrar menos.",
+      "Transcreve o áudio, marca o que sobra e devolve a timeline pronta. Só passou a ser usada quando aprendeu a mostrar menos.",
     year: "2025",
     role: "Autoria e manutenção",
     stack: ["Python", "ffmpeg", "faster-whisper", "FCPXML", "pytest"],
