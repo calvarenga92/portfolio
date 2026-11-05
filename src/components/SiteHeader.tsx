@@ -20,10 +20,10 @@ export function SiteHeader() {
               width={logo.width}
               height={logo.height}
               priority
-              className="h-[34px] w-auto"
+              className="h-[38px] w-auto"
             />
           ) : (
-            <Logo size={34} />
+            <Logo size={38} />
           )}
           <span className="hidden text-sm font-semibold tracking-[-0.01em] sm:inline">
             {site.shortName}

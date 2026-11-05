@@ -23,9 +23,9 @@ export const contact = {
 } as const;
 
 export const logo = {
-  src: null as string | null,
-  width: 40,
-  height: 40,
+  src: "/logo.png" as string | null,
+  width: 512,
+  height: 512,
 } as const;
 
 export const nav = [
