@@ -1,26 +1,167 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ──────────────────────────────────────────────────────────────────────────
+   Tokens
+
+   Painel de instrumento, não neon. A base é grafite esverdeado e o único
+   acento é um âmbar de sinalização, reservado a estado ativo e a número que
+   sustenta argumento. Se o âmbar aparecer em tudo, ele deixa de significar
+   alguma coisa — essa é a regra que segura a paleta inteira.
+   ────────────────────────────────────────────────────────────────────────── */
+@theme {
+  --color-base: #0f1513;
+  --color-surface: #161e1a;
+  --color-surface-high: #1c2621;
+  --color-rule: #26322c;
+  --color-rule-strong: #38473f;
+
+  /* Contraste medido sobre --color-base (#0f1513):
+     ink 15.1:1 · ink-soft 7.0:1 · ink-faint 4.8:1 · signal 9.7:1.
+     ink-faint aparece em 12px, então 4.5:1 é piso, não meta. */
+  --color-ink: #e6ede8;
+  --color-ink-soft: #94a59b;
+  --color-ink-faint: #76877d;
+
+  --color-signal: #f2b134;
+  --color-signal-dim: #6d5319;
+
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", monospace;
+
+  /* Escala modular de quarta justa (1.333), arredondada para o grid de 4px. */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.625rem;
+  --text-4xl: 3.5rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* O cabeçalho é fixo: sem isso a âncora para embaixo dele. O valor cobre
+       a altura do cabeçalho no celular, onde ele tem duas faixas. */
+    scroll-padding-top: 8rem;
+    -webkit-text-size-adjust: 100%;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    background-color: var(--color-base);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Foco visível e consistente. Nunca removido — é navegação por teclado. */
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-signal);
+    color: var(--color-base);
+  }
+
+  /* Numeral tabular em toda cifra e contagem: coluna de valor alinha. */
+  .tnum {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Linha de razão: rótulo, conexão pontilhada, valor. A conexão existe para
+     ligar os dois lados quando a linha é longa — é leitura, não enfeite. */
+  .ledger-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding-block: 0.875rem;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .ledger-row:last-child {
+    border-bottom: 0;
+  }
+
+  .ledger-label {
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+
+  /* A conexão é um item flexível DENTRO do rótulo, não um pseudo-elemento
+     posicionado: assim ela ocupa exatamente o espaço que sobra até a coluna
+     de valor e nunca passa por baixo dela. Só aparece onde há largura para
+     ligar as duas pontas. */
+  @media (min-width: 40rem) {
+    .ledger-label {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .ledger-label::after {
+      content: "";
+      flex: 1 1 auto;
+      border-bottom: 1px dotted var(--color-rule-strong);
+      transform: translateY(-0.3em);
+    }
+  }
+}
+
+/* Uma sequência de entrada, só no hero, só uma vez. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.6rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes beacon {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.beacon {
+  animation: beacon 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .rise,
+  .beacon {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
 }
