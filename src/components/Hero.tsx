@@ -6,7 +6,7 @@ import { Icon } from "./icons";
 
 export function Hero() {
   return (
-    <div className="pt-36 pb-20 sm:pt-40 sm:pb-28">
+    <div className="pt-40 pb-20 sm:pt-44 sm:pb-28">
       <Container>
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start lg:gap-16">
           <div>

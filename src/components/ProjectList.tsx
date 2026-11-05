@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/content/types";
+import { BrandIcon, hasBrand } from "./BrandIcon";
 
 export function ProjectList({ projects }: { projects: Project[] }) {
   return (
@@ -49,19 +50,7 @@ export function ProjectList({ projects }: { projects: Project[] }) {
             )}
 
             <div>
-              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                <h3 className="text-xl font-semibold tracking-[-0.02em]">
-                  {project.caseStudy ? (
-                    <Link
-                      href={`/projetos/${project.slug}`}
-                      className="transition-colors hover:text-signal"
-                    >
-                      {project.name}
-                    </Link>
-                  ) : (
-                    project.name
-                  )}
-                </h3>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                 <span className="tnum text-sm text-ink-faint">{project.year}</span>
                 {project.status && (
                   <span
@@ -82,9 +71,27 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                     {project.status.label}
                   </span>
                 )}
+                {project.codename && (
+                  <span className="rounded-sm border border-rule-strong px-2.5 py-1 text-xs text-ink-faint">
+                    {project.codename}
+                  </span>
+                )}
               </div>
 
-              <p className="mt-3 max-w-[56ch] text-base leading-[1.65] text-ink-soft">
+              <h3 className="mt-4 text-balance text-2xl font-semibold leading-tight tracking-[-0.02em]">
+                {project.caseStudy ? (
+                  <Link
+                    href={`/projetos/${project.slug}`}
+                    className="transition-colors hover:text-signal"
+                  >
+                    {project.name}
+                  </Link>
+                ) : (
+                  project.name
+                )}
+              </h3>
+
+              <p className="mt-4 text-base leading-[1.7] text-ink-soft">
                 {project.tagline}
               </p>
 
@@ -109,11 +116,7 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                 </dl>
               )}
 
-              <p className="mt-6 text-sm leading-relaxed text-ink-faint">
-                {project.stack.join(", ")}
-              </p>
-
-              <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
+              <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
                 {project.caseStudy && (
                   <Link
                     href={`/projetos/${project.slug}`}
@@ -134,6 +137,18 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                   </a>
                 ))}
               </div>
+
+              <ul className="mt-7 flex flex-wrap gap-2">
+                {project.stack.map((tool) => (
+                  <li
+                    key={tool}
+                    className="flex items-center gap-2 rounded-sm border border-rule-strong bg-surface px-2.5 py-1.5 text-sm text-ink-soft"
+                  >
+                    {hasBrand(tool) && <BrandIcon label={tool} size={16} useBrandColor />}
+                    {tool}
+                  </li>
+                ))}
+              </ul>
             </div>
           </article>
         </li>

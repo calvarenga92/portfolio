@@ -38,6 +38,7 @@ export type CaseBlock =
 export type Project = {
   slug: string;
   name: string;
+  codename?: string;
 
   tagline: string;
   year: string;

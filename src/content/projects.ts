@@ -3,9 +3,10 @@ import type { Project } from "./types";
 export const projects: Project[] = [
   {
     slug: "kurio",
-    name: "Kurio",
+    name: "Marketplace de arte digital",
+    codename: "Kurio",
     tagline:
-      "Marketplace de NFT onde o valor é inteiro de 18 casas e o checkout não cobra duas vezes.",
+      "Loja onde o cliente compra arte digital com dinheiro de verdade. Resolvi no alicerce os dois erros que custam caro nesse tipo de produto: a sobra de centavo, que some numa venda e aparece quando são milhares, e a cobrança dobrada de quem aperta pagar de novo porque a internet oscilou. Uma bateria de setenta e oito testes percorre a tela real antes de cada entrega, e não só a lógica por baixo dela.",
     year: "2026",
     status: { label: "Entregue", tone: "entregue" },
     role: "Front-end e arquitetura de interface",
@@ -89,9 +90,10 @@ export const projects: Project[] = [
   },
   {
     slug: "finance-workspace",
-    name: "Finance Workspace",
+    name: "Portal financeiro montado em partes",
+    codename: "Finance Workspace",
     tagline:
-      "Duas aplicações construídas e publicadas separadamente que se montam numa tela só — e o container continua de pé quando a outra cai.",
+      "Duas aplicações construídas, testadas e publicadas de forma independente, que se encontram numa tela só e parecem um produto único para quem usa. Cada uma vai ao ar sozinha, sem esperar pela outra, e se uma sair do ar a tela não vem abaixo junto. É o arranjo que deixa um time grande entregar sem travar o vizinho — e a razão de ele existir é justamente mostrar isso funcionando, não em slide.",
     year: "2026",
     status: { label: "Entregue", tone: "entregue" },
     role: "Arquitetura e implementação das duas pontas",
@@ -178,9 +180,10 @@ export const projects: Project[] = [
   {
 
     slug: "edit-ia",
-    name: "Esteira de edição de vídeo automatizada",
+    name: "Esteira de edição de vídeo",
+    codename: "edit-IA",
     tagline:
-      "Transcreve o áudio, marca o que sobra e devolve a timeline pronta. Só passou a ser usada quando aprendeu a mostrar menos.",
+      "Programa que assiste ao vídeo bruto, transcreve a fala com modelo rodando na própria máquina, encontra hesitação, repetição e silêncio, e devolve uma linha do tempo já cortada, pronta para abrir no editor. A primeira versão funcionava e ninguém usava: ela marcava noventa e três pontos para revisar, o que dava mais trabalho que cortar na mão. Hoje marca seis, e roda todo dia.",
 
     year: "desde 2025",
     status: { label: "Em evolução", tone: "ativo" },
