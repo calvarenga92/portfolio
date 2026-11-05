@@ -16,11 +16,6 @@ export function Work() {
   );
 }
 
-/**
- * Tempo decorrido entre as duas pontas de um período, em anos e meses.
- * Calculado a partir das datas ISO para não virar número escrito à mão que
- * envelhece sozinho no arquivo de conteúdo.
- */
 function durationLabel(startISO: string, endISO?: string): string {
   const start = new Date(`${startISO}-01T00:00:00`);
   const end = endISO ? new Date(`${endISO}-01T00:00:00`) : new Date();
@@ -36,14 +31,6 @@ function durationLabel(startISO: string, endISO?: string): string {
   return parts.join(" e ") || "menos de um mês";
 }
 
-/**
- * Experiência como trilho de tempo.
- *
- * O período é o dado que organiza a seção, então ganhou peso tipográfico e
- * uma coluna própria: antes competia em tamanho com a legenda de cidade e
- * sumia. O marcador do cargo atual é o mesmo ponto âmbar do cabeçalho — o
- * movimento ali diz "é agora", e nos anteriores ele fica apagado.
- */
 export function ExperienceTimeline() {
   return (
     <Section id="experiencia" title="Experiência" icon="experiencia" accent="live">
@@ -58,11 +45,6 @@ export function ExperienceTimeline() {
               key={job.company}
               className="relative grid gap-6 border-t border-rule py-10 lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] lg:gap-14"
             >
-              {/* Trilho: um segmento por item, encostando no de cima e no de
-                  baixo, o que dá uma linha contínua sem precisar medir a
-                  altura da lista. O primeiro começa no marcador e o último
-                  termina nele — 3.125rem é onde o centro do ponto cai, somando
-                  o respiro de cima e metade da linha do período. */}
               <span
                 aria-hidden="true"
                 className="absolute left-[3.5px] hidden w-px bg-rule-strong lg:block"
@@ -74,8 +56,6 @@ export function ExperienceTimeline() {
 
               <div>
                 <div className="flex items-center gap-3">
-                  {/* O anel na cor do fundo abre um vão no trilho para o
-                      marcador ficar sobre a linha, não atravessado por ela. */}
                   <span
                     aria-hidden="true"
                     className={`relative z-10 size-2 shrink-0 rounded-full ring-4 ring-base ${
@@ -102,8 +82,6 @@ export function ExperienceTimeline() {
                 <h3 className="text-xl font-semibold tracking-[-0.015em]">{job.company}</h3>
                 <p className="mt-1.5 text-base text-ink-soft">{job.role}</p>
 
-                {/* Sem medida máxima: a coluna do período já estreita o texto
-                    o bastante para a linha ficar em torno de 75 caracteres. */}
                 <p className="mt-5 text-lg leading-[1.6] text-ink">{job.summary}</p>
 
                 {job.figures && job.figures.length > 0 && (
@@ -138,8 +116,6 @@ export function ExperienceTimeline() {
                   ))}
                 </ul>
 
-                {/* Etiquetas no lugar da lista separada por vírgula: dá para
-                    varrer a stack de uma olhada em vez de ler uma frase. */}
                 <ul className="mt-7 flex flex-wrap gap-2">
                   {job.stack.map((tool) => (
                     <li
@@ -162,9 +138,6 @@ export function ExperienceTimeline() {
 export function Method() {
   return (
     <Section id="metodo" title={method.title} icon="metodo" accent="probe">
-      {/* Duas colunas ocupando a largura inteira. Em quatro blocos curtos a
-          grade é mais honesta que o texto corrido: quem só varre os títulos
-          leva as quatro teses, e quem quer o caso lê o corpo. */}
       <div className="grid gap-px overflow-hidden rounded-sm border border-rule bg-rule lg:grid-cols-2">
         {method.principles.map((principle) => (
           <article key={principle.title} className="flex flex-col bg-surface p-7 sm:p-8">
@@ -226,8 +199,6 @@ export function StackSection() {
                 </h3>
               </div>
 
-              {/* Etiquetas com a cor do grupo no contorno: a categoria fica
-                  legível de longe, sem precisar ler item por item. */}
               <ul className="mt-4 flex flex-wrap gap-2">
                 {group.items.map((item) => (
                   <li
@@ -251,7 +222,6 @@ export function StackSection() {
   );
 }
 
-/** O que eu faço do lado da pesquisa e da interface, em linguagem de negócio. */
 const praticasUX = [
   "Teste de usabilidade com usuário final",
   "Mapa de calor e leitura de funil",
@@ -262,15 +232,7 @@ const praticasUX = [
 ];
 
 export function Contact() {
-  /**
-   * Cada canal abre direto onde a pessoa já está: o WhatsApp pelo wa.me, que
-   * inicia a conversa sem obrigar a salvar o número; o e-mail pelo mailto, que
-   * abre o cliente de e-mail com o endereço preenchido.
-   *
-   * O LinkedIn usa ícone genérico de propósito: a empresa pediu a remoção da
-   * marca dos pacotes de ícones, então aqui vale o nome escrito, que é
-   * identificação e não reprodução do logo.
-   */
+
   const channels = [
     { label: "WhatsApp", detail: contact.phoneLabel, href: contact.whatsapp, brand: "WhatsApp", icon: null },
     { label: "E-mail", detail: contact.email, href: `mailto:${contact.email}`, brand: null, icon: "email" as const },
@@ -283,9 +245,12 @@ export function Contact() {
       <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-16">
         <div>
           <p className="text-xl leading-[1.55] text-ink">
-            Estou aberto a vaga efetiva, projeto por PJ e freelancer. Se o seu
-            time precisa de alguém que desenha a interface, valida com usuário e
-            responde por ela depois que entra no ar, me chame.
+            Se o seu time precisa de alguém que desenha a interface, valida com
+            usuário e responde por ela depois que entra no ar, me chame.
+          </p>
+
+          <p className="mt-4 text-base text-ink-faint">
+            Vaga efetiva, PJ ou freelancer.
           </p>
 
           <ul className="mt-8 flex flex-wrap gap-2">
@@ -337,8 +302,8 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-rule py-10">
       <Container>
-        <p className="text-base text-ink-faint">
-          Desenvolvido por {site.name}. São Paulo, Brasil.
+        <p className="text-center text-base text-ink-faint">
+          Desenvolvido por {site.name} — São Paulo, Brasil
         </p>
       </Container>
     </footer>

@@ -1,12 +1,5 @@
 import type { Project } from "./types";
 
-/**
- * Dois projetos com case completo e página própria. Preferi profundidade a
- * quantidade: recrutador de design abre um case, não oito cartões.
- *
- * Para adicionar imagens: solte os arquivos em /public/projetos/ e preencha
- * `cover` e os blocos `images`. Sem arquivo, a seção simplesmente não renderiza.
- */
 export const projects: Project[] = [
   {
     slug: "kurio",
@@ -88,13 +81,12 @@ export const projects: Project[] = [
     ],
   },
   {
-    // O slug continua "edit-ia" de propósito: é o nome do repositório e
-    // mudá-lo quebraria qualquer link já compartilhado para este case.
+
     slug: "edit-ia",
     name: "Esteira de edição de vídeo automatizada",
     tagline:
       "Transcreve o áudio, marca o que sobra e devolve a timeline pronta. Só passou a ser usada quando aprendeu a mostrar menos.",
-    /** Projeto vivo: o rótulo diz desde quando, não quando acabou. */
+
     year: "desde 2025",
     status: "Em evolução",
     role: "Autoria e manutenção",
@@ -105,17 +97,12 @@ export const projects: Project[] = [
       { label: "Testes, sendo 4 de integração", value: "26", numeric: true },
     ],
     links: [{ label: "Código no GitHub", href: "https://github.com/vic-clau/edit-IA" }],
-    /**
-     * Ilustração, não captura: a esteira roda em linha de comando e cospe um
-     * arquivo FCPXML, então não existe tela para fotografar. O desenho mostra
-     * o que ela entrega — cortes sugeridos, silêncio detectado, legenda — sem
-     * fingir ser um produto que ela não é.
-     */
+
     cover: {
-      src: "/projetos/esteira-video.png",
-      alt: "Timeline de edição com cortes sugeridos, forma de onda do áudio e trilha de legenda",
-      width: 942,
-      height: 896,
+      src: "/projetos/esteira-video.webp",
+      alt: "Esteira industrial levando quadros de filme, com braços robóticos cortando e iluminando as cenas e um monitor mostrando a timeline montada",
+      width: 1000,
+      height: 1000,
     },
     caseStudy: [
       {

@@ -1,25 +1,5 @@
 import * as simpleIcons from "simple-icons";
 
-/**
- * Marcas de tecnologia, desenhadas por quem é dono delas.
- *
- * Os traçados vêm do `simple-icons`, que distribui os logos oficiais. Eu não
- * redesenho marca de terceiro: além de não ser meu, logo redesenhado "parecido"
- * fica visivelmente torto para quem conhece a marca.
- *
- * O pacote tem mais de três mil ícones, mas isso não pesa no navegador: esta
- * página é estática, então o traçado é resolvido no build e sai como SVG no
- * HTML. Nada do pacote chega ao cliente.
- *
- * Uso nominativo — identificar a tecnologia. Não sugere patrocínio nem
- * vínculo com as empresas.
- *
- * LinkedIn não está aqui de propósito: a própria empresa pediu a remoção do
- * pacote por questão de marca, então o contato usa ícone genérico com o nome
- * escrito, que é identificação e não reprodução.
- */
-
-/** Rótulo do conteúdo para a chave do pacote. Sem entrada, não há ícone. */
 const brandKeyByLabel: Record<string, string> = {
   React: "siReact",
   "React Native": "siReact",
@@ -50,12 +30,6 @@ export function hasBrand(label: string): boolean {
   return Boolean(key && icons[key]);
 }
 
-/**
- * Luminância relativa, pela fórmula da WCAG. Serve para descobrir que a marca
- * oficial do GitHub, da Vercel e do Next.js é preta: sobre o fundo escuro do
- * site elas somem. Nesses casos o ícone segue a cor do texto — a forma é a da
- * marca, o que é o que identifica; a cor cede para o logo continuar visível.
- */
 function luminance(hex: string): number {
   const channel = (v: number) => {
     const s = v / 255;
@@ -70,7 +44,7 @@ function luminance(hex: string): number {
 export function BrandIcon({
   label,
   size = 18,
-  /** Em cor de marca o bloco vira arco-íris; o padrão segue a cor do texto. */
+
   useBrandColor = false,
   className = "",
 }: {

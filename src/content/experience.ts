@@ -1,13 +1,5 @@
 import type { Experience } from "./types";
 
-/*
- * Pendente: números reais de Gengi e XP que só o Claudio sabe — quantas
- * jornadas foram migradas do monolito, quantas squads consumiam o Design
- * System, tamanho do time, quantos produtos entregues como PJ. Preencher em
- * `figures` quando confirmados. Enquanto não vierem, a linha não aparece.
- */
-
-/** Ordem cronológica inversa — a UI não reordena, só renderiza. */
 export const experiences: Experience[] = [
   {
     company: "Gengi Soluções",

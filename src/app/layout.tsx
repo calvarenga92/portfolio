@@ -3,16 +3,6 @@ import localFont from "next/font/local";
 import { site, contact } from "@/content/site";
 import "./globals.css";
 
-/**
- * Duas famílias com papéis separados: Archivo carrega a interface inteira,
- * Plex Mono fica restrita a número. Mono em rótulo de texto é decoração;
- * mono em cifra e contagem é alinhamento.
- *
- * Os arquivos são servidos pelo próprio domínio em vez de virem do Google.
- * Três motivos: tira uma conexão a terceiro do caminho crítico do LCP, não
- * manda IP de visitante para fora, e o build não depende de rede externa.
- * Archivo entra como fonte variável — um arquivo cobre 100 a 900.
- */
 const archivo = localFont({
   src: [
     { path: "../fonts/archivo-latin-wght-normal.woff2", weight: "100 900", style: "normal" },
@@ -65,7 +55,6 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-/** Dados estruturados: ajuda o Google a entender que a página é uma pessoa. */
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",

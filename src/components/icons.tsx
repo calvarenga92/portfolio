@@ -1,12 +1,3 @@
-/**
- * Ícones desenhados à mão em SVG, sem biblioteca.
- *
- * Três motivos para não instalar um pacote: são nove formas, o traço fica
- * consistente com a tipografia porque eu escolho a espessura, e não entra
- * nada no bundle além do que é usado. `currentColor` faz o ícone herdar a cor
- * do texto, então ele acompanha estado e hover sem código extra.
- */
-
 export type IconName =
   | "trabalho"
   | "experiencia"
@@ -25,7 +16,7 @@ export type IconName =
   | "linkedin";
 
 const paths: Record<IconName, React.ReactNode> = {
-  // Janela de navegador: o que foi construído.
+
   trabalho: (
     <>
       <rect x="2.5" y="3.5" width="15" height="13" rx="1.5" />
@@ -33,7 +24,7 @@ const paths: Record<IconName, React.ReactNode> = {
       <path d="M5.5 5.5h.01M8 5.5h.01" />
     </>
   ),
-  // Trilho do tempo, o mesmo desenho da seção de experiência.
+
   experiencia: (
     <>
       <path d="M5 3v14" />
@@ -42,7 +33,7 @@ const paths: Record<IconName, React.ReactNode> = {
       <path d="M9 6h8M9 14h6" />
     </>
   ),
-  // Mira: decisão apontada, não tentativa.
+
   metodo: (
     <>
       <circle cx="10" cy="10" r="6.5" />
@@ -50,7 +41,7 @@ const paths: Record<IconName, React.ReactNode> = {
       <path d="M10 1.5v3M10 15.5v3M1.5 10h3M15.5 10h3" />
     </>
   ),
-  // Camadas empilhadas.
+
   stack: (
     <>
       <path d="M10 2.5 17.5 6.5 10 10.5 2.5 6.5z" />
@@ -64,14 +55,14 @@ const paths: Record<IconName, React.ReactNode> = {
       <path d="m2.5 6 7.5 5 7.5-5" />
     </>
   ),
-  // Cursor sobre superfície: interface.
+
   interface: (
     <>
       <rect x="2.5" y="3.5" width="15" height="13" rx="1.5" />
       <path d="m8 8 5 5-2 .5-.8 2z" />
     </>
   ),
-  // Banco de dados.
+
   dados: (
     <>
       <ellipse cx="10" cy="5" rx="6.5" ry="2.5" />
@@ -79,14 +70,14 @@ const paths: Record<IconName, React.ReactNode> = {
       <path d="M3.5 10c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5" />
     </>
   ),
-  // Marca de verificação dentro de um escudo: qualidade.
+
   qualidade: (
     <>
       <path d="M10 2.5 16 5v5c0 3.5-2.4 6.3-6 7.5-3.6-1.2-6-4-6-7.5V5z" />
       <path d="m7.5 9.8 1.8 1.9 3.4-3.7" />
     </>
   ),
-  // Seta subindo de uma base: entrega.
+
   entrega: (
     <>
       <path d="M10 13V3.5" />
@@ -107,7 +98,7 @@ const paths: Record<IconName, React.ReactNode> = {
       <path d="m2.5 6 7.5 5 7.5-5" />
     </>
   ),
-  // Silhueta de pessoa: perfil profissional, sem marca de nenhuma rede.
+
   perfil: (
     <>
       <circle cx="10" cy="7" r="3.2" />
@@ -129,7 +120,6 @@ const paths: Record<IconName, React.ReactNode> = {
   ),
 };
 
-/** Ícones de marca vêm preenchidos; os desenhados a traço, contornados. */
 const filled: IconName[] = ["github", "telefone"];
 
 export function Icon({

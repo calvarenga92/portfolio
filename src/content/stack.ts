@@ -1,13 +1,5 @@
 import type { StackGroup } from "./types";
 
-/**
- * Agrupado por função, não por "linguagens / frameworks / ferramentas".
- *
- * Cada grupo carrega a cor de sinalização da sua natureza — medição em ciano,
- * entrega em verde, interface em violeta — para a seção ser varrida de olho
- * em vez de lida palavra por palavra. O grupo final declara o que ainda não é
- * meu: é o que separa stack honesta de lista de palavra-chave.
- */
 export const stack: StackGroup[] = [
   {
     title: "Interface",

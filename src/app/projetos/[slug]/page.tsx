@@ -9,7 +9,6 @@ import { projects, projectBySlug } from "@/content/projects";
 
 type Params = { slug: string };
 
-/** Gera as rotas em build: duas páginas estáticas, zero servidor. */
 export function generateStaticParams(): Params[] {
   return projects.map((project) => ({ slug: project.slug }));
 }
@@ -55,15 +54,10 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
             {project.name}
           </h1>
 
-          {/* A chamada ocupa a largura toda: ela é a frase que resume o case e
-              quebrar em duas linhas curtas a fazia parecer legenda. */}
           <p className="mt-6 text-[clamp(1.125rem,2.2vw,1.5rem)] leading-[1.45] text-ink-soft">
             {project.tagline}
           </p>
 
-          {/* Ficha técnica em três colunas de mesma largura, ocupando a medida
-              inteira. Os rótulos subiram de tamanho porque eram pequenos
-              demais para o papel que têm: são eles que orientam a leitura. */}
           <dl className="mt-12 grid gap-x-10 gap-y-8 border-t border-rule pt-8 sm:grid-cols-3">
             <div>
               <dt className="text-sm text-ink-faint">Ano</dt>
@@ -98,11 +92,6 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
           )}
         </Container>
 
-        {/* Cada bloco ocupa a largura inteira: o título fica numa coluna à
-            esquerda e o corpo na coluna larga à direita. Enche a tela sem
-            esticar a linha de texto além do que se lê de um fôlego — acima de
-            uns 80 caracteres o olho perde a linha ao voltar para a esquerda.
-            No celular as duas colunas viram uma só, na ordem natural. */}
         <div className="mt-20 space-y-16 sm:mt-24 sm:space-y-20">
           {project.caseStudy.map((block) => (
             <Container key={block.title}>
@@ -127,7 +116,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
                       {block.images.map((image) => (
                         <figure
                           key={image.src}
-                          className="overflow-hidden rounded-sm border border-rule bg-surface"
+                          className="overflow-hidden rounded-xl border border-rule-strong bg-surface"
                         >
                           <Image
                             src={image.src}
@@ -149,8 +138,6 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
 
         <Container>
           <div className="mt-24 flex flex-col items-center gap-5 border-t border-rule pt-16 text-center">
-            {/* Sem medida máxima: a frase é curta e cabe numa linha só nas
-                telas largas. Em telas estreitas ela quebra naturalmente. */}
             <p className="text-[clamp(1.25rem,2.4vw,1.75rem)] leading-snug text-ink">
               Tem um projeto onde a interface precisa aguentar produção?
             </p>

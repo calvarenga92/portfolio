@@ -4,11 +4,6 @@ import { logo, nav, site } from "@/content/site";
 import { Logo } from "./Logo";
 import { Container } from "./primitives";
 
-/**
- * Cabeçalho fixo e discreto. O ponto âmbar é estado de disponibilidade, não
- * enfeite — por isso ele é o único elemento com movimento contínuo na página,
- * e some em prefers-reduced-motion.
- */
 export function SiteHeader() {
   return (
     <header className="fixed inset-x-0 top-0 z-40 border-b border-rule bg-base/85 backdrop-blur-md">
@@ -57,10 +52,6 @@ export function SiteHeader() {
         </p>
       </Container>
 
-      {/* No celular a navegação vira uma faixa que rola na horizontal, em vez
-          de sumir atrás de um botão. Sem estado para gerenciar, sem JavaScript,
-          e os destinos ficam visíveis — um menu escondido custa um toque a mais
-          para descobrir o que o site tem. */}
       <nav
         aria-label="Seções do site"
         className="border-t border-rule md:hidden"
