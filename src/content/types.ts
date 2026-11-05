@@ -26,6 +26,14 @@ export type Experience = {
   location: string;
   /** Uma frase sobre o que mudou por causa dele. Não é descrição de cargo. */
   summary: string;
+  /**
+   * Números que sustentam a passagem pela empresa. Opcional de propósito:
+   * emprego sem métrica verificável fica sem a linha, e isso é melhor do que
+   * preencher com número inventado — que é exatamente o que cai por terra na
+   * primeira entrevista técnica. Não repetir aqui o tempo de casa, que já é
+   * calculado a partir das datas.
+   */
+  figures?: LedgerLine[];
   highlights: string[];
   stack: string[];
 };

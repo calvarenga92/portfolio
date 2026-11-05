@@ -15,50 +15,143 @@ export function Work() {
 }
 
 /**
- * Experiência como timeline de razão: período à esquerda em mono, empresa e
- * o que mudou à direita. O período alinha porque é dado tabular.
+ * Tempo decorrido entre as duas pontas de um período, em anos e meses.
+ * Calculado a partir das datas ISO para não virar número escrito à mão que
+ * envelhece sozinho no arquivo de conteúdo.
+ */
+function durationLabel(startISO: string, endISO?: string): string {
+  const start = new Date(`${startISO}-01T00:00:00`);
+  const end = endISO ? new Date(`${endISO}-01T00:00:00`) : new Date();
+
+  const months =
+    (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+  const years = Math.floor(months / 12);
+  const rest = months % 12;
+
+  const parts: string[] = [];
+  if (years > 0) parts.push(`${years} ${years === 1 ? "ano" : "anos"}`);
+  if (rest > 0) parts.push(`${rest} ${rest === 1 ? "mês" : "meses"}`);
+  return parts.join(" e ") || "menos de um mês";
+}
+
+/**
+ * Experiência como trilho de tempo.
+ *
+ * O período é o dado que organiza a seção, então ganhou peso tipográfico e
+ * uma coluna própria: antes competia em tamanho com a legenda de cidade e
+ * sumia. O marcador do cargo atual é o mesmo ponto âmbar do cabeçalho — o
+ * movimento ali diz "é agora", e nos anteriores ele fica apagado.
  */
 export function ExperienceTimeline() {
   return (
     <Section id="experiencia" title="Experiência">
-      <ol className="space-y-14">
-        {experiences.map((job) => (
-          <li
-            key={job.company}
-            className="grid gap-4 border-t border-rule pt-8 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-10"
-          >
-            <div>
-              <time
-                dateTime={job.startISO}
-                className="tnum block text-sm leading-relaxed text-ink-faint"
-              >
-                {job.period}
-              </time>
-              <p className="mt-1 text-xs text-ink-faint">{job.location}</p>
-            </div>
+      <ol>
+        {experiences.map((job, index) => {
+          const current = !job.endISO;
+          const isFirst = index === 0;
+          const isLast = index === experiences.length - 1;
 
-            <div>
-              <h3 className="text-lg font-semibold tracking-[-0.015em]">{job.company}</h3>
-              <p className="mt-1 text-sm text-ink-soft">{job.role}</p>
-              <p className="mt-4 max-w-[58ch] text-base leading-[1.65] text-ink-soft">
-                {job.summary}
-              </p>
+          return (
+            <li
+              key={job.company}
+              className="relative grid gap-6 border-t border-rule py-10 lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] lg:gap-14"
+            >
+              {/* Trilho: um segmento por item, encostando no de cima e no de
+                  baixo, o que dá uma linha contínua sem precisar medir a
+                  altura da lista. O primeiro começa no marcador e o último
+                  termina nele — 3.125rem é onde o centro do ponto cai, somando
+                  o respiro de cima e metade da linha do período. */}
+              <span
+                aria-hidden="true"
+                className="absolute left-[3.5px] hidden w-px bg-rule-strong lg:block"
+                style={{
+                  top: isFirst ? "3.125rem" : 0,
+                  bottom: isLast ? "calc(100% - 3.125rem)" : 0,
+                }}
+              />
 
-              <ul className="mt-5 space-y-2.5">
-                {job.highlights.map((item) => (
-                  <li
-                    key={item}
-                    className="max-w-[62ch] border-l border-rule-strong pl-4 text-sm leading-[1.65] text-ink-soft"
+              <div>
+                <div className="flex items-center gap-3">
+                  {/* O anel na cor do fundo abre um vão no trilho para o
+                      marcador ficar sobre a linha, não atravessado por ela. */}
+                  <span
+                    aria-hidden="true"
+                    className={`relative z-10 size-2 shrink-0 rounded-full ring-4 ring-base ${
+                      current ? "beacon bg-signal" : "bg-rule-strong"
+                    }`}
+                  />
+                  <time
+                    dateTime={job.startISO}
+                    className={`tnum whitespace-nowrap text-lg leading-none sm:text-xl ${
+                      current ? "text-signal" : "text-ink"
+                    }`}
                   >
-                    {item}
-                  </li>
-                ))}
-              </ul>
+                    {job.period}
+                  </time>
+                </div>
 
-              <p className="mt-5 text-sm text-ink-faint">{job.stack.join(", ")}</p>
-            </div>
-          </li>
-        ))}
+                <p className="mt-3 pl-5 text-sm leading-relaxed text-ink-faint">
+                  {durationLabel(job.startISO, job.endISO)}
+                </p>
+                <p className="pl-5 text-sm leading-relaxed text-ink-faint">{job.location}</p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold tracking-[-0.015em]">{job.company}</h3>
+                <p className="mt-1.5 text-base text-ink-soft">{job.role}</p>
+
+                {/* Sem medida máxima: a coluna do período já estreita o texto
+                    o bastante para a linha ficar em torno de 75 caracteres. */}
+                <p className="mt-5 text-lg leading-[1.6] text-ink">{job.summary}</p>
+
+                {job.figures && job.figures.length > 0 && (
+                  <dl className="mt-6 flex flex-wrap gap-x-10 gap-y-4">
+                    {job.figures.map((figure) => (
+                      <div key={figure.label}>
+                        <dd
+                          className={
+                            figure.numeric
+                              ? "tnum text-3xl font-medium leading-none text-signal"
+                              : "text-xl font-medium leading-tight text-ink"
+                          }
+                        >
+                          {figure.value}
+                        </dd>
+                        <dt className="mt-2 max-w-[26ch] text-sm leading-snug text-ink-faint">
+                          {figure.label}
+                        </dt>
+                      </div>
+                    ))}
+                  </dl>
+                )}
+
+                <ul className="mt-6 space-y-3">
+                  {job.highlights.map((item) => (
+                    <li
+                      key={item}
+                      className="border-l border-rule-strong pl-5 text-base leading-[1.6] text-ink-soft"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Etiquetas no lugar da lista separada por vírgula: dá para
+                    varrer a stack de uma olhada em vez de ler uma frase. */}
+                <ul className="mt-7 flex flex-wrap gap-2">
+                  {job.stack.map((tool) => (
+                    <li
+                      key={tool}
+                      className="rounded-sm border border-rule bg-surface px-2.5 py-1 text-sm text-ink-soft"
+                    >
+                      {tool}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </li>
+          );
+        })}
       </ol>
     </Section>
   );
