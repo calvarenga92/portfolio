@@ -143,11 +143,15 @@ export function Method() {
           <article key={principle.title} className="flex flex-col bg-surface p-7 sm:p-8">
             <Icon
               name={principle.icon}
-              size={24}
+              size={34}
               className={accentText[principle.accent]}
             />
 
-            <h3 className="mt-5 text-xl font-semibold leading-snug tracking-[-0.015em] text-ink">
+            <h3
+              className={`mt-5 text-xl font-semibold leading-snug tracking-[-0.015em] ${
+                accentText[principle.accent]
+              }`}
+            >
               {principle.title}
             </h3>
 
@@ -155,22 +159,10 @@ export function Method() {
               {principle.body}
             </p>
 
-            {principle.figure && (
-              <div className="mt-6 border-t border-rule pt-5">
-                <p
-                  className={`leading-none ${
-                    principle.figure.numeric
-                      ? `tnum text-3xl font-medium ${accentText[principle.accent]}`
-                      : "text-xl font-medium text-ink"
-                  }`}
-                >
-                  {principle.figure.value}
-                </p>
-                <p className="mt-2 text-sm leading-snug text-ink-faint">
-                  {principle.figure.label}
-                </p>
-              </div>
-            )}
+            <p className="mt-6 flex items-start gap-3 border-t border-rule pt-5 text-base leading-[1.5] text-ink">
+              <Icon name="resultado" size={20} className="mt-0.5 text-signal" />
+              {principle.result}
+            </p>
           </article>
         ))}
       </div>

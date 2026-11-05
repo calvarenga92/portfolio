@@ -12,6 +12,7 @@ export type IconName =
   | "email"
   | "telefone"
   | "perfil"
+  | "resultado"
   | "github"
   | "linkedin";
 
@@ -99,6 +100,12 @@ const paths: Record<IconName, React.ReactNode> = {
     </>
   ),
 
+  resultado: (
+    <>
+      <circle cx="10" cy="10" r="7.5" />
+      <path d="m6.6 10.2 2.3 2.4 4.5-5" />
+    </>
+  ),
   perfil: (
     <>
       <circle cx="10" cy="7" r="3.2" />
