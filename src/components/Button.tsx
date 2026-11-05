@@ -1,14 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-/**
- * Ação primária do site. Existe um componente só para que todo call to action
- * — "Código no GitHub", "Falar sobre um projeto", "Voltar para o trabalho" —
- * tenha a mesma forma, o mesmo alvo de toque e o mesmo estado de foco. Dois
- * botões parecidos mas diferentes é o tipo de inconsistência que o usuário não
- * sabe nomear e sente mesmo assim.
- */
-
 type Variant = "solid" | "outline" | "ghost";
 
 const base =
@@ -24,14 +16,14 @@ type Props = {
   href: string;
   children: ReactNode;
   variant?: Variant;
-  /** Links externos abrem em nova aba; os internos usam o Link do Next. */
+
   external?: boolean;
   icon?: "arrow-left" | "arrow-up-right";
   className?: string;
 };
 
 function Icon({ name }: { name: NonNullable<Props["icon"]> }) {
-  // currentColor para o ícone acompanhar o estado do texto, inclusive no hover.
+
   return (
     <svg
       aria-hidden="true"

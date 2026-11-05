@@ -1,12 +1,6 @@
 import { ImageResponse } from "next/og";
 import { site } from "@/content/site";
 
-/**
- * Imagem de pré-visualização do link, gerada em build. É o que aparece quando
- * o endereço é colado no LinkedIn ou no WhatsApp — sem ela, o card fica cinza.
- * Usa a fonte padrão do runtime de propósito: baixar fonte em build é um ponto
- * de falha a mais para um ganho que ninguém percebe em 1200×630.
- */
 export const alt = `${site.name} — ${site.role}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

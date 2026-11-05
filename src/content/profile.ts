@@ -1,29 +1,16 @@
 import type { LedgerLine, Principle } from "./types";
 
-/**
- * Hero e seção de método.
- *
- * A manchete é quebrada em linhas à mão porque o ritmo da quebra faz parte
- * do desenho. Em telas estreitas o CSS deixa fluir naturalmente.
- */
 export const headline = ["Desenho a interface", "e respondo por ela", "em produção."];
 
 export const intro =
   "Front-end sênior, 12 anos de mercado, origem em UX. Trabalhei onde erro de interface vira incidente financeiro: investimentos na XP e e-commerce na Raia Drogasil. Hoje atendo como PJ pela Gengi, em São Paulo.";
 
-/** Fatos do hero. Verificáveis, nenhum arredondado para parecer maior. */
 export const ledger: LedgerLine[] = [
   { label: "Anos construindo interface em produção", value: "12", numeric: true },
   { label: "Monolito Angular substituído por micro-frontends", value: "jornada a jornada" },
   { label: "Tempo para desligar uma jornada sem deploy", value: "segundos" },
 ];
 
-/**
- * Cada princípio era um parágrafo de um texto corrido, e cada um já começava
- * com a própria tese. Separá-los em blocos não mudou o conteúdo — só revelou
- * a estrutura que estava lá, e permite que a seção seja varrida pelos títulos
- * por quem não vai ler tudo.
- */
 export const method: { title: string; principles: Principle[] } = {
   title: "Como eu trabalho",
   principles: [
@@ -70,4 +57,3 @@ export const method: { title: string; principles: Principle[] } = {
     },
   ],
 };
-

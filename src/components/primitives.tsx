@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import type { Accent, LedgerLine } from "@/content/types";
 import { Icon, type IconName } from "./icons";
 
-/** Tailwind precisa ver a classe inteira, então nada de montar string. */
 export const accentText: Record<Accent, string> = {
   signal: "text-signal",
   probe: "text-probe",
@@ -10,12 +9,6 @@ export const accentText: Record<Accent, string> = {
   craft: "text-craft",
 };
 
-/**
- * Três primitivos e nada além. Tudo no site é composto a partir daqui, para
- * que espaçamento, largura e ritmo tipográfico tenham um lugar só onde mudar.
- */
-
-/** Largura máxima e respiro lateral. Nunca defina padding lateral nas seções. */
 export function Container({
   children,
   className = "",
@@ -30,11 +23,6 @@ export function Container({
   );
 }
 
-/**
- * Seção com título. O `id` serve à navegação por âncora e o `aria-labelledby`
- * amarra a região ao próprio título — é o que faz leitor de tela anunciar
- * "região Trabalho" em vez de "região".
- */
 export function Section({
   id,
   title,
@@ -45,7 +33,7 @@ export function Section({
 }: {
   id: string;
   title: string;
-  /** O ícone resume a seção antes da leitura e marca o início do bloco. */
+
   icon?: IconName;
   accent?: Accent;
   children: ReactNode;
@@ -75,7 +63,6 @@ export function Section({
   );
 }
 
-/** Bloco de razão: rótulo à esquerda, valor à direita, conexão pontilhada. */
 export function Ledger({ lines }: { lines: readonly LedgerLine[] }) {
   return (
     <dl className="border-t border-rule">
@@ -97,7 +84,6 @@ export function Ledger({ lines }: { lines: readonly LedgerLine[] }) {
   );
 }
 
-/** Parágrafo de leitura. Medida travada abaixo de 70 caracteres. */
 export function Prose({ children }: { children: ReactNode }) {
   return (
     <div className="max-w-[62ch] space-y-5 text-base leading-[1.7] text-ink-soft">

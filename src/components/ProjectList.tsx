@@ -2,29 +2,18 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/content/types";
 
-/**
- * Listagem de projetos.
- *
- * Cada entrada é uma linha larga e não um cartão: cartão igual ao lado de
- * cartão igual obriga a comparar o que não é comparável, e some com a
- * hierarquia. Aqui a capa ancora, o texto explica e os números fecham.
- */
 export function ProjectList({ projects }: { projects: Project[] }) {
   return (
     <ul className="space-y-16 sm:space-y-20">
       {projects.map((project) => (
         <li key={project.slug}>
           <article className="grid gap-8 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-12">
-            {/* A coluna da esquerda é sempre ocupada, para que o texto de todas
-                as entradas comece no mesmo eixo. Quem tem captura mostra a
-                captura; quem não tem mostra os próprios números. Inventar uma
-                imagem só para preencher seria pior do que a assimetria. */}
             {project.cover ? (
               <Link
                 href={`/projetos/${project.slug}`}
                 tabIndex={-1}
                 aria-hidden="true"
-                className="block overflow-hidden rounded-sm border border-rule bg-surface"
+                className="block overflow-hidden rounded-xl border border-rule-strong bg-surface"
               >
                 <Image
                   src={project.cover.src}
@@ -86,8 +75,6 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                 {project.tagline}
               </p>
 
-              {/* Os números já apareceram na coluna da esquerda quando não há
-                  captura — repetir aqui seria ruído. */}
               {project.cover && (
                 <dl className="mt-6 flex flex-wrap gap-x-8 gap-y-3">
                   {project.metrics.map((metric) => (

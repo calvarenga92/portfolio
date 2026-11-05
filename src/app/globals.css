@@ -1,13 +1,5 @@
 @import "tailwindcss";
 
-/* ──────────────────────────────────────────────────────────────────────────
-   Tokens
-
-   Painel de instrumento, não neon. A base é grafite esverdeado e o único
-   acento é um âmbar de sinalização, reservado a estado ativo e a número que
-   sustenta argumento. Se o âmbar aparecer em tudo, ele deixa de significar
-   alguma coisa — essa é a regra que segura a paleta inteira.
-   ────────────────────────────────────────────────────────────────────────── */
 @theme {
   --color-base: #0f1513;
   --color-surface: #161e1a;
@@ -15,23 +7,10 @@
   --color-rule: #26322c;
   --color-rule-strong: #38473f;
 
-  /* Contraste medido sobre --color-base (#0f1513):
-     ink 15.1:1 · ink-soft 7.0:1 · ink-faint 4.8:1 · signal 9.7:1.
-     ink-faint aparece em 12px, então 4.5:1 é piso, não meta. */
   --color-ink: #e6ede8;
   --color-ink-soft: #94a59b;
   --color-ink-faint: #76877d;
 
-  /* Sinalização.
-     Cada cor tem um significado fixo, como num painel de instrumento: ela
-     informa, não decora. Se a mesma cor aparecer em duas categorias, ela
-     deixa de dizer qualquer coisa — então nenhuma se repete.
-       signal  âmbar   estado atual, número que sustenta argumento
-       probe   ciano   medição, teste, qualidade
-       live    verde   produção, no ar, entrega
-       craft   violeta interface, design
-     Contraste sobre --color-base: signal 9.7:1 · probe 9.2:1 ·
-     live 10.4:1 · craft 7.4:1. Todos acima do piso AA. */
   --color-signal: #f2b134;
   --color-signal-dim: #6d5319;
   --color-probe: #56c5dd;
@@ -41,7 +20,6 @@
   --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", monospace;
 
-  /* Escala modular de quarta justa (1.333), arredondada para o grid de 4px. */
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
@@ -55,8 +33,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    /* O cabeçalho é fixo: sem isso a âncora para embaixo dele. O valor cobre
-       a altura do cabeçalho no celular, onde ele tem duas faixas. */
+
     scroll-padding-top: 8rem;
     -webkit-text-size-adjust: 100%;
   }
@@ -70,7 +47,6 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Foco visível e consistente. Nunca removido — é navegação por teclado. */
   :focus-visible {
     outline: 2px solid var(--color-signal);
     outline-offset: 3px;
@@ -82,7 +58,6 @@
     color: var(--color-base);
   }
 
-  /* Numeral tabular em toda cifra e contagem: coluna de valor alinha. */
   .tnum {
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
@@ -91,8 +66,7 @@
 }
 
 @layer components {
-  /* Linha de razão: rótulo, conexão pontilhada, valor. A conexão existe para
-     ligar os dois lados quando a linha é longa — é leitura, não enfeite. */
+
   .ledger-row {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
@@ -112,10 +86,6 @@
     line-height: 1.5;
   }
 
-  /* A conexão é um item flexível DENTRO do rótulo, não um pseudo-elemento
-     posicionado: assim ela ocupa exatamente o espaço que sobra até a coluna
-     de valor e nunca passa por baixo dela. Só aparece onde há largura para
-     ligar as duas pontas. */
   @media (min-width: 40rem) {
     .ledger-label {
       display: flex;
@@ -132,7 +102,6 @@
   }
 }
 
-/* Uma sequência de entrada, só no hero, só uma vez. */
 @keyframes rise {
   from {
     opacity: 0;
