@@ -240,6 +240,68 @@ export const projects: Project[] = [
       },
     ],
   },
+  {
+    slug: "flutter-comparativo",
+    name: "Guia comparativo Web, React Native e Flutter",
+    codename: "comparativo.",
+    tagline:
+      "Guia interativo que compara, aspecto por aspecto, uma aplicação web com Flutter e o React Native com Flutter: quem desenha a tela, como o código roda, até onde se chega no aparelho e como o produto chega ao usuário. São trinta e quatro aspectos com código lado a lado e um veredito em cada, uma tabela com as três tecnologias e um teste que recomenda uma delas para o projeto. O próprio site é a demonstração: roda no navegador, mas cada pixel é desenhado pelo motor do Flutter, não pelo HTML.",
+    year: "2026",
+    status: { label: "Entregue", tone: "entregue" },
+    role: "Conteúdo, design e implementação",
+    stack: ["Flutter", "Dart", "Material 3", "flutter_test", "Vercel"],
+    metrics: [
+      { label: "Aspectos comparados, com código e veredito", value: "34", numeric: true },
+      { label: "Critérios na tabela das três tecnologias", value: "16", numeric: true },
+      { label: "Perguntas no teste de recomendação", value: "8", numeric: true },
+    ],
+    links: [
+      { label: "Ver no ar", href: "https://flutter-comparativo.vercel.app" },
+      { label: "Código no GitHub", href: "https://github.com/calvarenga92/flutter-comparativo" },
+    ],
+    caseStudy: [
+      {
+        kind: "images",
+        title: "O site no ar",
+        images: [
+          {
+            src: "/projetos/flutter-comparativo.webp",
+            alt: "Página inicial do guia, com o título Web, React Native ou Flutter? e os números de aspectos, tecnologias, critérios e perguntas",
+            width: 1000,
+            height: 442,
+          },
+        ],
+      },
+      {
+        kind: "prose",
+        title: "O problema",
+        body: [
+          "A pergunta \"web, React Native ou Flutter?\" costuma ser respondida com lista de prós e contras solta, sem explicar de onde vem cada diferença. Quem decide fica sem saber se a vantagem vale para o projeto dele.",
+          "Quase tudo nasce de um ponto só: quem transforma o código em pixels. O navegador, o sistema operacional ou o motor do próprio Flutter. O guia parte daí e mostra como isso se desdobra em performance, visual, SEO, acesso ao aparelho e entrega.",
+        ],
+      },
+      {
+        kind: "prose",
+        title: "As decisões",
+        body: [
+          "Conteúdo separado do layout. Cada aspecto é um dado tipado, com os dois lados, os pontos-chave, o código e o veredito. A interface só decide aparência, e incluir um aspecto novo é acrescentar um item à lista.",
+          "Veredito honesto. Nem todo aspecto tem vencedor: o placar separa vantagem de cada lado, empate e \"depende do projeto\", e o Flutter perde onde perde, como SEO e deploy.",
+          "Fontes empacotadas no app em vez de baixadas na hora, para o site abrir igual com ou sem acesso ao serviço de fontes. O deploy baixa a versão fixa do Flutter no build, então o que vai ao ar é o mesmo que foi testado.",
+        ],
+      },
+      {
+        kind: "ledger",
+        title: "Resumo",
+        lines: [
+          { label: "Aspectos comparados", value: "34", numeric: true },
+          { label: "Comparações", value: "Web × Flutter e RN × Flutter" },
+          { label: "Renderização na web", value: "canvas, pelo motor do Flutter" },
+          { label: "Testes", value: "navegação em desktop e celular" },
+          { label: "Deploy", value: "Vercel, a cada push" },
+        ],
+      },
+    ],
+  },
 ];
 
 export const projectBySlug = (slug: string) => projects.find((p) => p.slug === slug);
