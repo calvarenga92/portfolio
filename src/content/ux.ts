@@ -70,7 +70,7 @@ export const uxCases: UxCase[] = [
     slug: "finance-workspace",
     name: "Finance Workspace",
     tagline: "Portal financeiro: quando um módulo cai, o cliente não pode ver uma mensagem de desenvolvedor.",
-    before: img("finance-antes", "Tela atual: erro em inglês citando localhost", 1440, 560),
+    before: img("finance-antes", "Antes (v1): erro em inglês citando localhost, já corrigido no ar", 1440, 560),
     after: img("finance-depois", "Proposta v2: aviso em português com ações para tentar de novo e status dos módulos que seguem no ar", 1440, 560),
     extras: [img("finance-mobile", "Proposta mobile v2: rentabilidade em destaque, filtros por status e a tabela de seis colunas vira lista de cartões", 390, 1237, "Mobile: tabela vira cartões")],
     findings: [

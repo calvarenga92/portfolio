@@ -7,14 +7,14 @@ export const projects: Project[] = [
     name: "Marketplace de arte digital",
     codename: "Kurio",
     tagline:
-      "Loja onde o cliente compra arte digital com dinheiro de verdade. Resolvi no alicerce os dois erros que custam caro nesse tipo de produto: a sobra de centavo, que some numa venda e aparece quando são milhares, e a cobrança dobrada de quem aperta pagar de novo porque a internet oscilou. Uma bateria de setenta e oito testes percorre a tela real antes de cada entrega, e não só a lógica por baixo dela.",
+      "Front-end de uma loja de arte digital, com pagamento simulado. Resolvi no alicerce os dois erros que custam caro nesse tipo de produto: a sobra de centavo, que some numa venda e aparece quando são milhares, e a cobrança dobrada de quem aperta pagar de novo porque a internet oscilou. Uma bateria de setenta e oito testes percorre a tela real antes de cada entrega, e não só a lógica por baixo dela.",
     year: "2026",
     status: { label: "Entregue", tone: "entregue" },
     role: "Front-end e arquitetura de interface",
     stack: ["React 19", "TypeScript", "TanStack Query", "Tailwind", "Playwright", "Vite"],
     metrics: [
       { label: "Testes end-to-end em Playwright", value: "78", numeric: true },
-      { label: "Defeitos reais pegos antes da produção", value: "5", numeric: true },
+      { label: "Defeitos reais pegos antes da entrega", value: "5", numeric: true },
       { label: "Casas decimais no valor, sem float", value: "18", numeric: true },
     ],
     links: projectLinks.kurio,
@@ -70,7 +70,7 @@ export const projects: Project[] = [
         kind: "prose",
         title: "O que os testes acharam",
         body: [
-          "A suíte de 78 testes end-to-end pegou cinco defeitos reais antes da produção. O mais interessante não foi funcional: um estouro de layout em que a tela se comportava exatamente como o esperado e, ainda assim, ficava ilegível. Teste de comportamento dava verde.",
+          "A suíte de 78 testes end-to-end pegou cinco defeitos reais antes da entrega. O mais interessante não foi funcional: um estouro de layout em que a tela se comportava exatamente como o esperado e, ainda assim, ficava ilegível. Teste de comportamento dava verde.",
           "É o argumento prático para E2E rodar na tela de verdade e não só na lógica: correto e utilizável não são a mesma propriedade.",
         ],
       },
@@ -79,7 +79,7 @@ export const projects: Project[] = [
         title: "Resumo",
         lines: [
           { label: "Testes end-to-end", value: "78", numeric: true },
-          { label: "Defeitos encontrados antes da produção", value: "5", numeric: true },
+          { label: "Defeitos encontrados antes da entrega", value: "5", numeric: true },
           { label: "Representação de valor", value: "inteiro, 18 casas" },
           { label: "Retry de pagamento", value: "idempotente por tentativa" },
         ],
@@ -144,7 +144,7 @@ export const projects: Project[] = [
         title: "As decisões",
         body: [
           "Separei em duas aplicações com build e publicação próprios: um container, responsável pela estrutura, pelo menu e pelas rotas, e um módulo de carteira de investimentos, responsável apenas pela sua feature. Cada uma vive no seu repositório e vai ao ar sem depender da outra.",
-          "O container descobre o módulo em tempo de execução, não em tempo de build. É isso que permite publicar a carteira sem republicar o portal — se fosse resolvido no build, a independência seria só aparente.",
+          "O container carrega o módulo em tempo de execução, a partir de um endereço fixo na configuração, e não o embute no build. É isso que permite publicar uma versão nova da carteira sem republicar o portal, desde que o endereço continue o mesmo.",
           "React e ReactDOM são compartilhados entre as duas, em vez de cada uma carregar a sua cópia. Sem isso o usuário baixaria a mesma biblioteca duas vezes, e duas instâncias de React na mesma página quebram estado e contexto.",
           "O módulo só é baixado quando a rota dele é aberta. Quem entra e fica na visão geral nunca paga o custo da carteira.",
         ],
@@ -162,7 +162,7 @@ export const projects: Project[] = [
         title: "Resumo",
         lines: [
           { label: "Aplicações independentes", value: "2", numeric: true },
-          { label: "Descoberta do módulo", value: "em tempo de execução" },
+          { label: "Endereço do módulo", value: "fixo, resolvido em tempo de execução" },
           { label: "Bibliotecas compartilhadas", value: "React e ReactDOM" },
           { label: "Carregamento do módulo", value: "sob demanda, por rota" },
           { label: "Falha do remoto", value: "aviso no lugar do bloco" },

@@ -355,7 +355,7 @@
   <!-- ======================= 1. HOJE ======================= -->
   <div class="frame-wrap">
     <p class="frame-label">Hoje — Pedidos <span class="tag-hoje">Atual · 1440</span></p>
-    <p class="frame-note">Fiel ao frontend/src atual (estilos.css, PedidosPage, CardPedido, NovoPedidoForm). Tema claro. Ações vêm de transicoesDisponiveis.</p>
+    <p class="frame-note">A tela como está no ar hoje: uma lista única de pedidos, com o formulário de novo pedido ao lado.</p>
     <section class="frame" style="width:1440px">
       <div class="pagina">
         <header class="cabecalho">
@@ -506,7 +506,7 @@
   <!-- ======================= 2. KANBAN ======================= -->
   <div class="frame-wrap">
     <p class="frame-label">Proposta — Quadro operacional (kanban) <span class="tag-proposta">Proposta · 1440</span></p>
-    <p class="frame-note">Persona: operador da loja/central. Colunas pelo status; a ação principal de cada card é a próxima transição de transicoesDisponiveis, e "Cancelar pedido" fica como secundário. Finalizados agrupa Entregue e Cancelado.</p>
+    <p class="frame-note">Persona: operador da loja/central. Colunas pelo status; a ação principal de cada card é o próximo passo possível do pedido, e "Cancelar pedido" fica como secundário. Finalizados agrupa Entregue e Cancelado.</p>
     <section class="frame" style="width:1440px">
       <header class="topo-app">
         <div class="marca">
@@ -524,7 +524,7 @@
         <div class="quadro-titulo">
           <div>
             <h1>Quadro de pedidos</h1>
-            <p class="apoio">Cada card mostra só as ações que a API permite (transicoesDisponiveis).</p>
+            <p class="apoio">Cada pedido mostra só o próximo passo possível.</p>
           </div>
           <div class="resumo-dia">
             <span><b>7</b> em andamento</span>
@@ -780,7 +780,7 @@
   <!-- ======================= 5. NOVO PEDIDO EM 3 PASSOS ======================= -->
   <div class="frame-wrap">
     <p class="frame-label">Proposta — Novo pedido em 3 passos <span class="tag-proposta">Proposta · 1440</span></p>
-    <p class="frame-note">Os três passos lado a lado. As mensagens de erro são as reais da API (CriarPedidoRequest / ItemPedidoRequest), que chegam em detalhes com o código DADOS_INVALIDOS.</p>
+    <p class="frame-note">Os três passos lado a lado. As mensagens de erro são as reais do sistema, apontadas no campo que precisa ser corrigido.</p>
     <section class="frame" style="width:1440px">
       <header class="topo-app">
         <div class="marca">
@@ -907,16 +907,16 @@
         </div>
 
         <div class="catalogo-msgs">
-          <p class="passo-titulo">Mensagens de validação da API · código DADOS_INVALIDOS (400)</p>
+          <p class="passo-titulo">Mensagens de validação · o que a pessoa lê em cada campo</p>
           <table>
-            <thead><tr><th>Campo</th><th>Regra</th><th>Mensagem exibida</th><th>Passo</th></tr></thead>
+            <thead><tr><th>Campo</th><th>Mensagem exibida</th><th>Passo</th></tr></thead>
             <tbody>
-              <tr><td class="mono">cliente</td><td class="mono">@NotBlank</td><td>Cliente é obrigatório</td><td>1</td></tr>
-              <tr><td class="mono">enderecoEntrega</td><td class="mono">@NotBlank</td><td>Endereço de entrega é obrigatório</td><td>1</td></tr>
-              <tr><td class="mono">itens</td><td class="mono">@NotEmpty</td><td>Pedido deve ter pelo menos um item</td><td>2</td></tr>
-              <tr><td class="mono">itens[].descricao</td><td class="mono">@NotBlank</td><td>Descrição do item é obrigatória</td><td>2</td></tr>
-              <tr><td class="mono">itens[].quantidade</td><td class="mono">@Positive</td><td>Quantidade deve ser maior que zero</td><td>2</td></tr>
-              <tr><td class="mono">itens[].precoUnitario</td><td class="mono">@NotNull · @DecimalMin 0.01</td><td>Preço unitário é obrigatório · Preço unitário deve ser maior que zero</td><td>2</td></tr>
+              <tr><td>Cliente</td><td>Cliente é obrigatório</td><td>1</td></tr>
+              <tr><td>Endereço de entrega</td><td>Endereço de entrega é obrigatório</td><td>1</td></tr>
+              <tr><td>Itens</td><td>Pedido deve ter pelo menos um item</td><td>2</td></tr>
+              <tr><td>Descrição do item</td><td>Descrição do item é obrigatória</td><td>2</td></tr>
+              <tr><td>Quantidade</td><td>Quantidade deve ser maior que zero</td><td>2</td></tr>
+              <tr><td>Preço unitário</td><td>Preço unitário é obrigatório · Preço unitário deve ser maior que zero</td><td>2</td></tr>
             </tbody>
           </table>
         </div>
@@ -927,7 +927,7 @@
   <!-- ======================= 6. ESTADOS ======================= -->
   <div class="frame-wrap">
     <p class="frame-label">Proposta — Estados <span class="tag-proposta">Proposta · 1440</span></p>
-    <p class="frame-note">Textos de PedidosPage e de api/mensagens.ts. Sessão expirada vem de 401; transição inválida vem de 409 TRANSICAO_INVALIDA, com rollback da troca otimista.</p>
+    <p class="frame-note">Textos reais do sistema. Quando a mudança de status é recusada, o card volta ao estado anterior e o aviso explica o motivo.</p>
     <section class="frame" style="width:1440px">
       <div class="estados-wrap">
 
@@ -1014,31 +1014,22 @@
         <div class="rm-secao">
           <h2>Fatos</h2>
           <div class="fatos">
-            <div class="fato"><b>25</b><span>testes no backend (README diz 24)</span></div>
+            <div class="fato"><b>25</b><span>testes no backend</span></div>
             <div class="fato"><b>5</b><span>status na máquina de estados</span></div>
             <div class="fato"><b>{codigo, mensagem, momento, detalhes}</b><span>contrato de erro</span></div>
           </div>
         </div>
 
         <div class="rm-secao">
-          <h2>Divergências a corrigir</h2>
-          <div class="div-lista">
-            <div class="div-item"><svg class="i" viewBox="0 0 24 24" style="margin-top:2px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>README cita saveAndFlush, que não existe no código.</div>
-            <div class="div-item"><svg class="i" viewBox="0 0 24 24" style="margin-top:2px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>25 testes no código, 24 no README.</div>
-            <div class="div-item"><svg class="i" viewBox="0 0 24 24" style="margin-top:2px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>JSON malformado e status inexistente caem em 500.</div>
-          </div>
-        </div>
-
-        <div class="rm-secao">
           <h2>Melhorias</h2>
           <ol class="melhorias">
-            <li><span class="num">1</span>Corrigir o README</li>
-            <li><span class="num">2</span>Handler 400 para JSON malformado + acentos nos 401/403</li>
-            <li><span class="num">3</span>Screenshots + demo publicada</li>
+            <li><span class="num">1</span>Erro claro quando um dado chega inválido</li>
+            <li><span class="num">2</span>Sair automaticamente quando a sessão expira</li>
+            <li><span class="num">3</span>Demo publicada · feito</li>
             <li><span class="num">4</span>Testes de front</li>
-            <li><span class="num">5</span>Logout automático em 401</li>
-            <li><span class="num">6</span>Paginação e filtro</li>
-            <li><span class="num">7</span>Docker Compose + Flyway</li>
+            <li><span class="num">5</span>Paginação e filtro</li>
+            <li><span class="num">6</span>Docker Compose + Flyway</li>
+            <li><span class="num">7</span>Acentos nas mensagens de acesso negado</li>
             <li><span class="num">8</span>Histórico de status</li>
           </ol>
         </div>
