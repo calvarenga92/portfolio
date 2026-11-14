@@ -47,8 +47,8 @@ export const projectLinks = {
     design(figma("evolucao", "2-1900")),
   ],
 
-  // Sem produção ainda. Quando o deploy subir, entra um prod() aqui.
   foody: [
+    prod("https://foody-rastreador.vercel.app"),
     code(github("calvarenga92/foody-delivery-desafio")),
     design(figma("evolucao", "2-3253")),
   ],
