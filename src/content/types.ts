@@ -35,6 +35,12 @@ export type CaseBlock =
   | { kind: "ledger"; title: string; lines: LedgerLine[] }
   | { kind: "images"; title: string; images: ProjectImage[] };
 
+export type ProjectLink = {
+  kind: "prod" | "code" | "figma";
+  label: string;
+  href: string;
+};
+
 export type Project = {
   slug: string;
   name: string;
@@ -48,7 +54,7 @@ export type Project = {
   stack: string[];
 
   metrics: LedgerLine[];
-  links?: { label: string; href: string }[];
+  links?: ProjectLink[];
   cover?: ProjectImage;
 
   caseStudy?: CaseBlock[];
@@ -100,6 +106,7 @@ export type UxCase = {
 
   findings: string[];
   studyHref: string;
+  links?: ProjectLink[];
 };
 
 export type UxStep = {

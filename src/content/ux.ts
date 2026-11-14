@@ -1,3 +1,4 @@
+import { projectLinks } from "./links";
 import type { UxCase, UxImage, UxStep } from "./types";
 
 const img = (name: string, alt: string, width: number, height: number, caption?: string): UxImage => ({
@@ -79,6 +80,7 @@ export const uxCases: UxCase[] = [
       "Tabela de 6 colunas quebrando no celular",
     ],
     studyHref: "/estudos-ux/finance-workspace.html",
+    links: projectLinks.financeWorkspace,
   },
   {
     slug: "foody",
@@ -96,6 +98,7 @@ export const uxCases: UxCase[] = [
       "Novo pedido em 3 passos, com erro apontado por campo",
     ],
     studyHref: "/estudos-ux/foody.html",
+    links: projectLinks.foody,
   },
   {
     slug: "rectarchitecturelab",
@@ -109,6 +112,7 @@ export const uxCases: UxCase[] = [
       "Curtida que se desfazia sozinha",
     ],
     studyHref: "/estudos-ux/rectarchitecturelab.html",
+    links: projectLinks.rectArchitectureLab,
   },
   {
     slug: "flutter-comparativo",
@@ -122,6 +126,7 @@ export const uxCases: UxCase[] = [
       "Pergunta do teste com viés para uma das respostas",
     ],
     studyHref: "/estudos-ux/flutter-comparativo.html",
+    links: projectLinks.flutterComparativo,
   },
 ];
 

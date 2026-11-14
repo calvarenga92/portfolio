@@ -85,7 +85,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
                 <Button
                   key={link.href}
                   href={link.href}
-                  variant="solid"
+                  variant={link.kind === "prod" ? "solid" : "outline"}
                   external
                   icon="arrow-up-right"
                 >

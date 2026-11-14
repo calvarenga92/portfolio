@@ -120,9 +120,27 @@ export function UxCaseBlock({ item, index }: { item: UxCase; index: number }) {
           </h3>
           <p className="mt-3 max-w-[56ch] text-lg leading-[1.55] text-ink-soft">{item.tagline}</p>
         </div>
-        <Button href={item.studyHref} external icon="arrow-up-right" className="shrink-0">
-          {uxPage.study}
-        </Button>
+        <div className="flex shrink-0 flex-col items-start gap-4 lg:items-end">
+          <Button href={item.studyHref} external icon="arrow-up-right">
+            {uxPage.study}
+          </Button>
+          {item.links && item.links.length > 0 && (
+            <ul className="flex flex-wrap gap-x-5 gap-y-2 lg:justify-end">
+              {item.links.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="border-b border-rule-strong pb-0.5 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
 
       <div className="mt-8">

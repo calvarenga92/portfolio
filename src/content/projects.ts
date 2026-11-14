@@ -1,3 +1,4 @@
+import { projectLinks } from "./links";
 import type { Project } from "./types";
 
 export const projects: Project[] = [
@@ -16,10 +17,7 @@ export const projects: Project[] = [
       { label: "Defeitos reais pegos antes da produção", value: "5", numeric: true },
       { label: "Casas decimais no valor, sem float", value: "18", numeric: true },
     ],
-    links: [
-      { label: "Ver no ar", href: "https://calvarenga-jungle-nft.vercel.app" },
-      { label: "Código no GitHub", href: "https://github.com/calvarenga92/calvarenga-jungle-nft" },
-    ],
+    links: projectLinks.kurio,
     cover: {
       src: "/projetos/kurio-marketplace.webp",
       alt: "Vitrine de loja em miniatura com três telas expondo peças de arte digital",
@@ -113,11 +111,7 @@ export const projects: Project[] = [
         value: "quando a rota é aberta",
       },
     ],
-    links: [
-      { label: "Ver no ar", href: "https://finance-workspace-shell.vercel.app" },
-      { label: "Container no GitHub", href: "https://github.com/calvarenga92/finance-workspace-shell" },
-      { label: "Módulo no GitHub", href: "https://github.com/calvarenga92/finance-workspace-portfolio-mfe" },
-    ],
+    links: projectLinks.financeWorkspace,
     cover: {
       src: "/projetos/micro-frontend.webp",
       alt: "Tela de um sistema com um módulo separado encaixando dentro dela por um conector",
@@ -194,7 +188,7 @@ export const projects: Project[] = [
       { label: "Pontos de revisão por vídeo, depois", value: "6", numeric: true },
       { label: "Testes, sendo 4 de integração", value: "26", numeric: true },
     ],
-    links: [{ label: "Código no GitHub", href: "https://github.com/vic-clau/edit-IA" }],
+    links: projectLinks.editIa,
 
     cover: {
       src: "/projetos/esteira-video.webp",
@@ -255,10 +249,7 @@ export const projects: Project[] = [
       { label: "Critérios na tabela das três tecnologias", value: "16", numeric: true },
       { label: "Perguntas no teste de recomendação", value: "8", numeric: true },
     ],
-    links: [
-      { label: "Ver no ar", href: "https://flutter-comparativo.vercel.app" },
-      { label: "Código no GitHub", href: "https://github.com/calvarenga92/flutter-comparativo" },
-    ],
+    links: projectLinks.flutterComparativo,
     caseStudy: [
       {
         kind: "images",

@@ -23,7 +23,13 @@ Componente recebe dados por prop e decide só aparência. Se for preciso escreve
 uma string literal dentro de um componente, provavelmente ela pertence a `content/`.
 
 Arquivos de conteúdo: `profile.ts`, `experience.ts`, `projects.ts`, `stack.ts`,
-`site.ts`, `types.ts`.
+`site.ts`, `ux.ts`, `links.ts`, `types.ts`.
+
+**Links externos moram só em `links.ts`** (produção, GitHub e Figma, por projeto).
+`projects.ts` e `ux.ts` apenas referenciam `projectLinks.<projeto>`. Deploy novo ou
+página nova no Figma: mudar ali e mais nada. O Figma tem três arquivos (Cases de
+Product Design, Projetos — Front-end, Projetos — Evolução); os links apontam para
+a página do projeto via `node-id`.
 
 ## Armadilhas conhecidas
 
