@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { headline, intro, services } from "@/content/profile";
 import { portrait } from "@/content/site";
+import { uxCta } from "@/content/ux";
+import { Button } from "./Button";
 import { Container } from "./primitives";
 import { Icon } from "./icons";
 
@@ -28,6 +30,18 @@ export function Hero() {
             >
               {intro}
             </p>
+
+            <div
+              className="rise mt-10 flex flex-wrap gap-3"
+              style={{ animationDelay: "440ms" }}
+            >
+              <Button href={uxCta.primary.href} variant="solid">
+                {uxCta.primary.label}
+              </Button>
+              <Button href={uxCta.secondary.href} variant="outline">
+                {uxCta.secondary.label}
+              </Button>
+            </div>
           </div>
 
           {portrait.enabled && (

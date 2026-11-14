@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: site.url, lastModified: now, changeFrequency: "monthly", priority: 1 },
+    { url: `${site.url}/ux`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     ...projects
       .filter((project) => project.caseStudy)
       .map((project) => ({

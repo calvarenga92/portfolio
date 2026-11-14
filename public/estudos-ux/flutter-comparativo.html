@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>comparativo. — telas atuais e propostas · Claudio Alvarenga</title>
+<meta name="author" content="Claudio Alvarenga">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --fundo:#0A0A0B; --sup:#121215; --sup2:#1A1A1F; --borda:#26262D;
+    --texto:#F2F0EB; --suave:#9B99A3; --lima:#C6F432; --sobre:#0A0A0B;
+    --web:#FF6A3D; --rn:#58C4DC; --flutter:#5B9BFF; --codigo:#07070A;
+    --sg:'Space Grotesk',sans-serif; --in:'Inter',sans-serif; --mo:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#2a2a2a;font-family:var(--in);-webkit-font-smoothing:antialiased}
+  .canvas{display:flex;gap:120px;align-items:flex-start;padding:120px;width:max-content}
+  .frame-col{flex:none}
+  .frame-label{font-family:var(--mo);font-size:14px;color:#d6d6d6;margin-bottom:16px;letter-spacing:.5px}
+  .frame-label b{color:var(--lima);font-weight:500}
+  .frame{width:1440px;background:var(--fundo);color:var(--texto);font-family:var(--in);font-size:15px;line-height:1.55;overflow:hidden;position:relative}
+  .frame.w640{width:640px}
+  svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+  svg.i.s16{width:16px;height:16px} svg.i.s18{width:18px;height:18px} svg.i.s24{width:24px;height:24px}
+
+  /* base */
+  .wrap{width:1280px;margin:0 auto}
+  .topbar{height:76px;padding:0 64px;display:flex;align-items:center;border-bottom:1px solid var(--borda);background:var(--fundo)}
+  .marca{font-family:var(--sg);font-weight:700;font-size:22px;letter-spacing:-.8px;color:var(--texto)}
+  .marca span{color:var(--lima)}
+  .spacer{flex:1}
+  .nav{display:flex;align-items:center;gap:4px}
+  .navlink{padding:10px 16px;font-size:15px;font-weight:500;color:var(--suave)}
+  .navlink.ativo{color:var(--texto)}
+  .pill{display:inline-flex;align-items:center;gap:10px;padding:16px 26px;border-radius:999px;font-size:15px;font-weight:600;line-height:1}
+  .pill.cheio{background:var(--lima);color:var(--sobre);border:1px solid var(--lima)}
+  .pill.vazio{border:1px solid var(--borda);color:var(--texto)}
+  .pill.peq{padding:11px 18px;font-size:14px}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--mo);font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:var(--suave)}
+  .eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c,var(--lima))}
+  .rotulo{font-family:var(--mo);font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:var(--suave)}
+  .display{font-family:var(--sg);font-weight:700;font-size:120px;line-height:.98;letter-spacing:-2px}
+  .contorno{color:transparent;-webkit-text-stroke:1.6px var(--texto)}
+  .h-sec{font-family:var(--sg);font-weight:700;font-size:64px;line-height:1.02;letter-spacing:-1.2px}
+  .lead{font-size:19px;line-height:1.55;color:var(--suave)}
+  .lima{color:var(--lima)}
+
+  /* hero */
+  .hero{position:relative;padding:104px 0 72px}
+  .brilho{position:absolute;right:-216px;top:-120px;width:1008px;height:1008px;border-radius:50%;
+    background:radial-gradient(circle,rgba(198,244,50,.13) 0%,rgba(91,155,255,.05) 50%,rgba(0,0,0,0) 70%);pointer-events:none}
+  .duas{display:flex;align-items:center;gap:48px;margin-top:48px}
+  .duas .esq{width:560px}
+  .botoes{display:flex;gap:12px;flex-wrap:wrap}
+  .numeros{display:flex;margin-top:88px}
+  .numeros>div{flex:1;border-top:1px solid var(--borda);padding:20px 16px 20px 0}
+  .numeros .n{font-family:var(--sg);font-weight:700;font-size:52px;letter-spacing:-2px;line-height:1}
+  .numeros .rotulo{margin-top:8px}
+
+  .marquee{height:84px;border-top:1px solid var(--borda);border-bottom:1px solid var(--borda);overflow:hidden;display:flex;align-items:center;white-space:nowrap;
+    font-family:var(--sg);font-weight:700;font-size:34px;letter-spacing:-.5px}
+  .marquee span.sep{color:var(--suave);margin:0 18px;font-size:24px}
+
+  .cab{display:flex;align-items:flex-end;gap:48px}
+  .cab .titulo{flex:1}
+  .cab .titulo .h-sec{margin-top:20px}
+  .cab .desc{width:480px;font-size:17px;line-height:1.55;color:var(--suave);padding-bottom:6px}
+
+  .pipes{display:flex;gap:16px;margin-top:64px}
+  .pipe{flex:1;background:var(--sup);border:1px solid var(--borda);border-radius:24px;padding:28px}
+  .pipe.hover{background:var(--sup2);border-color:color-mix(in srgb,var(--c) 60%,transparent)}
+  .pipe .topo{display:flex;justify-content:space-between;align-items:flex-start}
+  .pipe .letra{font-family:var(--sg);font-weight:700;font-size:112px;line-height:.9;letter-spacing:-4px;color:var(--c)}
+  .pipe .ponto{width:10px;height:10px;border-radius:50%;background:var(--c)}
+  .pipe h3{font-family:var(--sg);font-weight:700;font-size:34px;letter-spacing:-1px;margin:28px 0}
+  .etapa{display:flex;align-items:center;border-top:1px solid var(--borda);padding:14px 0}
+  .etapa .rotulo{width:36px;letter-spacing:1.2px}
+  .pipe .final{margin-top:12px;display:flex;align-items:center;gap:10px;padding:14px 16px;border-radius:12px;color:var(--c);font-weight:600;
+    background:color-mix(in srgb,var(--c) 12%,transparent)}
+
+  .linhas{margin-top:56px;border-top:1px solid var(--borda)}
+  .linha{display:flex;align-items:center;padding:44px 0;border-bottom:1px solid var(--borda)}
+  .linha.hover{background:var(--sup);padding:44px 24px}
+  .linha .num{width:80px}
+  .linha .txt{flex:1}
+  .versus{font-family:var(--sg);font-weight:700;font-size:80px;letter-spacing:-2px;line-height:1.05}
+  .versus .x{color:var(--suave)}
+  .linha .sub{font-size:16px;color:var(--suave);margin:12px 0 16px}
+  .seta{width:64px;height:64px;border-radius:50%;border:1px solid var(--borda);display:flex;align-items:center;justify-content:center;margin-left:24px}
+  .seta svg{transform:rotate(-45deg)}
+  .seta.on{background:var(--lima);border-color:var(--lima);color:var(--sobre)}
+  .seta.on svg{transform:none}
+
+  .ferr{display:flex;gap:16px;margin-top:56px}
+  .card-f{flex:1;border-radius:28px;padding:36px;background:var(--sup);border:1px solid var(--borda)}
+  .card-f.dest{background:var(--lima);border-color:var(--lima);color:var(--sobre)}
+  .card-f .cima{display:flex;justify-content:space-between;align-items:center}
+  .card-f.dest .rotulo{color:rgba(10,10,11,.7)}
+  .card-f h3{font-family:var(--sg);font-weight:700;font-size:44px;line-height:1.02;letter-spacing:-1.5px;margin-top:72px}
+  .card-f p{font-size:16px;line-height:1.5;margin-top:20px;opacity:.75}
+  .card-f .abrir{display:flex;align-items:center;gap:8px;font-weight:600;margin-top:28px}
+
+  .rodape{margin-top:120px;border-top:1px solid var(--borda)}
+  .rodape .cta{padding:96px 0}
+  .rodape .cta .display{font-size:84px;margin:24px 0 36px}
+  .rodape .base{border-top:1px solid var(--borda);padding:32px 0}
+  .rodape .base .wrap{display:flex;justify-content:space-between;align-items:center;gap:24px}
+  .rodape .base .rotulo{letter-spacing:.4px;text-transform:none}
+
+  /* aspecto */
+  .browser{height:44px;background:#18181c;border-bottom:1px solid var(--borda);display:flex;align-items:center;gap:14px;padding:0 16px}
+  .browser .bolas{display:flex;gap:7px}
+  .browser .bolas i{width:11px;height:11px;border-radius:50%;background:#3a3a42;display:block}
+  .browser .url{flex:1;max-width:760px;height:28px;border-radius:8px;background:#0f0f12;border:1px solid var(--borda);display:flex;align-items:center;gap:8px;padding:0 12px;
+    font-family:var(--mo);font-size:12.5px;color:var(--suave)}
+  .browser .url b{color:var(--texto);font-weight:400}
+  .browser .nav-b{display:flex;gap:10px;color:#55545c}
+  .browser .nav-b .ok{color:var(--suave)}
+  .voltar{display:flex;align-items:center;gap:10px;font-weight:500}
+  .asp{padding-top:88px}
+  .asp .display{font-size:104px;margin:28px 0}
+  .asp .intro{max-width:760px;font-size:21px;line-height:1.55;color:var(--suave)}
+  .selo{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;font-family:var(--mo);font-size:10.5px;letter-spacing:1.6px;text-transform:uppercase;
+    color:var(--c);border:1px solid color-mix(in srgb,var(--c) 50%,transparent);background:color-mix(in srgb,var(--c) 8%,transparent);margin-top:24px}
+  .selo::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--c)}
+  .cols{display:flex;gap:16px;margin-top:72px;align-items:flex-start}
+  .col{flex:1;background:var(--sup);border:1px solid var(--borda);border-radius:24px;padding:32px}
+  .col .nome{display:flex;align-items:center;gap:12px;font-family:var(--sg);font-weight:700;font-size:30px;letter-spacing:-.8px;color:var(--c)}
+  .col .nome::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--c)}
+  .col .resumo{font-size:17px;line-height:1.65;margin-top:20px}
+  .pontos{margin-top:24px}
+  .pontos div{display:flex;gap:12px;border-top:1px solid var(--borda);padding:12px 0;line-height:1.5}
+  .pontos svg{color:var(--c);margin-top:3px}
+  .veredito{margin-top:16px;background:var(--lima);color:var(--sobre);border-radius:24px;padding:48px}
+  .veredito .rotulo{color:var(--sobre)}
+  .veredito p{font-family:var(--sg);font-weight:700;font-size:40px;line-height:1.2;letter-spacing:-.8px;margin-top:20px}
+  .antprox{margin-top:96px;padding-top:32px;border-top:1px solid var(--borda);display:flex;gap:32px}
+  .antprox>div{flex:1}
+  .antprox .t{font-family:var(--sg);font-weight:700;font-size:28px;line-height:1.15;letter-spacing:-.8px;margin-top:12px}
+  .antprox .dir{text-align:right}
+
+  /* anotações de proposta */
+  .nota{position:absolute;z-index:5;background:#fffbe6;color:#1a1a1a;font-family:var(--mo);font-size:12px;line-height:1.45;padding:10px 12px;border-radius:8px;width:260px;
+    box-shadow:0 6px 24px rgba(0,0,0,.35)}
+  .nota b{display:block;font-family:var(--in);font-size:12px;font-weight:700;margin-bottom:2px}
+  .tag-prop{display:inline-flex;align-items:center;gap:8px;font-family:var(--mo);font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--sobre);
+    background:var(--lima);border-radius:999px;padding:4px 10px}
+  .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1px solid var(--borda);font-size:14px;color:var(--texto);background:var(--sup)}
+  .chip.on{border-color:var(--lima);color:var(--lima);background:rgba(198,244,50,.08)}
+
+  /* home v2 */
+  .cred{border-top:1px solid var(--borda);border-bottom:1px solid var(--borda);background:var(--sup)}
+  .cred .wrap{display:flex}
+  .cred .item{flex:1;padding:28px 24px 28px 0;display:flex;gap:14px;align-items:flex-start}
+  .cred .item+.item{border-left:1px solid var(--borda);padding-left:24px}
+  .cred .item svg{color:var(--lima);margin-top:2px}
+  .cred .k{font-family:var(--sg);font-weight:700;font-size:22px;letter-spacing:-.4px;line-height:1.15}
+  .cred .v{font-size:14px;color:var(--suave);margin-top:4px}
+  .mini-pipes{display:flex;gap:16px;margin-top:48px}
+  .mini-pipes .pipe{padding:24px}
+  .mini-pipes .letra{font-size:72px}
+  .mini-pipes h3{font-size:28px;margin:16px 0 8px}
+  .mini-pipes .seq{font-family:var(--mo);font-size:12.5px;color:var(--suave);line-height:1.7}
+  .placar{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap}
+  .placar .p{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;border:1px solid var(--borda);font-family:var(--mo);font-size:12px;letter-spacing:.6px;color:var(--suave)}
+  .placar .p b{color:var(--texto);font-weight:500}
+  .placar .p i{width:8px;height:8px;border-radius:50%;background:var(--c);display:block}
+  .barra{display:flex;height:8px;border-radius:999px;overflow:hidden;margin-top:16px;width:520px;background:var(--borda)}
+  .barra span{display:block;height:100%}
+  .fintech{background:var(--sup);border:1px solid var(--borda);border-radius:28px;padding:56px;margin-top:56px;position:relative;overflow:hidden}
+  .fintech .faixa{position:absolute;inset:0 0 auto auto;width:520px;height:520px;right:-160px;top:-200px;border-radius:50%;
+    background:radial-gradient(circle,rgba(198,244,50,.10),rgba(0,0,0,0) 65%)}
+  .fintech h3{font-family:var(--sg);font-weight:700;font-size:48px;line-height:1.05;letter-spacing:-1.2px;max-width:900px;margin-top:20px}
+  .temas{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:40px}
+  .tema{background:var(--sup2);border:1px solid var(--borda);border-radius:18px;padding:22px;min-height:168px;display:flex;flex-direction:column;justify-content:space-between}
+  .tema svg{color:var(--lima)}
+  .tema .nome{font-family:var(--sg);font-weight:600;font-size:20px;line-height:1.2;letter-spacing:-.3px}
+  .tema .k3{display:flex;gap:6px;margin-top:12px}
+  .tema .k3 i{width:8px;height:8px;border-radius:50%;display:block}
+  .autor{display:flex;gap:56px;align-items:center;margin-top:56px;border:1px solid var(--borda);border-radius:28px;padding:48px}
+  .avatar{width:200px;height:200px;border-radius:24px;flex:none;
+    background:linear-gradient(135deg,#1A1A1F 0%,#26262D 40%,rgba(198,244,50,.35) 100%);display:flex;align-items:flex-end;padding:16px}
+  .autor .nome{font-family:var(--sg);font-weight:700;font-size:44px;letter-spacing:-1.2px;line-height:1.05;margin-top:16px}
+  .autor .bio{font-size:18px;color:var(--suave);margin-top:16px;max-width:640px}
+  .autor .tags{display:flex;gap:8px;margin-top:24px;flex-wrap:wrap}
+  .canal{display:flex;align-items:center;gap:24px;border:1px solid var(--borda);border-radius:20px;padding:24px 28px;margin-top:40px;background:var(--sup)}
+  .canal .play{width:52px;height:52px;border-radius:50%;background:var(--lima);color:var(--sobre);display:flex;align-items:center;justify-content:center;flex:none}
+  .canal .t{font-family:var(--sg);font-weight:700;font-size:24px;letter-spacing:-.5px}
+
+  /* aspecto v2 */
+  .barra-asp{height:76px;padding:0 64px;display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--borda)}
+  .migalha{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--suave)}
+  .migalha b{color:var(--texto);font-weight:500}
+  .toast{position:absolute;right:64px;top:176px;background:var(--lima);color:var(--sobre);font-weight:600;padding:14px 18px;border-radius:12px;display:flex;gap:10px;align-items:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.4);font-size:14px}
+  .meta-asp{display:flex;align-items:center;gap:12px;margin-top:24px;flex-wrap:wrap}
+  .fontes{margin-top:16px;border:1px solid var(--borda);border-radius:24px;padding:32px;display:flex;gap:48px}
+  .fontes .lista{flex:1}
+  .fontes .f{display:flex;align-items:center;gap:14px;border-top:1px solid var(--borda);padding:14px 0;font-size:15px}
+  .fontes .f .rotulo{width:28px;letter-spacing:1px}
+  .fontes .f .dom{margin-left:auto;font-family:var(--mo);font-size:12px;color:var(--suave)}
+  .og{width:400px;flex:none}
+  .og .card{border:1px solid var(--borda);border-radius:14px;overflow:hidden;background:var(--sup2)}
+  .og .img{height:210px;background:var(--fundo);padding:24px;display:flex;flex-direction:column;justify-content:space-between;
+    background-image:radial-gradient(circle at 85% 10%,rgba(198,244,50,.18),rgba(0,0,0,0) 55%)}
+  .og .img .t{font-family:var(--sg);font-weight:700;font-size:34px;letter-spacing:-1px;line-height:1}
+  .og .meta{padding:12px 14px;font-size:13px}
+  .og .meta .d{font-family:var(--mo);font-size:11px;color:var(--suave)}
+
+  /* teste transparente */
+  .res{background:var(--sup);border:1.5px solid var(--flutter);border-radius:28px;padding:56px}
+  .res .display{font-size:96px;color:var(--flutter);margin-top:24px}
+  .barras{margin-top:48px}
+  .barras .l{display:flex;align-items:center;margin-bottom:16px}
+  .barras .l .rotulo{width:140px}
+  .barras .trilho{flex:1;height:10px;border-radius:999px;background:var(--borda);overflow:hidden}
+  .barras .trilho span{display:block;height:100%;border-radius:999px}
+  .barras .l .pts{width:72px;text-align:right}
+  .porque{margin-top:16px;border:1px solid var(--borda);border-radius:28px;overflow:hidden}
+  .porque .cabp{padding:32px 40px;display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid var(--borda)}
+  .porque h3{font-family:var(--sg);font-weight:700;font-size:40px;letter-spacing:-1px;line-height:1.05;margin-top:16px}
+  .tab{width:100%;border-collapse:collapse}
+  .tab th{font-family:var(--mo);font-weight:400;font-size:11.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--suave);text-align:left;padding:14px 16px;border-bottom:1px solid var(--borda)}
+  .tab td{padding:16px;border-bottom:1px solid var(--borda);vertical-align:middle;font-size:15px}
+  .tab th:first-child,.tab td:first-child{padding-left:40px}
+  .tab th:last-child,.tab td:last-child{padding-right:40px}
+  .tab .n{font-family:var(--mo);font-size:12px;color:var(--suave);width:56px}
+  .tab .q{color:var(--suave);font-size:14px}
+  .tab .resp{font-weight:500}
+  .tab .c{width:110px;text-align:center;font-family:var(--mo);font-size:13px}
+  .tab .c.z{color:#4a4952}
+  .tab tfoot td{font-family:var(--sg);font-weight:700;font-size:22px;border-bottom:none}
+  .tab tr.alerta td{background:rgba(198,244,50,.05)}
+  .pts-chip{display:inline-block;min-width:36px;padding:3px 8px;border-radius:999px;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--c)}
+  .aviso{display:flex;gap:16px;padding:24px 40px;background:var(--sup2);border-top:1px solid var(--borda);align-items:flex-start}
+  .aviso svg{color:var(--lima);margin-top:2px}
+
+  /* roadmap */
+  .rm{padding:48px}
+  .rm h2{font-family:var(--sg);font-weight:700;font-size:44px;letter-spacing:-1.2px;line-height:1.02;margin-top:16px}
+  .rm .sub{color:var(--suave);font-size:16px;margin-top:12px}
+  .rm .bloco{margin-top:40px}
+  .mel{display:flex;gap:16px;border-top:1px solid var(--borda);padding:16px 0;align-items:flex-start}
+  .mel .ord{font-family:var(--sg);font-weight:700;font-size:28px;letter-spacing:-1px;width:44px;line-height:1;color:var(--lima)}
+  .mel .t{font-weight:600;font-size:16px}
+  .mel .d{color:var(--suave);font-size:14px;margin-top:4px}
+  .mel .badge{margin-left:auto;font-family:var(--mo);font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;padding:4px 9px;border-radius:999px;border:1px solid var(--borda);color:var(--suave);white-space:nowrap}
+  .mel .badge.a{border-color:rgba(198,244,50,.5);color:var(--lima)}
+  .dir{border:1px solid var(--borda);border-radius:20px;padding:24px;margin-top:12px;background:var(--sup)}
+  .dir.rec{border-color:var(--lima);background:rgba(198,244,50,.06)}
+  .dir .t{font-family:var(--sg);font-weight:700;font-size:22px;letter-spacing:-.5px;margin-top:10px}
+  .dir .d{color:var(--suave);font-size:14px;margin-top:6px}
+  .criticas{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .criticas span{font-size:13px;padding:6px 12px;border-radius:999px;background:var(--sup2);border:1px solid var(--borda);color:var(--suave)}
+</style>
+</head>
+<body>
+<div class="canvas">
+
+<!-- ======================================================= -->
+<!-- FRAME 1 — Hoje — Início                                  -->
+<!-- ======================================================= -->
+<div class="frame-col">
+  <p class="frame-label">Hoje — Início · 1440</p>
+  <section class="frame">
+    <header class="topbar">
+      <div class="marca">comparativo<span>.</span></div>
+      <div class="spacer"></div>
+      <nav class="nav">
+        <span class="navlink">Web × Flutter</span>
+        <span class="navlink">RN × Flutter</span>
+        <span class="navlink">Tabela</span>
+      </nav>
+      <span style="width:20px"></span>
+      <span class="pill cheio">Qual escolher?</span>
+    </header>
+
+    <div class="hero">
+      <div class="brilho"></div>
+      <div class="wrap" style="position:relative">
+        <span class="eyebrow">Guia comparativo · Edição 2026</span>
+        <h1 class="display" style="margin-top:32px">Web, React Native<br><span class="contorno">ou </span>Flutter<span class="lima">?</span></h1>
+        <div class="duas">
+          <p class="lead esq">Comparamos, aspecto por aspecto, como cada tecnologia desenha a tela, roda o código, acessa o aparelho e chega até o usuário, com código lado a lado e um veredito para cada ponto.</p>
+          <div class="botoes">
+            <span class="pill cheio">Explorar comparações</span>
+            <span class="pill vazio">Fazer o teste</span>
+          </div>
+        </div>
+        <div class="numeros">
+          <div><div class="n">34</div><div class="rotulo">aspectos comparados</div></div>
+          <div><div class="n">3</div><div class="rotulo">tecnologias</div></div>
+          <div><div class="n">16</div><div class="rotulo">critérios na tabela</div></div>
+          <div><div class="n">8</div><div class="rotulo">perguntas no teste</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="marquee">
+      <span style="padding-left:64px">Impeller</span><span class="sep">✦</span>DOM<span class="sep">✦</span>Hermes<span class="sep">✦</span>Hot Reload<span class="sep">✦</span>JSI<span class="sep">✦</span>Fabric<span class="sep">✦</span>CanvasKit<span class="sep">✦</span>Dart<span class="sep">✦</span>TypeScript<span class="sep">✦</span>PWA<span class="sep">✦</span>SEO<span class="sep">✦</span>Widgets<span class="sep">✦</span>Flexbox<span class="sep">✦</span>Expo<span class="sep">✦</span>pub.dev
+    </div>
+
+    <!-- 01 Como funciona -->
+    <div class="wrap" style="margin-top:120px">
+      <div class="cab">
+        <div class="titulo">
+          <span class="eyebrow">01 — Como funciona</span>
+          <h2 class="h-sec">Três jeitos de<br>desenhar uma tela.</h2>
+        </div>
+        <p class="desc">Quem transforma o seu código em pixels? A resposta explica quase todas as outras diferenças: performance, visual, SEO e acesso ao aparelho.</p>
+      </div>
+      <div class="pipes">
+        <div class="pipe" style="--c:var(--web)">
+          <div class="topo"><span class="letra">A</span><span class="ponto"></span></div>
+          <h3>Web</h3>
+          <div class="etapa"><span class="rotulo">01</span>HTML + CSS + JS</div>
+          <div class="etapa"><span class="rotulo">02</span>DOM, CSSOM e layout</div>
+          <div class="etapa"><span class="rotulo">03</span>Pintura do navegador</div>
+          <div class="final"><svg class="i s18" viewBox="0 0 24 24"><path d="m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg>O navegador desenha</div>
+        </div>
+        <div class="pipe hover" style="--c:var(--rn)">
+          <div class="topo"><span class="letra">B</span><span class="ponto"></span></div>
+          <h3>React Native</h3>
+          <div class="etapa"><span class="rotulo">01</span>JS/TS + React</div>
+          <div class="etapa"><span class="rotulo">02</span>Hermes + JSI + Fabric</div>
+          <div class="etapa"><span class="rotulo">03</span>UIView / Android View</div>
+          <div class="final"><svg class="i s18" viewBox="0 0 24 24"><path d="m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg>O sistema desenha</div>
+        </div>
+        <div class="pipe" style="--c:var(--flutter)">
+          <div class="topo"><span class="letra">C</span><span class="ponto"></span></div>
+          <h3>Flutter</h3>
+          <div class="etapa"><span class="rotulo">01</span>Dart (widgets)</div>
+          <div class="etapa"><span class="rotulo">02</span>Compilado AOT</div>
+          <div class="etapa"><span class="rotulo">03</span>Impeller na GPU</div>
+          <div class="final"><svg class="i s18" viewBox="0 0 24 24"><path d="m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg>O Flutter desenha</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 Comparações -->
+    <div class="wrap" style="margin-top:140px">
+      <div class="cab">
+        <div class="titulo">
+          <span class="eyebrow">02 — Comparações</span>
+          <h2 class="h-sec">Frente a frente.</h2>
+        </div>
+        <p class="desc">Cada comparação traz o resumo, um placar, busca por tema e uma página de detalhe para cada aspecto, com código e veredito.</p>
+      </div>
+      <div class="linhas">
+        <div class="linha">
+          <span class="rotulo num">01</span>
+          <div class="txt">
+            <div class="versus"><span style="color:var(--web)">Web</span><span class="x"> × </span><span style="color:var(--flutter)">Flutter</span></div>
+            <p class="sub">Aplicação web (HTML, CSS, JS) contra um app Flutter</p>
+            <span class="rotulo">17 aspectos · 6 categorias</span>
+          </div>
+          <span class="seta"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        </div>
+        <div class="linha hover">
+          <span class="rotulo num">02</span>
+          <div class="txt">
+            <div class="versus"><span style="color:var(--rn)">React Native</span><span class="x"> × </span><span style="color:var(--flutter)">Flutter</span></div>
+            <p class="sub">Os dois maiores frameworks multiplataforma para mobile</p>
+            <span class="rotulo">17 aspectos · 5 categorias</span>
+          </div>
+          <span class="seta on"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 Ferramentas -->
+    <div class="wrap" style="margin-top:140px">
+      <span class="eyebrow">03 — Ferramentas</span>
+      <h2 class="h-sec" style="margin-top:20px">Para decidir.</h2>
+      <div class="ferr">
+        <div class="card-f">
+          <div class="cima"><span class="rotulo">Tabela</span><svg class="i s24" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg></div>
+          <h3>Tudo numa<br>visão só.</h3>
+          <p>As três tecnologias lado a lado em 16 critérios.</p>
+          <div class="abrir">Abrir <svg class="i s18" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+        </div>
+        <div class="card-f dest">
+          <div class="cima"><span class="rotulo">Teste</span><svg class="i s24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></div>
+          <h3>Qual combina<br>com você?</h3>
+          <p>8 perguntas sobre o seu projeto e o seu time, e uma recomendação no fim.</p>
+          <div class="abrir">Abrir <svg class="i s18" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="rodape">
+      <div class="cta"><div class="wrap">
+        <span class="eyebrow">Ainda em dúvida?</span>
+        <h2 class="display">Descubra qual tecnologia<br>combina com o seu projeto.</h2>
+        <div class="botoes"><span class="pill cheio">Fazer o teste</span><span class="pill vazio">Ver a tabela</span></div>
+      </div></div>
+      <div class="base"><div class="wrap">
+        <div class="marca">comparativo<span>.</span></div>
+        <span class="rotulo">Feito por Claudio Alvarenga, em Flutter. Cada pixel desta página foi desenhado pelo motor do Flutter, não pelo DOM.</span>
+        <span class="rotulo">© 2026</span>
+      </div></div>
+    </footer>
+  </section>
+</div>
+
+<!-- ======================================================= -->
+<!-- FRAME 2 — Hoje — Aspecto SEO e indexação                 -->
+<!-- ======================================================= -->
+<div class="frame-col">
+  <p class="frame-label">Hoje — Aspecto SEO e indexação · 1440</p>
+  <section class="frame">
+    <div class="browser">
+      <div class="bolas"><i></i><i></i><i></i></div>
+      <div class="nav-b"><svg class="i s18" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><svg class="i s18" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+      <div class="url"><svg class="i s16" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><b>flutter-comparativo.vercel.app</b></div>
+    </div>
+    <div class="nota" style="right:24px;top:56px"><b>Achado</b>A URL não muda ao abrir um aspecto. Voltar do navegador não funciona, o link não é compartilhável e não há OG.</div>
+
+    <div class="barra-asp">
+      <div class="voltar"><svg class="i" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Voltar para Web × Flutter</div>
+      <div class="spacer"></div>
+      <span class="rotulo">10 / 17</span>
+    </div>
+
+    <div class="wrap asp">
+      <span class="eyebrow">Aspecto 10 · Web</span>
+      <h1 class="display">SEO e indexação</h1>
+      <p class="intro">Ser encontrado no Google, no Bing e em redes sociais.</p>
+      <span class="selo" style="--c:var(--web)">Vantagem Web</span>
+
+      <div class="cols">
+        <div class="col" style="--c:var(--web)">
+          <div class="nome">Web</div>
+          <p class="resumo">HTML é a língua nativa dos buscadores. Com renderização no servidor (SSR) ou geração estática (SSG), o conteúdo é indexado com facilidade.</p>
+          <div class="pontos">
+            <div><svg class="i s16" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Next.js, Nuxt, Astro e Remix entregam HTML pronto para o robô.</div>
+            <div><svg class="i s16" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Meta tags, Open Graph e dados estruturados (JSON-LD).</div>
+            <div><svg class="i s16" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Cada página tem a sua URL, compartilhável e indexável.</div>
+          </div>
+        </div>
+        <div class="col" style="--c:var(--flutter)">
+          <div class="nome">Flutter</div>
+          <p class="resumo">O Flutter Web desenha num canvas, então não há texto em HTML para o robô ler. A própria equipe do Flutter recomenda usá-lo para apps, e não para sites de conteúdo.</p>
+          <div class="pontos">
+            <div><svg class="i s16" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Bom para: dashboards, ferramentas internas e apps atrás de login.</div>
+            <div><svg class="i s16" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Ruim para: blog, landing page, loja que depende de busca orgânica.</div>
+            <div><svg class="i s16" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Solução comum: site institucional em HTML e o app Flutter separado.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="veredito">
+        <span class="rotulo">Veredito</span>
+        <p>A web vence, e não chega a ser uma disputa.</p>
+      </div>
+
+      <div class="antprox">
+        <div><span class="rotulo">← Anterior</span><div class="t">Performance</div></div>
+        <div class="dir"><span class="rotulo">Próximo →</span><div class="t">Carregamento e tamanho</div></div>
+      </div>
+    </div>
+
+    <footer class="rodape">
+      <div class="cta"><div class="wrap">
+        <span class="eyebrow">Ainda em dúvida?</span>
+        <h2 class="display">Descubra qual tecnologia<br>combina com o seu projeto.</h2>
+        <div class="botoes"><span class="pill cheio">Fazer o teste</span><span class="pill vazio">Ver a tabela</span></div>
+      </div></div>
+      <div class="base"><div class="wrap">
+        <div class="marca">comparativo<span>.</span></div>
+        <span class="rotulo">Feito por Claudio Alvarenga, em Flutter. Cada pixel desta página foi desenhado pelo motor do Flutter, não pelo DOM.</span>
+        <span class="rotulo">© 2026</span>
+      </div></div>
+    </footer>
+  </section>
+</div>
+
+<!-- ======================================================= -->
+<!-- FRAME 3 — Proposta — Home v2                             -->
+<!-- ======================================================= -->
+<div class="frame-col">
+  <p class="frame-label"><b>Proposta</b> — Home v2 · 1440</p>
+  <section class="frame">
+    <header class="topbar">
+      <div class="marca">comparativo<span>.</span></div>
+      <div class="spacer"></div>
+      <nav class="nav">
+        <span class="navlink">Web × Flutter</span>
+        <span class="navlink">RN × Flutter</span>
+        <span class="navlink">Tabela</span>
+        <span class="navlink">Lente fintech</span>
+        <span class="navlink">Sobre</span>
+      </nav>
+      <span style="width:20px"></span>
+      <span class="pill cheio">Decidir minha stack</span>
+    </header>
+
+    <div class="hero" style="padding-bottom:88px">
+      <div class="brilho"></div>
+      <div class="wrap" style="position:relative">
+        <span class="eyebrow">Guia comparativo · Edição 2026</span>
+        <h1 class="display" style="margin-top:32px">Web, React Native<br><span class="contorno">ou </span>Flutter<span class="lima">?</span></h1>
+        <div class="duas">
+          <p class="lead esq" style="font-size:24px;color:var(--texto)">34 diferenças explicadas por quem já entregou as três.</p>
+          <div class="botoes">
+            <span class="pill cheio">Decidir minha stack <svg class="i s18" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            <span class="pill vazio">Explorar comparações</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- faixa de credibilidade -->
+    <div class="cred"><div class="wrap">
+      <div class="item"><svg class="i s24" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><div><div class="k">3 anos de React Native na XP</div><div class="v">Escrito por quem já entregou em produção</div></div></div>
+      <div class="item"><svg class="i s24" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg><div><div class="k">34 aspectos</div><div class="v">17 Web × Flutter · 17 RN × Flutter</div></div></div>
+      <div class="item"><svg class="i s24" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg><div><div class="k">Fontes e “revisado em”</div><div class="v">Em cada aspecto</div></div></div>
+      <div class="item"><svg class="i s24" viewBox="0 0 24 24"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg><div><div class="k">Feito em Flutter</div><div class="v">O próprio site é a demonstração</div></div></div>
+    </div></div>
+
+    <!-- como funciona compacto -->
+    <div class="wrap" style="margin-top:120px">
+      <div class="cab">
+        <div class="titulo">
+          <span class="eyebrow">01 — Como funciona</span>
+          <h2 class="h-sec">Três jeitos de<br>desenhar uma tela.</h2>
+        </div>
+        <p class="desc">Quem transforma o seu código em pixels? A resposta explica quase todas as outras diferenças: performance, visual, SEO e acesso ao aparelho.</p>
+      </div>
+      <div class="mini-pipes">
+        <div class="pipe" style="--c:var(--web)"><div class="topo"><span class="letra">A</span><span class="ponto"></span></div><h3>Web</h3><div class="seq">HTML + CSS + JS → DOM, CSSOM e layout → Pintura do navegador</div><div class="final">O navegador desenha</div></div>
+        <div class="pipe" style="--c:var(--rn)"><div class="topo"><span class="letra">B</span><span class="ponto"></span></div><h3>React Native</h3><div class="seq">JS/TS + React → Hermes + JSI + Fabric → UIView / Android View</div><div class="final">O sistema desenha</div></div>
+        <div class="pipe" style="--c:var(--flutter)"><div class="topo"><span class="letra">C</span><span class="ponto"></span></div><h3>Flutter</h3><div class="seq">Dart (widgets) → Compilado AOT → Impeller na GPU</div><div class="final">O Flutter desenha</div></div>
+      </div>
+    </div>
+
+    <!-- frente a frente com mini placar -->
+    <div class="wrap" style="margin-top:140px">
+      <div class="cab">
+        <div class="titulo">
+          <span class="eyebrow">02 — Comparações</span>
+          <h2 class="h-sec">Frente a frente.</h2>
+        </div>
+        <p class="desc">Cada comparação traz o resumo, um placar, busca por tema e uma página de detalhe para cada aspecto, com código e veredito.</p>
+      </div>
+      <div class="linhas">
+        <div class="linha">
+          <span class="rotulo num">01</span>
+          <div class="txt">
+            <div class="versus" style="font-size:64px"><span style="color:var(--web)">Web</span><span class="x"> × </span><span style="color:var(--flutter)">Flutter</span></div>
+            <p class="sub">Aplicação web (HTML, CSS, JS) contra um app Flutter</p>
+            <div class="placar">
+              <span class="p" style="--c:var(--web)"><i></i>Web <b>6</b></span>
+              <span class="p" style="--c:var(--flutter)"><i></i>Flutter <b>4</b></span>
+              <span class="p" style="--c:var(--suave)"><i></i>Empate <b>3</b></span>
+              <span class="p" style="--c:var(--lima)"><i></i>Depende <b>4</b></span>
+            </div>
+            <div class="barra"><span style="width:35.3%;background:var(--web)"></span><span style="width:23.5%;background:var(--flutter)"></span><span style="width:17.6%;background:var(--suave)"></span><span style="width:23.6%;background:var(--lima)"></span></div>
+          </div>
+          <span class="seta"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        </div>
+        <div class="linha">
+          <span class="rotulo num">02</span>
+          <div class="txt">
+            <div class="versus" style="font-size:64px"><span style="color:var(--rn)">React Native</span><span class="x"> × </span><span style="color:var(--flutter)">Flutter</span></div>
+            <p class="sub">Os dois maiores frameworks multiplataforma para mobile</p>
+            <div class="placar">
+              <span class="p" style="--c:var(--rn)"><i></i>React Native <b>3</b></span>
+              <span class="p" style="--c:var(--flutter)"><i></i>Flutter <b>5</b></span>
+              <span class="p" style="--c:var(--suave)"><i></i>Empate <b>6</b></span>
+              <span class="p" style="--c:var(--lima)"><i></i>Depende <b>3</b></span>
+            </div>
+            <div class="barra"><span style="width:17.6%;background:var(--rn)"></span><span style="width:29.4%;background:var(--flutter)"></span><span style="width:35.3%;background:var(--suave)"></span><span style="width:17.7%;background:var(--lima)"></span></div>
+          </div>
+          <span class="seta"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- lente fintech -->
+    <div class="wrap" style="margin-top:140px">
+      <span class="eyebrow">03 — Lente fintech</span>
+      <div class="fintech">
+        <div class="faixa"></div>
+        <span class="tag-prop">Novo</span>
+        <h3>Web, RN ou Flutter para um app financeiro, por quem já entregou RN na XP.</h3>
+        <div class="temas">
+          <div class="tema"><svg class="i s24" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div><div class="nome">Segurança</div><div class="k3"><i style="background:var(--web)"></i><i style="background:var(--rn)"></i><i style="background:var(--flutter)"></i></div></div></div>
+          <div class="tema"><svg class="i s24" viewBox="0 0 24 24"><path d="M2 12C2 6.5 6.5 2 12 2a10 10 0 0 1 8 4"/><path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"/><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"/><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/><path d="M8.65 22c.21-.66.45-1.32.57-2"/><path d="M14 13.12c0 2.38 0 6.38-1 8.88"/><path d="M2 16h.01"/><path d="M21.8 16c.2-2 .131-5.354 0-6"/><path d="M9 6.8a6 6 0 0 1 9 5.2c0 .47 0 1.17-.02 2"/></svg><div><div class="nome">Biometria</div><div class="k3"><i style="background:var(--web)"></i><i style="background:var(--rn)"></i><i style="background:var(--flutter)"></i></div></div></div>
+          <div class="tema"><svg class="i s24" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg><div><div class="nome">SDK antifraude</div><div class="k3"><i style="background:var(--web)"></i><i style="background:var(--rn)"></i><i style="background:var(--flutter)"></i></div></div></div>
+          <div class="tema"><svg class="i s24" viewBox="0 0 24 24"><circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1"/><path d="m5 8 3-3 5.5 3-2.36 3.5"/><path d="M4.24 14.5a5 5 0 0 0 6.88 6"/><path d="M13.76 17.5a5 5 0 0 0-6.88-6"/></svg><div><div class="nome">Acessibilidade regulatória</div><div class="k3"><i style="background:var(--web)"></i><i style="background:var(--rn)"></i><i style="background:var(--flutter)"></i></div></div></div>
+          <div class="tema"><svg class="i s24" viewBox="0 0 24 24"><path d="M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg><div><div class="nome">OTA vs compliance</div><div class="k3"><i style="background:var(--web)"></i><i style="background:var(--rn)"></i><i style="background:var(--flutter)"></i></div></div></div>
+        </div>
+        <div class="botoes" style="margin-top:40px"><span class="pill cheio">Ver a lente fintech <svg class="i s18" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></div>
+      </div>
+    </div>
+
+    <!-- ferramentas -->
+    <div class="wrap" style="margin-top:140px">
+      <span class="eyebrow">04 — Ferramentas</span>
+      <h2 class="h-sec" style="margin-top:20px">Para decidir.</h2>
+      <div class="ferr">
+        <div class="card-f">
+          <div class="cima"><span class="rotulo">Tabela</span><svg class="i s24" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg></div>
+          <h3>Tudo numa<br>visão só.</h3>
+          <p>As três tecnologias lado a lado em 16 critérios.</p>
+          <div class="abrir">Abrir <svg class="i s18" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+        </div>
+        <div class="card-f dest">
+          <div class="cima"><span class="rotulo">Teste</span><svg class="i s24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></div>
+          <h3>Qual combina<br>com você?</h3>
+          <p>8 perguntas sobre o seu projeto e o seu time, e uma recomendação no fim, com o porquê de cada ponto.</p>
+          <div class="abrir">Decidir minha stack <svg class="i s18" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- sobre o autor -->
+    <div class="wrap" style="margin-top:140px">
+      <span class="eyebrow">05 — Sobre o autor</span>
+      <div class="autor">
+        <div class="avatar"><span class="marca" style="font-size:28px">CA<span>.</span></span></div>
+        <div>
+          <span class="rotulo">Quem escreveu</span>
+          <div class="nome">Claudio Alvarenga</div>
+          <p class="bio">3 anos de React Native na XP. Este guia compara as três tecnologias a partir de quem já entregou as três, e o próprio site roda em Flutter.</p>
+          <div class="tags"><span class="chip">React Native na XP</span><span class="chip">Web</span><span class="chip">Flutter</span></div>
+          <div class="botoes" style="margin-top:28px"><span class="pill vazio peq">Sobre / Como foi feito</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- rodapé com canal -->
+    <footer class="rodape">
+      <div class="cta"><div class="wrap">
+        <span class="eyebrow">Ainda em dúvida?</span>
+        <h2 class="display">Descubra qual tecnologia<br>combina com o seu projeto.</h2>
+        <div class="botoes"><span class="pill cheio">Decidir minha stack</span><span class="pill vazio">Ver a tabela</span></div>
+        <div class="canal">
+          <span class="play"><svg class="i" viewBox="0 0 24 24"><path d="m6 3 14 9-14 9z"/></svg></span>
+          <div><span class="rotulo">Série no canal</span><div class="t">34 diferenças em 60 segundos cada</div></div>
+          <div class="spacer"></div>
+          <span class="pill vazio peq">Assistir a série</span>
+        </div>
+      </div></div>
+      <div class="base"><div class="wrap">
+        <div class="marca">comparativo<span>.</span></div>
+        <span class="rotulo">Feito por Claudio Alvarenga, em Flutter. Cada pixel desta página foi desenhado pelo motor do Flutter, não pelo DOM.</span>
+        <span class="rotulo">© 2026</span>
+      </div></div>
+    </footer>
+  </section>
+</div>
+
+<!-- ======================================================= -->
+<!-- FRAME 4 — Proposta — Aspecto com URL, fontes e Copiar link -->
+<!-- ======================================================= -->
+<div class="frame-col">
+  <p class="frame-label"><b>Proposta</b> — Aspecto com URL, fontes e Copiar link · 1440</p>
+  <section class="frame">
+    <div class="browser">
+      <div class="bolas"><i></i><i></i><i></i></div>
+      <div class="nav-b"><span class="ok"><svg class="i s18" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg></span><svg class="i s18" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+      <div class="url"><svg class="i s16" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>flutter-comparativo.vercel.app<b>/web-vs-flutter/seo</b></div>
+    </div>
+    <div class="nota" style="right:24px;top:56px;width:280px"><b>Melhoria 1</b>Rotas com URL (go_router): cada aspecto tem endereço próprio e o Voltar do navegador funciona.</div>
+
+    <div class="barra-asp">
+      <div class="migalha"><svg class="i s18" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Início <span>/</span> Web × Flutter <span>/</span> <b>SEO e indexação</b></div>
+      <div class="spacer"></div>
+      <span class="rotulo" style="margin-right:16px">10 / 17</span>
+      <span class="pill cheio peq"><svg class="i s16" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Copiar link</span>
+    </div>
+    <div class="toast"><svg class="i s18" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Link copiado</div>
+
+    <div class="wrap asp">
+      <span class="eyebrow">Aspecto 10 · Web</span>
+      <h1 class="display">SEO e indexação</h1>
+      <p class="intro">Ser encontrado no Google, no Bing e em redes sociais.</p>
+      <div class="meta-asp">
+        <span class="selo" style="--c:var(--web);margin-top:0">Vantagem Web</span>
+        <span class="chip"><svg class="i s16" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Revisado em DD/MM/AAAA</span>
+        <span class="chip"><svg class="i s16" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>3 fontes</span>
+      </div>
+
+      <div class="cols">
+        <div class="col" style="--c:var(--web)">
+          <div class="nome">Web</div>
+          <p class="resumo">HTML é a língua nativa dos buscadores. Com renderização no servidor (SSR) ou geração estática (SSG), o conteúdo é indexado com facilidade.</p>
+          <div class="pontos">
+            <div><svg class="i s16" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Next.js, Nuxt, Astro e Remix entregam HTML pronto para o robô.</div>
+            <div><svg class="i s16" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Meta tags, Open Graph e dados estruturados (JSON-LD).</div>
+            <div><svg class="i s16" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Cada página tem a sua URL, compartilhável e indexável.</div>
+          </div>
+        </div>
+        <div class="col" style="--c:var(--flutter)">
+          <div class="nome">Flutter</div>
+          <p class="resumo">O Flutter Web desenha num canvas, então não há texto em HTML para o robô ler. A própria equipe do Flutter recomenda usá-lo para apps, e não para sites de conteúdo.</p>
+          <div class="pontos">
+            <div><svg class="i s16" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Bom para: dashboards, ferramentas internas e apps atrás de login.</div>
+            <div><svg class="i s16" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Ruim para: blog, landing page, loja que depende de busca orgânica.</div>
+            <div><svg class="i s16" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Solução comum: site institucional em HTML e o app Flutter separado.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="veredito">
+        <span class="rotulo">Veredito</span>
+        <p>A web vence, e não chega a ser uma disputa.</p>
+      </div>
+
+      <!-- fontes + prévia OG -->
+      <div class="fontes">
+        <div class="lista">
+          <span class="eyebrow">Fontes deste aspecto</span>
+          <div style="margin-top:20px">
+            <div class="f"><span class="rotulo">01</span>[Título da fonte oficial]<span class="dom">[domínio] ↗</span></div>
+            <div class="f"><span class="rotulo">02</span>[Título da fonte oficial]<span class="dom">[domínio] ↗</span></div>
+            <div class="f"><span class="rotulo">03</span>[Título da fonte oficial]<span class="dom">[domínio] ↗</span></div>
+          </div>
+          <p class="rotulo" style="margin-top:16px;text-transform:none;letter-spacing:.3px">Revisado em DD/MM/AAAA · Viu algo desatualizado? Avise.</p>
+        </div>
+        <div class="og">
+          <span class="eyebrow">Prévia ao compartilhar (OG)</span>
+          <div class="card" style="margin-top:20px">
+            <div class="img">
+              <div class="marca" style="font-size:18px">comparativo<span>.</span></div>
+              <div><div class="rotulo" style="margin-bottom:8px">Web × Flutter · 10 / 17</div><div class="t">SEO e indexação</div></div>
+            </div>
+            <div class="meta"><div class="d">flutter-comparativo.vercel.app</div><div style="font-weight:600;margin-top:2px">SEO e indexação · Web × Flutter</div><div style="color:var(--suave);font-size:12.5px">Ser encontrado no Google, no Bing e em redes sociais.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="antprox">
+        <div><span class="rotulo">← Anterior</span><div class="t">Performance</div><div class="rotulo" style="margin-top:8px;text-transform:none;letter-spacing:.3px">/web-vs-flutter/performance</div></div>
+        <div class="dir"><span class="rotulo">Próximo →</span><div class="t">Carregamento e tamanho</div><div class="rotulo" style="margin-top:8px;text-transform:none;letter-spacing:.3px">/web-vs-flutter/carregamento</div></div>
+      </div>
+    </div>
+
+    <footer class="rodape">
+      <div class="base"><div class="wrap">
+        <div class="marca">comparativo<span>.</span></div>
+        <span class="rotulo">Feito por Claudio Alvarenga, em Flutter. Cada pixel desta página foi desenhado pelo motor do Flutter, não pelo DOM.</span>
+        <span class="rotulo">© 2026</span>
+      </div></div>
+    </footer>
+  </section>
+</div>
+
+<!-- ======================================================= -->
+<!-- FRAME 5 — Proposta — Resultado do teste transparente      -->
+<!-- ======================================================= -->
+<div class="frame-col">
+  <p class="frame-label"><b>Proposta</b> — Resultado do teste transparente (Por que essa recomendação) · 1440</p>
+  <section class="frame">
+    <header class="topbar">
+      <div class="marca">comparativo<span>.</span></div>
+      <div class="spacer"></div>
+      <nav class="nav">
+        <span class="navlink">Web × Flutter</span>
+        <span class="navlink">RN × Flutter</span>
+        <span class="navlink">Tabela</span>
+        <span class="navlink">Lente fintech</span>
+        <span class="navlink">Sobre</span>
+      </nav>
+      <span style="width:20px"></span>
+      <span class="pill cheio">Decidir minha stack</span>
+    </header>
+
+    <div class="wrap" style="padding-top:88px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end">
+        <div>
+          <span class="eyebrow">Teste rápido</span>
+          <h1 class="display" style="margin-top:28px;font-size:104px">Qual combina<br>com você?</h1>
+        </div>
+        <span class="rotulo">08 / 08</span>
+      </div>
+
+      <div class="res" style="margin-top:56px">
+        <span class="eyebrow" style="--c:var(--flutter)">Nossa recomendação</span>
+        <h2 class="display">Flutter.</h2>
+        <p class="lead" style="color:var(--texto);max-width:720px;margin-top:24px">Você quer um app nativo com interface própria, consistente e fluida, e várias plataformas (mobile, desktop, web) a partir de um código só.</p>
+        <div class="barras">
+          <div class="l"><span class="rotulo" style="color:var(--flutter)">Flutter</span><div class="trilho"><span style="width:50%;background:var(--flutter)"></span></div><span class="rotulo pts">11 pts</span></div>
+          <div class="l"><span class="rotulo" style="color:var(--rn)">React Native</span><div class="trilho"><span style="width:45.5%;background:var(--rn)"></span></div><span class="rotulo pts">10 pts</span></div>
+          <div class="l"><span class="rotulo" style="color:var(--web)">Web</span><div class="trilho"><span style="width:4.5%;background:var(--web)"></span></div><span class="rotulo pts">1 pts</span></div>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:24px">
+          <span class="pill vazio"><svg class="i s18" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M8 16H3v5"/></svg>Refazer o teste</span>
+          <span class="pill vazio"><svg class="i s18" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Copiar link do resultado</span>
+        </div>
+      </div>
+
+      <div class="porque">
+        <div class="cabp">
+          <div>
+            <span class="tag-prop">Novo</span>
+            <h3>Por que essa recomendação</h3>
+            <p style="color:var(--suave);margin-top:8px">Cada resposta soma pontos para uma ou mais tecnologias. Aqui está a conta inteira, sem pesos escondidos.</p>
+          </div>
+          <span class="rotulo">Diferença final: 1 ponto</span>
+        </div>
+        <table class="tab">
+          <thead><tr><th>#</th><th>Pergunta e sua resposta</th><th style="text-align:center">Web</th><th style="text-align:center">React Native</th><th style="text-align:center">Flutter</th></tr></thead>
+          <tbody>
+            <tr><td class="n">01</td><td><div class="q">O que você está construindo?</div><div class="resp">App para baixar na loja</div></td><td class="c z">0</td><td class="c"><span class="pts-chip" style="--c:var(--rn)">+2</span></td><td class="c"><span class="pts-chip" style="--c:var(--flutter)">+2</span></td></tr>
+            <tr><td class="n">02</td><td><div class="q">O que o time já domina?</div><div class="resp">React e TypeScript</div></td><td class="c"><span class="pts-chip" style="--c:var(--web)">+1</span></td><td class="c"><span class="pts-chip" style="--c:var(--rn)">+3</span></td><td class="c z">0</td></tr>
+            <tr><td class="n">03</td><td><div class="q">Precisa ser encontrado no Google?</div><div class="resp">Não, o uso é atrás de login ou no app</div></td><td class="c z">0</td><td class="c"><span class="pts-chip" style="--c:var(--rn)">+1</span></td><td class="c"><span class="pts-chip" style="--c:var(--flutter)">+1</span></td></tr>
+            <tr><td class="n">04</td><td><div class="q">Vai usar recursos do aparelho (câmera, Bluetooth, NFC, segundo plano)?</div><div class="resp">Sim, bastante</div></td><td class="c z">0</td><td class="c"><span class="pts-chip" style="--c:var(--rn)">+2</span></td><td class="c"><span class="pts-chip" style="--c:var(--flutter)">+2</span></td></tr>
+            <tr><td class="n">05</td><td><div class="q">Como deve ser o visual?</div><div class="resp">Idêntico em todas as plataformas, com marca forte</div></td><td class="c z">0</td><td class="c z">0</td><td class="c"><span class="pts-chip" style="--c:var(--flutter)">+3</span></td></tr>
+            <tr><td class="n">06</td><td><div class="q">Quão importantes são animações e fluidez?</div><div class="resp">Importantes, mas não centrais</div></td><td class="c z">0</td><td class="c"><span class="pts-chip" style="--c:var(--rn)">+1</span></td><td class="c"><span class="pts-chip" style="--c:var(--flutter)">+1</span></td></tr>
+            <tr><td class="n">07</td><td><div class="q">Com que frequência vai publicar correções?</div><div class="resp">Semanalmente, pela loja, tudo bem</div></td><td class="c z">0</td><td class="c"><span class="pts-chip" style="--c:var(--rn)">+1</span></td><td class="c"><span class="pts-chip" style="--c:var(--flutter)">+1</span></td></tr>
+            <tr class="alerta"><td class="n">08</td><td><div class="q">Já existe um site em React para reaproveitar código?</div><div class="resp">Não</div></td><td class="c z">0</td><td class="c z">0</td><td class="c"><span class="pts-chip" style="--c:var(--flutter)">+1</span></td></tr>
+          </tbody>
+          <tfoot><tr><td></td><td style="font-family:var(--mo);font-weight:400;font-size:12px;letter-spacing:1.4px;color:var(--suave)">TOTAL</td><td class="c" style="color:var(--web)">1</td><td class="c" style="color:var(--rn)">10</td><td class="c" style="color:var(--flutter)">11</td></tr></tfoot>
+        </table>
+        <div class="aviso">
+          <svg class="i s24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <div>
+            <div style="font-weight:600">A pergunta 08 decidiu o resultado.</div>
+            <p style="color:var(--suave);margin-top:4px;max-width:900px">Hoje, responder “Não” soma 1 ponto para Flutter. Sem ela, React Native e Flutter empatariam em 10. Na proposta, “Não” deixa de favorecer qualquer tecnologia e o empate é mostrado como empate.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:120px"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ======================================================= -->
+<!-- FRAME 6 — Roadmap de evolução (640)                       -->
+<!-- ======================================================= -->
+<div class="frame-col">
+  <p class="frame-label">Roadmap de evolução · 640</p>
+  <section class="frame w640">
+    <div class="rm">
+      <div class="marca">comparativo<span>.</span></div>
+      <h2>Roadmap de evolução</h2>
+      <p class="sub">Flutter Comparativo — atual e evolução · Claudio Alvarenga</p>
+
+      <div class="bloco">
+        <span class="eyebrow">Críticas de hoje</span>
+        <div class="criticas">
+          <span>Sem URL por aspecto</span><span>Voltar do navegador não funciona</span><span>Sofre do problema de SEO que aponta</span><span>Sem OG</span><span>Sem fontes nem datas</span><span>Teste com pesos opacos</span><span>Viés na pergunta 8</span><span>Autor só no rodapé</span><span>Sem reduced motion</span>
+        </div>
+      </div>
+
+      <div class="bloco">
+        <span class="eyebrow">Melhorias priorizadas</span>
+        <div style="margin-top:16px">
+          <div class="mel"><span class="ord">1</span><div><div class="t">Rotas com URL (go_router) + “Copiar link”</div><div class="d">Cada aspecto com endereço próprio; Voltar do navegador funciona.</div></div><span class="badge a">Primeiro</span></div>
+          <div class="mel"><span class="ord">2</span><div><div class="t">OG por aspecto</div><div class="d">Prévia própria ao compartilhar cada aspecto.</div></div><span class="badge a">Primeiro</span></div>
+          <div class="mel"><span class="ord">3</span><div><div class="t">Fontes + “revisado em”</div><div class="d">Em cada aspecto.</div></div><span class="badge a">Primeiro</span></div>
+          <div class="mel"><span class="ord">4</span><div><div class="t">Teste transparente</div><div class="d">“Por que essa recomendação”, com a conta de cada resposta.</div></div><span class="badge">Depois</span></div>
+          <div class="mel"><span class="ord">5</span><div><div class="t">Página “Sobre / Como foi feito”</div><div class="d">3 anos de RN na XP.</div></div><span class="badge">Depois</span></div>
+          <div class="mel"><span class="ord">6</span><div><div class="t">Reduced motion</div><div class="d">Respeitar a preferência de movimento reduzido.</div></div><span class="badge">Depois</span></div>
+          <div class="mel"><span class="ord">7</span><div><div class="t">Medições reais</div></div><span class="badge">Mais tarde</span></div>
+          <div class="mel"><span class="ord">8</span><div><div class="t">Tema claro</div></div><span class="badge">Mais tarde</span></div>
+        </div>
+      </div>
+
+      <div class="bloco">
+        <span class="eyebrow">3 direções</span>
+        <div class="dir">
+          <span class="rotulo">Direção A</span>
+          <div class="t">Decisor com pesos ajustáveis</div>
+        </div>
+        <div class="dir rec">
+          <span class="tag-prop">Lente fintech</span>
+          <div class="t">Web, RN ou Flutter para um app financeiro, por quem já entregou RN na XP</div>
+          <div class="d">Segurança · biometria · SDK antifraude · acessibilidade regulatória · OTA vs compliance</div>
+        </div>
+        <div class="dir">
+          <span class="rotulo">Direção C</span>
+          <div class="t">Série para o canal: “34 diferenças em 60 segundos cada”</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</div>
+</body>
+</html>

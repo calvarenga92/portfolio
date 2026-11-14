@@ -80,3 +80,29 @@ export type StackGroup = {
 
   muted?: boolean;
 };
+
+export type UxImage = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  caption?: string;
+};
+
+export type UxCase = {
+  slug: string;
+  name: string;
+  tagline: string;
+
+  before: UxImage;
+  after: UxImage;
+  extras?: UxImage[];
+
+  findings: string[];
+  studyHref: string;
+};
+
+export type UxStep = {
+  title: string;
+  body: string;
+};

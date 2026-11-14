@@ -44,7 +44,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
     <>
       <SiteHeader />
 
-      <main id="conteudo" className="pt-36 pb-24 sm:pt-40">
+      <main id="conteudo" className="pt-48 pb-24 md:pt-40">
         <Container>
           <Button href="/#trabalho" variant="outline" icon="arrow-left">
             Voltar para o trabalho

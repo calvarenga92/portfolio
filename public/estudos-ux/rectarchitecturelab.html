@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>RectArchitectureLab — atual e evolução · Claudio Alvarenga</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: #2a2a2a;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .canvas { display: flex; gap: 120px; align-items: flex-start; padding: 120px; width: max-content; }
+  .frame-wrap { display: flex; flex-direction: column; gap: 16px; }
+  .frame-label { margin: 0; color: #d4d4d4; font-size: 20px; font-weight: 600; letter-spacing: .01em; }
+  .frame-label span { color: #ff8a55; }
+  .frame { position: relative; overflow: hidden; }
+  .w1440 { width: 1440px; }
+  .w640 { width: 640px; }
+  svg.i { display: block; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  p, h1, h2, h3, h4 { margin: 0; }
+
+  /* ================= HOJE ================= */
+  .hoje { background: #f3e4dc; color: #020617; min-height: 900px; }
+  .tb { height: 48px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; background: rgba(2,6,23,.9); color: #fff; }
+  .tb-l, .tb-r { display: flex; align-items: center; gap: 8px; }
+  .tb-chip { border-radius: 6px; background: #1e293b; padding: 4px 12px; font-size: 12px; font-weight: 700; }
+  .tb-name { font-size: 14px; color: #cbd5e1; }
+  .tb-btn { border-radius: 6px; background: #1e293b; padding: 4px 12px; font-size: 12px; color: #fff; }
+  .tb-btn.pub { background: #fff; color: #020617; font-weight: 700; }
+
+  .h-hero { background: #ff6a2a; padding: 64px 80px; }
+  .h-hero-in { max-width: 1152px; margin: 0 auto; display: grid; grid-template-columns: 360px 1fr; gap: 40px; align-items: center; }
+  .h-photo { border-radius: 24px; background: #fff; padding: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,.1), 0 8px 10px -6px rgba(0,0,0,.1); }
+  .h-photo-img { height: 320px; border-radius: 16px; background: linear-gradient(135deg, #3b2a22 0%, #6b4a3a 35%, #b98c6c 70%, #e9d2bf 100%); position: relative; overflow: hidden; }
+  .h-photo-img::before { content: ""; position: absolute; left: 24px; right: 24px; bottom: 0; height: 120px; background: linear-gradient(180deg, rgba(20,14,10,.0), rgba(20,14,10,.55)); border-radius: 12px 12px 0 0; }
+  .h-photo-img::after { content: ""; position: absolute; left: 60px; top: 70px; width: 90px; height: 90px; border-radius: 50%; background: rgba(255,240,228,.35); box-shadow: 120px 20px 0 -6px rgba(255,240,228,.25); }
+  .h-name { font-size: 18px; line-height: 28px; font-weight: 800; color: #fff; margin-bottom: 48px; }
+  .h-title { font-size: 72px; line-height: 1.25; font-weight: 900; max-width: 768px; color: #020617; }
+  .h-sub { margin-top: 32px; font-size: 20px; line-height: 28px; font-weight: 700; color: #fff; max-width: 672px; }
+
+  .reg { background: #f3e4dc; padding: 64px 80px; }
+  .reg-in { max-width: 1152px; margin: 0 auto; }
+  .reg h2 { text-align: center; font-size: 36px; line-height: 40px; font-weight: 900; margin-bottom: 32px; }
+  .reg-grid { display: grid; grid-template-columns: 1fr 420px; gap: 32px; align-items: start; }
+  .reg-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .mcard { border-radius: 16px; border: 1px solid #fff; background: rgba(255,255,255,.7); padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .mcard.on { border-color: #020617; background: #fff; box-shadow: 0 20px 25px -5px rgba(0,0,0,.1), 0 8px 10px -6px rgba(0,0,0,.1); }
+  .mcard-l { display: flex; align-items: center; gap: 12px; }
+  .ibox { border-radius: 12px; background: #ff6a2a; padding: 8px; color: #fff; }
+  .mcard-t { font-weight: 900; font-size: 16px; line-height: 24px; }
+  .mcard-r { font-size: 12px; line-height: 16px; font-weight: 700; color: #64748b; }
+  .badge { border-radius: 999px; padding: 4px 12px; font-size: 12px; line-height: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .025em; }
+  .badge.ativo { background: #d1fae5; color: #065f46; }
+  .badge.plan { background: #ffedd5; color: #9a3412; }
+  .aside { border-radius: 24px; background: #fff; padding: 32px; box-shadow: 0 20px 25px -5px rgba(0,0,0,.1), 0 8px 10px -6px rgba(0,0,0,.1); }
+  .aside-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+  .ibox-lg { border-radius: 16px; background: #ff6a2a; padding: 16px; color: #fff; }
+  .open-link { border-radius: 12px; background: #020617; color: #fff; padding: 12px 16px; font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: .025em; }
+  .aside h3 { font-size: 30px; line-height: 36px; font-weight: 900; }
+  .aside-desc { margin-top: 16px; font-size: 14px; line-height: 24px; font-weight: 600; color: #334155; }
+  .aside-k { margin-top: 32px; font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: .025em; color: #ff6a2a; }
+  .pages { margin-top: 12px; display: grid; gap: 8px; }
+  .pages div { border-radius: 12px; background: #f1f5f9; padding: 12px 16px; font-size: 14px; line-height: 20px; font-weight: 700; color: #1e293b; }
+  .float { position: absolute; right: 20px; bottom: 20px; border-radius: 999px; background: #fff; padding: 8px 16px; font-size: 12px; font-weight: 900; color: #020617; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 20px 25px -5px rgba(0,0,0,.1), 0 8px 10px -6px rgba(0,0,0,.1); }
+
+  /* feed hoje */
+  .voltar { font-size: 16px; line-height: 24px; color: #020617; }
+  .feed-col { max-width: 576px; margin: 0 auto; }
+  .post { border-radius: 12px; background: #fff; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -2px rgba(0,0,0,.1); }
+  .post h3 { font-size: 16px; line-height: 24px; font-weight: 700; }
+  .post p { margin-top: 8px; font-size: 16px; line-height: 24px; }
+  .post-img { margin-top: 12px; border-radius: 8px; width: 544px; height: 317px; background: linear-gradient(160deg, #8aa3b8 0%, #5f7c93 40%, #3d4f5e 70%, #2a333b 100%); position: relative; overflow: hidden; }
+  .post-img::after { content: ""; position: absolute; left: -40px; right: -40px; bottom: -60px; height: 180px; border-radius: 50%; background: rgba(30,38,44,.6); }
+  .post-act { margin-top: 16px; display: flex; gap: 12px; font-size: 14px; font-weight: 700; }
+
+  /* ================= PROPOSTA ================= */
+  .v2 { --ink: #0b1220; --ink2: #111a2e; --line: #1f2a40; --paper: #f6efe9; --warm: #f3e4dc; --accent: #ff6a2a; --muted: #64748b; --ok: #10b981; --okbg: #d1fae5; --okink: #065f46; --warn: #9a3412; --warnbg: #ffedd5; --err: #dc2626; --errbg: #fee2e2;
+        background: var(--paper); color: var(--ink); }
+  .v2-tb { height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; background: var(--ink); color: #fff; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 16px; letter-spacing: -.01em; }
+  .logo-mark { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); display: grid; place-items: center; }
+  .logo-mark i { display: block; width: 12px; height: 12px; border: 2px solid #fff; border-radius: 3px; }
+  .nav { display: flex; align-items: center; gap: 32px; font-size: 14px; font-weight: 600; color: #cbd5e1; }
+  .nav .cur { color: #fff; }
+  .nav-r { display: flex; align-items: center; gap: 12px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; border-radius: 10px; font-weight: 700; font-size: 14px; line-height: 20px; padding: 10px 16px; white-space: nowrap; }
+  .btn-ghost-d { color: #e2e8f0; border: 1px solid #334155; }
+  .btn-acc { background: var(--accent); color: #fff; }
+  .btn-ink { background: var(--ink); color: #fff; }
+  .btn-out { border: 1px solid #cbd5e1; color: var(--ink); background: #fff; }
+  .btn-lg { padding: 14px 22px; font-size: 16px; border-radius: 12px; }
+
+  .v2-hero { background: var(--ink); color: #fff; padding: 88px 120px 104px; }
+  .v2-hero-in { display: grid; grid-template-columns: 1fr 520px; gap: 72px; align-items: center; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+  .eyebrow::before { content: ""; width: 24px; height: 2px; background: var(--accent); }
+  .v2-h1 { margin-top: 24px; font-size: 64px; line-height: 1.05; font-weight: 900; letter-spacing: -.03em; }
+  .v2-h1 em { font-style: normal; color: var(--accent); }
+  .v2-sub { margin-top: 24px; font-size: 20px; line-height: 30px; color: #cbd5e1; max-width: 600px; }
+  .v2-ctas { margin-top: 40px; display: flex; gap: 12px; }
+  .v2-ctas .btn-out { background: transparent; color: #fff; border-color: #334155; }
+  .v2-quote { margin-top: 40px; padding-left: 16px; border-left: 2px solid #334155; font-size: 15px; line-height: 24px; color: #94a3b8; max-width: 560px; }
+
+  .win { border-radius: 16px; background: var(--ink2); border: 1px solid var(--line); overflow: hidden; box-shadow: 0 40px 80px -20px rgba(0,0,0,.6); }
+  .win-bar { height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 16px; border-bottom: 1px solid var(--line); }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #334155; }
+  .win-url { margin-left: 12px; font-size: 12px; color: #64748b; }
+  .win-body { padding: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .slot { border-radius: 12px; border: 1px dashed #334155; padding: 14px; min-height: 120px; display: flex; flex-direction: column; gap: 10px; }
+  .slot.wide { grid-column: span 2; min-height: 96px; }
+  .slot-h { display: flex; align-items: center; justify-content: space-between; }
+  .slot-t { font-size: 12px; font-weight: 700; color: #e2e8f0; display: flex; align-items: center; gap: 8px; }
+  .slot-t svg { color: var(--accent); }
+  .slot-tag { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .06em; }
+  .bar { height: 8px; border-radius: 4px; background: #1e293b; }
+  .spark { height: 48px; }
+  .shell-tag { grid-column: span 2; display: flex; justify-content: space-between; font-size: 11px; color: #64748b; padding-top: 4px; }
+
+  .sec { padding: 96px 120px; }
+  .sec-h { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin-bottom: 48px; }
+  .sec-k { font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+  .sec-t { margin-top: 12px; font-size: 40px; line-height: 1.15; font-weight: 900; letter-spacing: -.02em; }
+  .sec-d { font-size: 16px; line-height: 26px; color: #475569; max-width: 440px; }
+
+  /* diagrama */
+  .diag { display: grid; grid-template-columns: 1fr 64px 1fr 64px 1.25fr; align-items: stretch; }
+  .layer { border-radius: 20px; background: #fff; border: 1px solid #e7dcd3; padding: 28px; }
+  .layer.shell { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .layer-n { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  .layer h3 { margin-top: 8px; font-size: 28px; font-weight: 900; letter-spacing: -.01em; }
+  .layer-d { margin-top: 8px; font-size: 14px; line-height: 22px; color: #64748b; }
+  .layer.shell .layer-d { color: #94a3b8; }
+  .chips { margin-top: 20px; display: grid; gap: 8px; }
+  .chip { border-radius: 10px; padding: 10px 12px; font-size: 14px; font-weight: 600; background: #f6efe9; display: flex; align-items: center; gap: 10px; }
+  .layer.shell .chip { background: #1e293b; color: #e2e8f0; }
+  .chip svg { color: var(--accent); }
+  .arrow { display: flex; align-items: center; justify-content: center; color: #94a3b8; }
+  .mods { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mod { border-radius: 12px; border: 1px solid #e7dcd3; padding: 12px; font-size: 14px; font-weight: 700; display: flex; flex-direction: column; gap: 6px; }
+  .mod small { font-size: 11px; font-weight: 600; color: #64748b; }
+  .diag-foot { margin-top: 24px; display: flex; gap: 24px; font-size: 14px; color: #475569; }
+  .diag-foot b { color: var(--ink); }
+
+  /* registro v2 */
+  .reg2 { background: var(--warm); }
+  .tbl { border-radius: 20px; background: #fff; overflow: hidden; border: 1px solid #e7dcd3; }
+  .tr { display: grid; grid-template-columns: 2.2fr 1.2fr 3fr 1.1fr 1.2fr; align-items: center; gap: 24px; padding: 18px 28px; border-top: 1px solid #f0e7e0; font-size: 14px; }
+  .tr.th { border-top: none; background: #faf6f2; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #64748b; padding: 14px 28px; }
+  .tr .nm { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 15px; }
+  .tr .rt { font-weight: 600; color: #64748b; }
+  .tr .ds { color: #475569; line-height: 20px; }
+  .st { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 700; }
+  .st::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .st.on { background: var(--okbg); color: var(--okink); }
+  .st.pl { background: #f1f5f9; color: #475569; }
+  .act { font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
+  .act.dis { color: #94a3b8; font-weight: 600; }
+  .ibx { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--ink); color: #fff; }
+  .ibx.dim { background: #f1f5f9; color: #64748b; }
+  .reg-sum { display: flex; gap: 12px; align-items: center; }
+  .note { margin-top: 20px; display: flex; gap: 10px; align-items: center; font-size: 14px; color: #475569; }
+
+  /* padroes */
+  .pats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .pat { border-radius: 20px; background: #fff; border: 1px solid #e7dcd3; padding: 32px; display: flex; flex-direction: column; gap: 16px; }
+  .pat-ic { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; background: #fff1ea; color: var(--accent); }
+  .pat h3 { font-size: 24px; font-weight: 900; letter-spacing: -.01em; }
+  .pat p { font-size: 15px; line-height: 24px; color: #475569; }
+  .flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; font-weight: 700; }
+  .flow span.s { border-radius: 8px; background: #f6efe9; padding: 6px 10px; }
+  .flow span.a { color: #94a3b8; }
+  .pat .lnk { margin-top: auto; font-weight: 800; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
+
+  /* qualidade */
+  .q { background: var(--ink); color: #fff; }
+  .q .sec-d { color: #94a3b8; }
+  .qgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .qi { border-radius: 16px; border: 1px solid var(--line); background: var(--ink2); padding: 24px; display: flex; gap: 16px; }
+  .qi .ck { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; background: rgba(255,106,42,.15); color: var(--accent); flex: none; }
+  .qi h4 { font-size: 16px; font-weight: 800; }
+  .qi p { margin-top: 6px; font-size: 14px; line-height: 22px; color: #94a3b8; }
+
+  .foot { background: #070c17; color: #94a3b8; padding: 48px 120px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
+  .foot b { color: #fff; font-size: 16px; }
+  .foot-l { display: flex; flex-direction: column; gap: 6px; }
+  .foot-r { display: flex; gap: 24px; align-items: center; color: #cbd5e1; font-weight: 600; }
+  .foot-r span { display: inline-flex; align-items: center; gap: 8px; }
+
+  /* modulo */
+  .crumb { padding: 28px 120px 0; font-size: 14px; color: #64748b; display: flex; gap: 8px; align-items: center; }
+  .crumb b { color: var(--ink); }
+  .mh { padding: 20px 120px 40px; display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; }
+  .mh h1 { font-size: 48px; line-height: 1.1; font-weight: 900; letter-spacing: -.02em; }
+  .mh p { margin-top: 12px; font-size: 18px; line-height: 28px; color: #475569; max-width: 680px; }
+  .mgrid { padding: 0 120px 96px; display: grid; grid-template-columns: 1fr 480px; gap: 24px; align-items: start; }
+  .card { border-radius: 20px; background: #fff; border: 1px solid #e7dcd3; }
+  .card-h { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid #f0e7e0; }
+  .card-h h3 { font-size: 18px; font-weight: 800; }
+  .card-h small { font-size: 12px; font-weight: 600; color: #64748b; }
+  .ctrls { display: flex; gap: 12px; align-items: center; }
+  .tog { display: inline-flex; align-items: center; gap: 10px; border-radius: 10px; border: 1px solid #fecaca; background: #fef2f2; color: #b91c1c; padding: 8px 12px; font-size: 14px; font-weight: 700; }
+  .sw { width: 32px; height: 18px; border-radius: 999px; background: #dc2626; position: relative; }
+  .sw::after { content: ""; position: absolute; right: 2px; top: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; }
+  .ot { display: grid; grid-template-columns: 1.4fr .9fr .8fr 1fr 1fr 1.5fr; gap: 16px; align-items: center; padding: 16px 24px; border-top: 1px solid #f3ece6; font-size: 14px; }
+  .ot.th { border-top: none; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #64748b; background: #faf6f2; padding: 12px 24px; }
+  .ot .tk { font-weight: 800; display: flex; flex-direction: column; }
+  .ot .tk small { font-weight: 500; color: #64748b; font-size: 12px; }
+  .ot .n { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .side { font-weight: 700; }
+  .side.c { color: #047857; }
+  .side.v { color: #b91c1c; }
+  .ost { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 700; }
+  .ost.ok { background: var(--okbg); color: var(--okink); }
+  .ost.pend { background: #e0e7ff; color: #3730a3; }
+  .ost.undo { background: var(--errbg); color: #991b1b; }
+  .ot.ghost { background: repeating-linear-gradient(-45deg, #fff6f4 0 10px, #fff 10px 20px); }
+  .ot.ghost .tk, .ot.ghost .n, .ot.ghost .side { color: #94a3b8; text-decoration: line-through; }
+  .toast { margin: 20px 24px 24px; border-radius: 12px; background: #fef2f2; border: 1px solid #fecaca; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 22px; color: #7f1d1d; }
+  .toast b { display: block; color: #991b1b; }
+  .newo { padding: 20px 24px; display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr auto; gap: 12px; align-items: end; border-top: 1px solid #f0e7e0; }
+  .fld label { display: block; font-size: 12px; font-weight: 700; color: #64748b; margin-bottom: 6px; }
+  .inp { height: 44px; border-radius: 10px; border: 1px solid #e2e8f0; padding: 0 12px; display: flex; align-items: center; font-size: 14px; font-weight: 600; justify-content: space-between; }
+  .seg { display: flex; border-radius: 10px; border: 1px solid #e2e8f0; overflow: hidden; height: 44px; }
+  .seg span { flex: 1; display: grid; place-items: center; font-size: 14px; font-weight: 700; color: #64748b; }
+  .seg span.on { background: #ecfdf5; color: #047857; }
+
+  .what { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .what .card-h { border-color: var(--line); }
+  .what .card-h small { color: #94a3b8; }
+  .tl { padding: 24px; display: flex; flex-direction: column; }
+  .step { display: grid; grid-template-columns: 32px 1fr; gap: 16px; position: relative; padding-bottom: 24px; }
+  .step:last-child { padding-bottom: 0; }
+  .step::before { content: ""; position: absolute; left: 15px; top: 34px; bottom: 2px; width: 2px; background: var(--line); }
+  .step:last-child::before { display: none; }
+  .sn { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 800; background: #1e293b; color: #e2e8f0; }
+  .sn.red { background: #7f1d1d; color: #fecaca; }
+  .sn.acc { background: var(--accent); color: #fff; }
+  .sh { display: flex; justify-content: space-between; align-items: baseline; }
+  .code { font-weight: 800; font-size: 15px; color: #fff; }
+  .ms { font-size: 12px; font-weight: 600; color: #64748b; font-variant-numeric: tabular-nums; }
+  .sd { margin-top: 6px; font-size: 14px; line-height: 22px; color: #94a3b8; }
+  .pill { display: inline-block; margin-top: 8px; border-radius: 6px; background: #1e293b; color: #cbd5e1; padding: 4px 8px; font-size: 12px; font-weight: 600; }
+  .pill.red { background: #450a0a; color: #fca5a5; }
+  .fix { margin: 0 24px 24px; border-radius: 12px; border: 1px solid var(--line); padding: 16px; font-size: 14px; line-height: 22px; color: #cbd5e1; }
+  .fix b { color: #fff; display: block; margin-bottom: 4px; }
+  .legend { padding: 0 24px 20px; display: flex; gap: 16px; font-size: 12px; color: #64748b; }
+
+  /* roadmap */
+  .rm { background: #fbf8f5; color: #0b1220; padding: 48px 40px; }
+  .rm h1 { font-size: 32px; line-height: 1.15; font-weight: 900; letter-spacing: -.02em; }
+  .rm .lead { margin-top: 10px; font-size: 15px; line-height: 24px; color: #475569; }
+  .rm h2 { margin-top: 40px; font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #ff6a2a; }
+  .rm-sub { margin-top: 6px; font-size: 14px; color: #64748b; }
+  .imp { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .imp-i { display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: start; border-radius: 14px; background: #fff; border: 1px solid #ece3db; padding: 14px 16px; }
+  .imp-n { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; font-weight: 900; font-size: 15px; background: #0b1220; color: #fff; }
+  .imp-i:nth-child(n+4) .imp-n { background: #f1f5f9; color: #334155; }
+  .imp-t { font-size: 15px; font-weight: 800; line-height: 22px; }
+  .imp-d { font-size: 13px; line-height: 20px; color: #64748b; margin-top: 2px; }
+  .axis { margin-top: 12px; display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; color: #64748b; }
+  .axis i { flex: 1; height: 2px; background: linear-gradient(90deg, #0b1220, #cbd5e1); }
+  .bugs { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .bug { border-radius: 10px; background: #fff; border: 1px solid #ece3db; padding: 10px 12px; font-size: 13px; line-height: 19px; color: #334155; display: flex; gap: 8px; }
+  .bug svg { color: #dc2626; margin-top: 1px; }
+  .dirs { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .dir { border-radius: 16px; background: #fff; border: 1px solid #ece3db; padding: 20px; }
+  .dir-k { font-size: 12px; font-weight: 800; color: #64748b; letter-spacing: .06em; text-transform: uppercase; }
+  .dir h3 { margin-top: 6px; font-size: 18px; font-weight: 900; }
+  .dir p { margin-top: 6px; font-size: 14px; line-height: 22px; color: #475569; }
+  .dir.rec { background: #0b1220; color: #fff; border: 2px solid #ff6a2a; padding: 24px; }
+  .dir.rec .dir-k { color: #ff6a2a; }
+  .dir.rec p { color: #cbd5e1; }
+  .rec-tag { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; background: #ff6a2a; color: #fff; padding: 4px 10px; font-size: 12px; font-weight: 800; }
+  .rec-mods { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .rec-mods span { border-radius: 10px; background: #111a2e; border: 1px solid #1f2a40; padding: 10px 12px; font-size: 13px; font-weight: 700; color: #e2e8f0; }
+  .quote { margin-top: 14px; padding-left: 12px; border-left: 2px solid #ff6a2a; font-size: 14px; line-height: 22px; color: #fff; font-weight: 600; }
+  .rm-foot { margin-top: 40px; padding-top: 20px; border-top: 1px solid #ece3db; font-size: 13px; color: #64748b; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+<!-- ===================================================== -->
+<!-- FRAME 1 — Hoje — Home                                  -->
+<!-- ===================================================== -->
+<div class="frame-wrap">
+  <p class="frame-label">Hoje — Home · 1440</p>
+  <section class="frame w1440 hoje">
+    <div class="tb">
+      <div class="tb-l">
+        <div class="tb-chip">Fechar</div>
+        <div class="tb-name">React Architecture Lab</div>
+      </div>
+      <div class="tb-r">
+        <div class="tb-btn">Preview</div>
+        <div class="tb-btn pub">Publicar site</div>
+      </div>
+    </div>
+
+    <div class="h-hero">
+      <div class="h-hero-in">
+        <div class="h-photo"><div class="h-photo-img"></div></div>
+        <div>
+          <p class="h-name">Claudio Alvarenga Jr.</p>
+          <h1 class="h-title">Hub de Arquitetura Front-end</h1>
+          <p class="h-sub">React + TypeScript + Tailwind + MFEs + Feed em tempo real + Design System + Performance.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="reg">
+      <div class="reg-in">
+        <h2>Registro de MFEs</h2>
+        <div class="reg-grid">
+          <div class="reg-cards">
+            <div class="mcard on"><div class="mcard-l"><div class="ibox"><svg class="i" width="20" height="20" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div><div><p class="mcard-t">Documentacao</p><p class="mcard-r">/docs</p></div></div><span class="badge ativo">ativo</span></div>
+            <div class="mcard"><div class="mcard-l"><div class="ibox"><svg class="i" width="20" height="20" viewBox="0 0 24 24"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg></div><div><p class="mcard-t">Arquitetura</p><p class="mcard-r">/architecture</p></div></div><span class="badge plan">planejado</span></div>
+            <div class="mcard"><div class="mcard-l"><div class="ibox"><svg class="i" width="20" height="20" viewBox="0 0 24 24"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg></div><div><p class="mcard-t">React TS</p><p class="mcard-r">/react-typescript</p></div></div><span class="badge plan">planejado</span></div>
+            <div class="mcard"><div class="mcard-l"><div class="ibox"><svg class="i" width="20" height="20" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div><p class="mcard-t">Feed</p><p class="mcard-r">/feed</p></div></div><span class="badge plan">planejado</span></div>
+            <div class="mcard"><div class="mcard-l"><div class="ibox"><svg class="i" width="20" height="20" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></div><div><p class="mcard-t">Performance</p><p class="mcard-r">/performance</p></div></div><span class="badge plan">planejado</span></div>
+            <div class="mcard"><div class="mcard-l"><div class="ibox"><svg class="i" width="20" height="20" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg></div><div><p class="mcard-t">Dados API</p><p class="mcard-r">/data-api</p></div></div><span class="badge plan">planejado</span></div>
+            <div class="mcard"><div class="mcard-l"><div class="ibox"><svg class="i" width="20" height="20" viewBox="0 0 24 24"><path d="M4.9 16.1C1 12.2 1 5.8 4.9 1.9"/><path d="M7.8 4.7a6.14 6.14 0 0 0-.8 7.5"/><circle cx="12" cy="9" r="2"/><path d="M16.2 4.8c2 2 2.26 5.11.8 7.47"/><path d="M19.1 1.9a9.96 9.96 0 0 1 0 14.1"/><path d="M9.5 18h5"/><path d="m8 22 4-11 4 11"/></svg></div><div><p class="mcard-t">Tempo Real</p><p class="mcard-r">/realtime</p></div></div><span class="badge plan">planejado</span></div>
+            <div class="mcard"><div class="mcard-l"><div class="ibox"><svg class="i" width="20" height="20" viewBox="0 0 24 24"><path d="m16 16 2 2 4-4"/><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><path d="M3.29 7 12 12l8.71-5"/><path d="M12 22V12"/></svg></div><div><p class="mcard-t">Design System</p><p class="mcard-r">/design-system</p></div></div><span class="badge plan">planejado</span></div>
+            <div class="mcard"><div class="mcard-l"><div class="ibox"><svg class="i" width="20" height="20" viewBox="0 0 24 24"><path d="M21 7 6.82 21.18a2.83 2.83 0 0 1-3.99-.01a2.83 2.83 0 0 1 0-4L17 3"/><path d="m16 2 6 6"/><path d="M12 16H4"/></svg></div><div><p class="mcard-t">Qualidade</p><p class="mcard-r">/quality</p></div></div><span class="badge plan">planejado</span></div>
+            <div class="mcard"><div class="mcard-l"><div class="ibox"><svg class="i" width="20" height="20" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M12 17v4"/><path d="M8 21h8"/><circle cx="12" cy="10" r="2.5"/><path d="M12 6v1.5M12 12.5V14M8 10h1.5M14.5 10H16"/></svg></div><div><p class="mcard-t">Infra</p><p class="mcard-r">/infra</p></div></div><span class="badge plan">planejado</span></div>
+          </div>
+
+          <aside class="aside">
+            <div class="aside-top">
+              <div class="ibox-lg"><svg class="i" width="34" height="34" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div>
+              <div class="open-link">Abrir modulo</div>
+            </div>
+            <h3>MFE Main Docs</h3>
+            <p class="aside-desc">Hub principal com paginas de arquitetura, performance, feed em tempo real e design system.</p>
+            <p class="aside-k">Paginas previstas</p>
+            <div class="pages">
+              <div>Arquitetura</div>
+              <div>Performance</div>
+              <div>Feed em tempo real</div>
+              <div>Design System</div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+    <div class="float"><svg class="i" width="14" height="14" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>Shell pronto para MFEs</div>
+  </section>
+</div>
+
+<!-- ===================================================== -->
+<!-- FRAME 2 — Hoje — Feed                                  -->
+<!-- ===================================================== -->
+<div class="frame-wrap">
+  <p class="frame-label">Hoje — Feed (/feed) · 1440</p>
+  <section class="frame w1440 hoje">
+    <div class="tb">
+      <div class="tb-l">
+        <div class="tb-chip">Fechar</div>
+        <div class="tb-name">React Architecture Lab</div>
+      </div>
+      <div class="tb-r">
+        <div class="tb-btn">Preview</div>
+        <div class="tb-btn pub">Publicar site</div>
+      </div>
+    </div>
+    <div class="voltar">voltar</div>
+    <div class="feed-col">
+      <div class="post">
+        <h3>Claudio</h3>
+        <p>Construindo um feed com React Query e arquitetura limpa.</p>
+        <div class="post-img"></div>
+        <div class="post-act">❤️ 10</div>
+      </div>
+    </div>
+    <div class="float"><svg class="i" width="14" height="14" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>Shell pronto para MFEs</div>
+  </section>
+</div>
+
+<!-- ===================================================== -->
+<!-- FRAME 3 — Proposta — Home v2                           -->
+<!-- ===================================================== -->
+<div class="frame-wrap">
+  <p class="frame-label"><span>Proposta</span> — Home v2 · 1440</p>
+  <section class="frame w1440 v2">
+    <header class="v2-tb">
+      <div class="logo"><div class="logo-mark"><i></i></div>Architecture Lab</div>
+      <nav class="nav">
+        <span class="cur">Módulos</span>
+        <span>Design System</span>
+        <span>Sobre</span>
+      </nav>
+      <div class="nav-r">
+        <span class="btn btn-ghost-d"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>GitHub</span>
+        <span class="btn btn-acc"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Baixar CV</span>
+      </div>
+    </header>
+
+    <div class="v2-hero">
+      <div class="v2-hero-in">
+        <div>
+          <p class="eyebrow">Claudio Alvarenga · Front-end</p>
+          <h1 class="v2-h1">Arquitetura front-end para <em>produtos financeiros</em></h1>
+          <p class="v2-sub">Micro-frontends, dados em tempo real e design system: rodando, não em slides.</p>
+          <div class="v2-ctas">
+            <span class="btn btn-acc btn-lg">Ver demo ao vivo<svg class="i" width="18" height="18" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            <span class="btn btn-out btn-lg"><svg class="i" width="18" height="18" viewBox="0 0 24 24"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>Ler o código</span>
+          </div>
+          <p class="v2-quote">Shell de micro-frontends para uma plataforma de investimentos, do jeito que eu fiz na XP.</p>
+        </div>
+
+        <div class="win">
+          <div class="win-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="win-url">Painel de Investimentos</span></div>
+          <div class="win-body">
+            <div class="slot wide">
+              <div class="slot-h"><span class="slot-t"><svg class="i" width="14" height="14" viewBox="0 0 24 24"><path d="M4.9 16.1C1 12.2 1 5.8 4.9 1.9"/><path d="M7.8 4.7a6.14 6.14 0 0 0-.8 7.5"/><circle cx="12" cy="9" r="2"/><path d="M16.2 4.8c2 2 2.26 5.11.8 7.47"/><path d="M19.1 1.9a9.96 9.96 0 0 1 0 14.1"/><path d="M9.5 18h5"/><path d="m8 22 4-11 4 11"/></svg>Cotações ao vivo</span><span class="slot-tag">módulo</span></div>
+              <svg class="spark" width="456" height="48" viewBox="0 0 456 48" fill="none"><path d="M0 36 L38 30 L76 34 L114 22 L152 26 L190 14 L228 20 L266 10 L304 16 L342 8 L380 18 L418 12 L456 6" stroke="#ff6a2a" stroke-width="2" fill="none"/><path d="M0 36 L38 30 L76 34 L114 22 L152 26 L190 14 L228 20 L266 10 L304 16 L342 8 L380 18 L418 12 L456 6 L456 48 L0 48 Z" fill="rgba(255,106,42,.12)"/></svg>
+            </div>
+            <div class="slot">
+              <div class="slot-h"><span class="slot-t"><svg class="i" width="14" height="14" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>Ordem otimista</span><span class="slot-tag">módulo</span></div>
+              <div class="bar" style="width:80%"></div><div class="bar" style="width:62%"></div><div class="bar" style="width:72%"></div>
+            </div>
+            <div class="slot">
+              <div class="slot-h"><span class="slot-t"><svg class="i" width="14" height="14" viewBox="0 0 24 24"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>Carteira</span><span class="slot-tag">módulo</span></div>
+              <div class="bar" style="width:70%"></div><div class="bar" style="width:84%"></div><div class="bar" style="width:52%"></div>
+            </div>
+            <div class="slot wide">
+              <div class="slot-h"><span class="slot-t"><svg class="i" width="14" height="14" viewBox="0 0 24 24"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg>Extrato virtualizado</span><span class="slot-tag">módulo</span></div>
+              <div class="bar" style="width:100%"></div><div class="bar" style="width:100%"></div>
+            </div>
+            <div class="shell-tag"><span>Shell · React 19 · React Router 7 · React Query</span><span>4 módulos</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Como este shell funciona -->
+    <div class="sec">
+      <div class="sec-h">
+        <div>
+          <p class="sec-k">Arquitetura</p>
+          <h2 class="sec-t">Como este shell funciona</h2>
+        </div>
+        <p class="sec-d">O shell carrega a navegação e os provedores; o core é compartilhado; cada módulo é independente e carregado sob demanda.</p>
+      </div>
+      <div class="diag">
+        <div class="layer shell">
+          <p class="layer-n">1 · Shell</p>
+          <h3>Shell</h3>
+          <p class="layer-d">Monta a página, resolve rotas e isola cada módulo.</p>
+          <div class="chips">
+            <div class="chip"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>TopBar e navegação</div>
+            <div class="chip"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg>Rotas · React Router 7</div>
+            <div class="chip"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>Error boundary por módulo</div>
+            <div class="chip"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/><path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/><path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/><path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/></svg>Carregamento lazy · 404</div>
+          </div>
+        </div>
+        <div class="arrow"><svg class="i" width="32" height="32" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+        <div class="layer">
+          <p class="layer-n">2 · Core</p>
+          <h3>Core</h3>
+          <p class="layer-d">Compartilhado por todos os módulos: contratos, dados e tokens.</p>
+          <div class="chips">
+            <div class="chip"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>React Query · cache</div>
+            <div class="chip"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>Services e adapters</div>
+            <div class="chip"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>Contratos TypeScript</div>
+            <div class="chip"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="m16 16 2 2 4-4"/><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/></svg>Design system · tokens</div>
+          </div>
+        </div>
+        <div class="arrow"><svg class="i" width="32" height="32" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+        <div class="layer">
+          <p class="layer-n">3 · Módulos</p>
+          <h3>Módulos</h3>
+          <p class="layer-d">Cada tela é um módulo com rota própria. Se um quebra, os outros seguem no ar.</p>
+          <div class="mods">
+            <div class="mod">Cotações ao vivo<small>tempo real</small></div>
+            <div class="mod">Ordem otimista<small>atualização otimista</small></div>
+            <div class="mod">Carteira<small>dados em cache</small></div>
+            <div class="mod">Extrato virtualizado<small>lista virtualizada</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Registro de módulos -->
+    <div class="sec reg2">
+      <div class="sec-h">
+        <div>
+          <p class="sec-k">Registro</p>
+          <h2 class="sec-t">Módulos com status real</h2>
+        </div>
+        <div class="reg-sum"><span class="st on">1 no ar</span><span class="st pl">5 planejados</span></div>
+      </div>
+      <div class="tbl">
+        <div class="tr th"><span>Módulo</span><span>Rota</span><span>O que mostra</span><span>Status</span><span>Ação</span></div>
+        <div class="tr">
+          <span class="nm"><span class="ibx"><svg class="i" width="18" height="18" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>Feed</span>
+          <span class="rt">/feed</span>
+          <span class="ds">Curtida com atualização otimista e rollback.</span>
+          <span><span class="st on">No ar</span></span>
+          <span class="act">Abrir módulo<svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        </div>
+        <div class="tr">
+          <span class="nm"><span class="ibx dim"><svg class="i" width="18" height="18" viewBox="0 0 24 24"><path d="M4.9 16.1C1 12.2 1 5.8 4.9 1.9"/><path d="M7.8 4.7a6.14 6.14 0 0 0-.8 7.5"/><circle cx="12" cy="9" r="2"/><path d="M16.2 4.8c2 2 2.26 5.11.8 7.47"/><path d="M19.1 1.9a9.96 9.96 0 0 1 0 14.1"/><path d="M9.5 18h5"/><path d="m8 22 4-11 4 11"/></svg></span>Cotações ao vivo</span>
+          <span class="rt">/cotacoes</span>
+          <span class="ds">Tempo real com atualização parcial de cache.</span>
+          <span><span class="st pl">Planejado</span></span>
+          <span class="act dis">Em breve</span>
+        </div>
+        <div class="tr">
+          <span class="nm"><span class="ibx dim"><svg class="i" width="18" height="18" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></span>Ordem otimista</span>
+          <span class="rt">/ordens</span>
+          <span class="ds">Ordem aparece na hora; se o servidor recusar, volta.</span>
+          <span><span class="st pl">Planejado</span></span>
+          <span class="act dis">Em breve</span>
+        </div>
+        <div class="tr">
+          <span class="nm"><span class="ibx dim"><svg class="i" width="18" height="18" viewBox="0 0 24 24"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></span>Carteira</span>
+          <span class="rt">/carteira</span>
+          <span class="ds">Posições lidas do core, com estados de carregamento e erro.</span>
+          <span><span class="st pl">Planejado</span></span>
+          <span class="act dis">Em breve</span>
+        </div>
+        <div class="tr">
+          <span class="nm"><span class="ibx dim"><svg class="i" width="18" height="18" viewBox="0 0 24 24"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg></span>Extrato virtualizado</span>
+          <span class="rt">/extrato</span>
+          <span class="ds">Lista longa renderizada sob demanda.</span>
+          <span><span class="st pl">Planejado</span></span>
+          <span class="act dis">Em breve</span>
+        </div>
+        <div class="tr">
+          <span class="nm"><span class="ibx dim"><svg class="i" width="18" height="18" viewBox="0 0 24 24"><path d="m16 16 2 2 4-4"/><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15"/><path d="M3.29 7 12 12l8.71-5"/><path d="M12 22V12"/></svg></span>Design System</span>
+          <span class="rt">/design-system</span>
+          <span class="ds">Tokens e componentes usados por todos os módulos.</span>
+          <span><span class="st pl">Planejado</span></span>
+          <span class="act dis">Em breve</span>
+        </div>
+      </div>
+      <p class="note"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>O status vem do registro. Rota sem módulo mostra uma página 404, não um erro.</p>
+    </div>
+
+    <!-- 3 padrões -->
+    <div class="sec">
+      <div class="sec-h">
+        <div>
+          <p class="sec-k">Padrões</p>
+          <h2 class="sec-t">3 padrões que você pode testar</h2>
+        </div>
+        <p class="sec-d">Cada padrão tem uma demo com o botão que provoca o problema e um painel que mostra o que aconteceu.</p>
+      </div>
+      <div class="pats">
+        <div class="pat">
+          <div class="pat-ic"><svg class="i" width="24" height="24" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></div>
+          <h3>Atualização otimista</h3>
+          <p>A tela responde antes do servidor. Se a requisição falhar, o estado anterior volta.</p>
+          <div class="flow"><span class="s">onMutate</span><span class="a">→</span><span class="s">request</span><span class="a">→</span><span class="s">rollback</span></div>
+          <span class="lnk">Simular falha<svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        </div>
+        <div class="pat">
+          <div class="pat-ic"><svg class="i" width="24" height="24" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>
+          <h3>Isolamento de falhas</h3>
+          <p>Módulos lazy com error boundary: se um módulo quebra, o shell e os outros seguem funcionando.</p>
+          <div class="flow"><span class="s">lazy</span><span class="a">→</span><span class="s">error boundary</span><span class="a">→</span><span class="s">fallback</span></div>
+          <span class="lnk">Quebrar módulo<svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        </div>
+        <div class="pat">
+          <div class="pat-ic"><svg class="i" width="24" height="24" viewBox="0 0 24 24"><path d="M4.9 16.1C1 12.2 1 5.8 4.9 1.9"/><path d="M7.8 4.7a6.14 6.14 0 0 0-.8 7.5"/><circle cx="12" cy="9" r="2"/><path d="M16.2 4.8c2 2 2.26 5.11.8 7.47"/><path d="M19.1 1.9a9.96 9.96 0 0 1 0 14.1"/><path d="M9.5 18h5"/><path d="m8 22 4-11 4 11"/></svg></div>
+          <h3>Tempo real</h3>
+          <p>Cotações ao vivo atualizam só o pedaço do cache que mudou, sem recarregar a lista.</p>
+          <div class="flow"><span class="s">evento</span><span class="a">→</span><span class="s">setQueryData</span><span class="a">→</span><span class="s">render parcial</span></div>
+          <span class="lnk">Ver cotações<svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prova de qualidade -->
+    <div class="sec q">
+      <div class="sec-h">
+        <div>
+          <p class="sec-k">Qualidade</p>
+          <h2 class="sec-t">Prova de qualidade</h2>
+        </div>
+        <p class="sec-d">O que um revisor encontra ao abrir o repositório.</p>
+      </div>
+      <div class="qgrid">
+        <div class="qi"><span class="ck"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><div><h4>Versões fixas</h4><p>Dependências com versão definida, nada em latest.</p></div></div>
+        <div class="qi"><span class="ck"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><div><h4>Testes com Vitest</h4><p>Os padrões cobertos por testes, incluindo o rollback.</p></div></div>
+        <div class="qi"><span class="ck"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><div><h4>CI</h4><p>Lint, tipos e testes a cada push.</p></div></div>
+        <div class="qi"><span class="ck"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><div><h4>Deploy na Vercel</h4><p>Demo publicada, aberta para quem quiser testar.</p></div></div>
+        <div class="qi"><span class="ck"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><div><h4>README com GIF</h4><p>Mostra o shell funcionando sem precisar rodar nada.</p></div></div>
+        <div class="qi"><span class="ck"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><div><h4>Acessibilidade básica</h4><p>Fonte carregada de verdade e imagens com texto alternativo.</p></div></div>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <div class="foot-l"><b>Claudio Alvarenga</b><span>Architecture Lab · React 19 · React Router 7 · React Query · TypeScript</span></div>
+      <div class="foot-r">
+        <span><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>GitHub</span>
+        <span><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</span>
+        <span><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Baixar CV</span>
+      </div>
+    </footer>
+  </section>
+</div>
+
+<!-- ===================================================== -->
+<!-- FRAME 4 — Proposta — Módulo Atualização otimista       -->
+<!-- ===================================================== -->
+<div class="frame-wrap">
+  <p class="frame-label"><span>Proposta</span> — Módulo Atualização otimista · 1440</p>
+  <section class="frame w1440 v2">
+    <header class="v2-tb">
+      <div class="logo"><div class="logo-mark"><i></i></div>Architecture Lab</div>
+      <nav class="nav">
+        <span class="cur">Módulos</span>
+        <span>Design System</span>
+        <span>Sobre</span>
+      </nav>
+      <div class="nav-r">
+        <span class="btn btn-ghost-d"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>GitHub</span>
+        <span class="btn btn-acc"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Baixar CV</span>
+      </div>
+    </header>
+
+    <div class="crumb"><span>Módulos</span><svg class="i" width="14" height="14" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg><b>Atualização otimista</b></div>
+    <div class="mh">
+      <div>
+        <h1>Atualização otimista</h1>
+        <p>A ordem aparece na hora, antes da resposta do servidor. Ligue “Simular falha” e veja o rollback acontecer, passo a passo.</p>
+      </div>
+      <div class="ctrls">
+        <span class="btn btn-out"><svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>Ler o código</span>
+      </div>
+    </div>
+
+    <div class="mgrid">
+      <!-- Demo -->
+      <div class="card">
+        <div class="card-h">
+          <div><h3>Ordens</h3><small>Dados simulados</small></div>
+          <div class="ctrls">
+            <span class="tog"><span class="sw"></span>Simular falha</span>
+          </div>
+        </div>
+        <div class="ot th"><span>Ativo</span><span>Lado</span><span>Qtd.</span><span>Preço</span><span>Total</span><span>Status</span></div>
+        <div class="ot ghost">
+          <span class="tk">VALE3<small>Vale ON</small></span>
+          <span class="side c">Compra</span>
+          <span class="n">200</span>
+          <span class="n">R$ 61,40</span>
+          <span class="n">R$ 12.280,00</span>
+          <span><span class="ost undo"><svg class="i" width="12" height="12" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>Desfeita</span></span>
+        </div>
+        <div class="ot">
+          <span class="tk">PETR4<small>Petrobras PN</small></span>
+          <span class="side c">Compra</span>
+          <span class="n">100</span>
+          <span class="n">R$ 38,20</span>
+          <span class="n">R$ 3.820,00</span>
+          <span><span class="ost ok"><svg class="i" width="12" height="12" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Confirmada</span></span>
+        </div>
+        <div class="ot">
+          <span class="tk">ITUB4<small>Itaú Unibanco PN</small></span>
+          <span class="side v">Venda</span>
+          <span class="n">300</span>
+          <span class="n">R$ 33,10</span>
+          <span class="n">R$ 9.930,00</span>
+          <span><span class="ost ok"><svg class="i" width="12" height="12" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Confirmada</span></span>
+        </div>
+        <div class="ot">
+          <span class="tk">BBAS3<small>Banco do Brasil ON</small></span>
+          <span class="side c">Compra</span>
+          <span class="n">50</span>
+          <span class="n">R$ 27,85</span>
+          <span class="n">R$ 1.392,50</span>
+          <span><span class="ost ok"><svg class="i" width="12" height="12" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Confirmada</span></span>
+        </div>
+
+        <div class="toast">
+          <svg class="i" width="18" height="18" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+          <div><b>A ordem de VALE3 não foi enviada.</b>O servidor recusou a requisição (falha simulada). A lista voltou ao estado anterior e nada foi cobrado.</div>
+        </div>
+
+        <div class="newo">
+          <div class="fld"><label>Ativo</label><div class="inp">VALE3<svg class="i" width="16" height="16" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div></div>
+          <div class="fld"><label>Lado</label><div class="seg"><span class="on">Compra</span><span>Venda</span></div></div>
+          <div class="fld"><label>Quantidade</label><div class="inp">200</div></div>
+          <div class="fld"><label>Preço</label><div class="inp">R$ 61,40</div></div>
+          <span class="btn btn-ink btn-lg">Enviar ordem</span>
+        </div>
+      </div>
+
+      <!-- O que aconteceu -->
+      <div class="card what">
+        <div class="card-h">
+          <div><h3>O que aconteceu</h3><small>Última ordem · VALE3</small></div>
+          <span class="ost undo">Rollback</span>
+        </div>
+        <div class="tl">
+          <div class="step">
+            <span class="sn acc">1</span>
+            <div>
+              <div class="sh"><span class="code">onMutate</span><span class="ms">0 ms</span></div>
+              <p class="sd">Cancela consultas em andamento, guarda uma cópia da lista e insere a ordem como “Enviada”. Você vê a ordem na hora.</p>
+              <span class="pill">cancelQueries · getQueryData · setQueryData</span>
+            </div>
+          </div>
+          <div class="step">
+            <span class="sn red">2</span>
+            <div>
+              <div class="sh"><span class="code">request</span><span class="ms">+300 ms</span></div>
+              <p class="sd">A requisição vai para o servidor simulado. Com “Simular falha” ligado, ele responde com erro.</p>
+              <span class="pill red">POST /ordens · falha simulada</span>
+            </div>
+          </div>
+          <div class="step">
+            <span class="sn red">3</span>
+            <div>
+              <div class="sh"><span class="code">rollback</span><span class="ms">+300 ms</span></div>
+              <p class="sd">onError restaura a cópia guardada no passo 1. A ordem sai da lista e o aviso explica o motivo.</p>
+              <span class="pill">onError · setQueryData(cópia)</span>
+            </div>
+          </div>
+          <div class="step">
+            <span class="sn">4</span>
+            <div>
+              <div class="sh"><span class="code">onSettled</span><span class="ms">+310 ms</span></div>
+              <p class="sd">Revalida a lista com o servidor, que agora guarda estado. A ordem confirmada continua confirmada.</p>
+              <span class="pill">invalidateQueries</span>
+            </div>
+          </div>
+        </div>
+        <div class="fix">
+          <b>Por que a curtida do feed voltava sozinha</b>
+          O mock não guardava estado: depois do invalidate, o servidor devolvia o valor antigo e a curtida se desfazia em cerca de 800 ms. Aqui o servidor simulado guarda cada ordem.
+        </div>
+        <div class="legend"><span>● Passo otimista</span><span>● Passo com falha</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================================================== -->
+<!-- FRAME 5 — Roadmap de evolução                          -->
+<!-- ===================================================== -->
+<div class="frame-wrap">
+  <p class="frame-label"><span>Proposta</span> — Roadmap de evolução · 640</p>
+  <section class="frame w640 rm">
+    <h1>RectArchitectureLab — roadmap de evolução</h1>
+    <p class="lead">De catálogo de 10 “MFEs” com 1 rota funcionando para uma demo que prova o que diz.</p>
+
+    <h2>Bugs de hoje</h2>
+    <div class="bugs">
+      <div class="bug"><svg class="i" width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>Curtida otimista se desfaz em ~800 ms (mock sem estado + invalidate)</div>
+      <div class="bug"><svg class="i" width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>“Abrir modulo” de /docs cai em erro</div>
+      <div class="bug"><svg class="i" width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>Feed marcado “planejado”, mas é a única rota que funciona</div>
+      <div class="bug"><svg class="i" width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>TopBar com “Fechar / Preview / Publicar site” sem função</div>
+      <div class="bug"><svg class="i" width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>Inter não carregada; imagens sem alt</div>
+      <div class="bug"><svg class="i" width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>Dependências em latest; sem testes nem deploy</div>
+    </div>
+
+    <h2>Melhorias priorizadas</h2>
+    <p class="rm-sub">Ordenadas por impacto × esforço: primeiro o que muda mais com menos trabalho.</p>
+    <div class="axis"><span>Fazer primeiro</span><i></i><span>Depois</span></div>
+    <div class="imp">
+      <div class="imp-i"><span class="imp-n">1</span><div><p class="imp-t">Corrigir a curtida + painel “O que aconteceu” e “Simular falha”</p><p class="imp-d">O bug vira a vitrine do padrão de atualização otimista.</p></div></div>
+      <div class="imp-i"><span class="imp-n">2</span><div><p class="imp-t">Status honesto + página 404</p><p class="imp-d">Feed como “no ar”, o resto como planejado; rota sem módulo não quebra.</p></div></div>
+      <div class="imp-i"><span class="imp-n">3</span><div><p class="imp-t">TopBar real</p><p class="imp-d">GitHub, LinkedIn e CV no lugar de “Fechar / Preview / Publicar site”.</p></div></div>
+      <div class="imp-i"><span class="imp-n">4</span><div><p class="imp-t">Tokens + /design-system</p><p class="imp-d">Cores e tipografia em tokens, com uma página que os mostra.</p></div></div>
+      <div class="imp-i"><span class="imp-n">5</span><div><p class="imp-t">Módulos lazy com error boundary + “Quebrar módulo”</p><p class="imp-d">Prova de isolamento de falhas, clicável.</p></div></div>
+      <div class="imp-i"><span class="imp-n">6</span><div><p class="imp-t">Estados completos no feed + lista virtualizada</p><p class="imp-d">Carregando, vazio, erro e listas longas.</p></div></div>
+      <div class="imp-i"><span class="imp-n">7</span><div><p class="imp-t">Repositório apresentável</p><p class="imp-d">Versões fixas, Vitest, CI, Vercel e README com GIF.</p></div></div>
+    </div>
+
+    <h2>3 direções</h2>
+    <div class="dirs">
+      <div class="dir">
+        <p class="dir-k">Direção A</p>
+        <h3>Explorador interativo de arquitetura</h3>
+        <p>Navegar pelo shell, core e módulos como um mapa interativo.</p>
+      </div>
+      <div class="dir rec">
+        <div style="display:flex;justify-content:space-between;align-items:center"><p class="dir-k">Direção B</p><span class="rec-tag"><svg class="i" width="12" height="12" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Recomendada</span></div>
+        <h3>Demo fintech “Painel de Investimentos”</h3>
+        <p>Cada parte do painel é um módulo do shell.</p>
+        <div class="rec-mods"><span>Cotações ao vivo</span><span>Ordem otimista</span><span>Carteira</span><span>Extrato virtualizado</span></div>
+        <p class="quote">“Shell de micro-frontends para uma plataforma de investimentos, do jeito que eu fiz na XP.”</p>
+      </div>
+      <div class="dir">
+        <p class="dir-k">Direção C</p>
+        <h3>Vitrine de design system</h3>
+        <p>Tokens e componentes como produto principal do laboratório.</p>
+      </div>
+    </div>
+
+    <div class="rm-foot"><span>Claudio Alvarenga</span><span>13/11/2026</span></div>
+  </section>
+</div>
+
+</div>
+</body>
+</html>

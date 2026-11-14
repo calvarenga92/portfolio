@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Claudio Alvarenga">
+<title>Foody — Rastreador de Pedidos · atual e evolução · Claudio Alvarenga</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Tokens reais: foody-delivery/frontend/src/estilos.css (tema claro) */
+  .frame {
+    --fundo: #f6f7f9;
+    --superficie: #ffffff;
+    --borda: #e2e5ea;
+    --texto: #1b1f24;
+    --texto-apoio: #646d78;
+    --acento: #1f6feb;
+    --acento-texto: #ffffff;
+    --perigo: #c0392b;
+    --raio: 10px;
+    --sombra: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.10);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; }
+  body {
+    background: #2a2a2a;
+    font-family: Roboto, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  .canvas {
+    display: flex;
+    gap: 120px;
+    align-items: flex-start;
+    padding: 120px;
+    width: max-content;
+  }
+
+  .frame-wrap { display: flex; flex-direction: column; gap: 16px; }
+  .frame-label {
+    margin: 0;
+    color: #e8e8e8;
+    font: 600 20px/1.3 Roboto, sans-serif;
+    letter-spacing: 0.01em;
+  }
+  .frame-label span {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    vertical-align: middle;
+  }
+  .tag-hoje { background: #3a3f47; color: #d7dbe0; }
+  .tag-proposta { background: #1f6feb; color: #fff; }
+  .frame-note { margin: -8px 0 0; color: #a7a7a7; font: 400 14px/1.45 Roboto, sans-serif; max-width: 900px; }
+
+  .frame {
+    background: var(--fundo);
+    color: var(--texto);
+    font-family: Roboto, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    flex: none;
+    overflow: hidden;
+  }
+
+  .frame h1 { font-size: 1.35rem; margin: 0; }
+  .frame h2 { font-size: 1.1rem; margin: 0 0 1rem; }
+  .frame h3 { font-size: 1rem; margin: 0; }
+  .frame p { margin: 0; }
+
+  .apoio { color: var(--texto-apoio); font-size: 0.85rem; margin: 0.15rem 0 0; }
+
+  .cartao {
+    background: var(--superficie);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    padding: 1.25rem;
+  }
+
+  .i { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  .i-20 { width: 20px; height: 20px; }
+  .i-24 { width: 24px; height: 24px; }
+
+  /* Botões reais */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    font: inherit; font-weight: 600; font-size: 15px; line-height: 1.5;
+    padding: 0.55rem 0.95rem;
+    border: 1px solid var(--acento);
+    border-radius: 8px;
+    background: var(--acento);
+    color: var(--acento-texto);
+    white-space: nowrap;
+  }
+  .btn.secundario { background: var(--superficie); color: var(--texto); border-color: var(--borda); }
+  .btn.link { background: none; border: none; color: var(--acento); padding: 0; text-decoration: underline; justify-self: start; }
+  .btn.perigo-texto { background: none; border: 1px solid transparent; color: var(--perigo); }
+  .btn:disabled, .btn.desabilitado { opacity: 0.55; }
+  .btn.bloco { width: 100%; }
+  .btn.pequeno { font-size: 14px; padding: 0.4rem 0.75rem; }
+
+  /* Formulários reais */
+  .formulario { display: grid; gap: 1rem; }
+  .campo { display: grid; gap: 0.3rem; }
+  .campo label { font-size: 0.85rem; font-weight: 600; }
+  .input {
+    font: inherit; padding: 0.55rem 0.7rem; min-height: 41px;
+    border: 1px solid var(--borda); border-radius: 8px;
+    background: var(--superficie); color: inherit; width: 100%;
+  }
+  .input.vazio { color: transparent; }
+  .input.invalido { border-color: var(--perigo); box-shadow: 0 0 0 1px var(--perigo) inset; }
+  .input.foco { outline: 2px solid var(--acento); outline-offset: 2px; }
+  .placeholder { color: #9aa1aa; }
+  .itens {
+    border: 1px dashed var(--borda); border-radius: 8px; padding: 0.9rem;
+    display: grid; gap: 0.9rem; margin: 0;
+  }
+  .itens legend { font-size: 0.85rem; font-weight: 600; padding: 0 0.35rem; }
+  .item { display: flex; gap: 0.6rem; align-items: end; }
+  .campo--cresce { flex: 1 1 10rem; }
+  .campo--estreito { flex: 0 0 5.5rem; }
+  .erro { color: var(--perigo); font-size: 0.85rem; margin: 0; min-height: 1.25rem; }
+  .erro-campo { display: flex; align-items: center; gap: 5px; color: var(--perigo); font-size: 0.8rem; }
+
+  /* Pedido real */
+  .pedido { display: grid; gap: 0.9rem; }
+  .pedido__topo { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
+  .pedido__itens {
+    list-style: none; margin: 0; padding: 0.75rem 0;
+    border-top: 1px solid var(--borda); border-bottom: 1px solid var(--borda);
+    display: grid; gap: 0.35rem;
+  }
+  .pedido__itens li { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.9rem; }
+  .pedido__rodape { display: flex; justify-content: space-between; align-items: end; gap: 1rem; }
+  .pedido__acoes { display: flex; gap: 0.5rem; }
+
+  .etiqueta {
+    display: inline-block;
+    font-size: 0.75rem; font-weight: 700; line-height: 1.5;
+    padding: 0.25rem 0.6rem; border-radius: 999px; white-space: nowrap;
+    border: 1px solid transparent;
+  }
+  .etiqueta--recebido { background: #eef2ff; color: #3730a3; }
+  .etiqueta--em_preparo { background: #fff7e6; color: #92400e; }
+  .etiqueta--saiu_para_entrega { background: #e0f2fe; color: #075985; }
+  .etiqueta--entregue { background: #e7f6ec; color: #166534; }
+  .etiqueta--cancelado { background: #fdecea; color: #991b1b; }
+
+  .aviso {
+    background: var(--superficie); border: 1px solid var(--borda);
+    border-left: 3px solid var(--texto-apoio); border-radius: 8px;
+    padding: 0.9rem 1rem; display: grid; gap: 0.5rem; justify-items: start;
+  }
+  .aviso p { margin: 0; color: var(--texto-apoio); font-size: 0.9rem; }
+  .aviso--erro { border-left-color: var(--perigo); }
+  .aviso--erro strong { color: var(--perigo); }
+
+  /* ---------- Hoje ---------- */
+  .pagina { max-width: 1180px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+  .cabecalho { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.75rem; }
+  .colunas { display: grid; gap: 1.5rem; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: start; }
+  .lista { display: grid; gap: 1rem; }
+
+  /* ---------- Proposta: barra superior ---------- */
+  .topo-app {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px; padding: 0 32px;
+    background: var(--superficie); border-bottom: 1px solid var(--borda);
+  }
+  .marca { display: flex; align-items: center; gap: 10px; }
+  .marca-logo {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: linear-gradient(135deg, #1f6feb, #5a9bff);
+    display: grid; place-items: center; color: #fff;
+  }
+  .marca strong { font-size: 16px; }
+  .marca small { display: block; color: var(--texto-apoio); font-size: 12px; line-height: 1.2; }
+  .topo-acoes { display: flex; gap: 10px; align-items: center; }
+  .operador { display: flex; align-items: center; gap: 8px; color: var(--texto-apoio); font-size: 14px; padding-right: 6px; }
+  .avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: #e8eefc; color: #1f4fb0; display: grid; place-items: center;
+    font-size: 12px; font-weight: 700;
+  }
+
+  /* ---------- Kanban ---------- */
+  .quadro-wrap { padding: 24px 32px 40px; }
+  .quadro-titulo { display: flex; justify-content: space-between; align-items: end; margin-bottom: 20px; }
+  .quadro-titulo h1 { font-size: 1.35rem; }
+  .resumo-dia { display: flex; gap: 20px; color: var(--texto-apoio); font-size: 14px; }
+  .resumo-dia b { color: var(--texto); font-weight: 600; }
+  .quadro { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: start; }
+  .coluna {
+    background: #eef0f3; border: 1px solid var(--borda); border-radius: 12px;
+    padding: 12px; display: grid; gap: 10px;
+  }
+  .coluna-cab { display: flex; align-items: center; justify-content: space-between; padding: 2px 4px 4px; }
+  .coluna-cab h3 { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+  .ponto { width: 8px; height: 8px; border-radius: 50%; }
+  .contagem { font-size: 12px; font-weight: 700; color: var(--texto-apoio); background: var(--superficie); border: 1px solid var(--borda); border-radius: 999px; padding: 1px 8px; }
+  .k-card { display: grid; gap: 8px; padding: 14px; }
+  .k-linha { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .k-id { font-weight: 700; font-size: 13px; color: var(--texto-apoio); font-variant-numeric: tabular-nums; }
+  .k-tempo { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--texto-apoio); }
+  .k-tempo.alerta { color: #92400e; }
+  .k-cliente { font-weight: 600; font-size: 15px; }
+  .k-end { display: flex; align-items: center; gap: 5px; color: var(--texto-apoio); font-size: 13px; min-width: 0; }
+  .k-end span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .k-total { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .k-itens { font-size: 13px; color: var(--texto-apoio); }
+  .k-acoes { display: grid; gap: 4px; padding-top: 4px; border-top: 1px solid var(--borda); margin-top: 2px; }
+  .k-acoes .btn { margin-top: 8px; }
+  .k-cancelar { font: inherit; font-size: 13px; font-weight: 600; color: var(--texto-apoio); background: none; border: none; padding: 4px 0; text-align: center; text-decoration: underline; }
+  .k-card.final { opacity: 0.85; }
+  .anotacao {
+    display: flex; gap: 8px; align-items: flex-start;
+    margin-top: 20px; padding: 10px 14px; border-radius: 8px;
+    background: #eaf1fe; color: #1f4fb0; font-size: 13px;
+  }
+
+  /* ---------- Mobile ---------- */
+  .mobile { width: 390px; min-height: 844px; display: flex; flex-direction: column; }
+  .status-bar { height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; font-size: 14px; font-weight: 600; background: var(--superficie); }
+  .status-bar .dots { display: flex; gap: 5px; align-items: center; }
+  .status-bar .dots i { display: block; width: 16px; height: 9px; border-radius: 2px; background: var(--texto); }
+  .m-topo { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px 12px; background: var(--superficie); }
+  .m-topo h1 { font-size: 1.35rem; }
+  .icone-btn { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--borda); background: var(--superficie); display: grid; place-items: center; color: var(--texto); }
+  .chips { display: flex; gap: 8px; padding: 0 16px 12px; background: var(--superficie); border-bottom: 1px solid var(--borda); overflow: hidden; white-space: nowrap; }
+  .chip { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; border: 1px solid var(--borda); background: var(--superficie); font-size: 14px; font-weight: 600; color: var(--texto); }
+  .chip b { font-size: 12px; color: var(--texto-apoio); font-weight: 700; }
+  .chip.ativo { background: var(--texto); border-color: var(--texto); color: #fff; }
+  .chip.ativo b { color: #c9ced6; }
+  .m-lista { flex: 1; padding: 12px 16px 16px; display: grid; gap: 10px; align-content: start; }
+  .m-secao { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--texto-apoio); margin: 4px 2px 0; }
+  .m-card { display: flex; gap: 12px; align-items: center; padding: 14px; }
+  .m-card .corpo { flex: 1; min-width: 0; display: grid; gap: 3px; }
+  .m-card.selecionado { border-color: var(--acento); box-shadow: 0 0 0 1px var(--acento) inset, var(--sombra); }
+  .barra-fixa {
+    background: var(--superficie); border-top: 1px solid var(--borda);
+    padding: 12px 16px 28px; display: grid; gap: 10px;
+    box-shadow: 0 -4px 16px rgba(16, 24, 40, 0.08);
+  }
+  .barra-fixa .contexto { display: flex; justify-content: space-between; font-size: 13px; color: var(--texto-apoio); }
+  .barra-fixa .contexto b { color: var(--texto); }
+  .barra-fixa .btn { min-height: 48px; font-size: 16px; }
+  .home-ind { width: 134px; height: 5px; border-radius: 3px; background: var(--texto); margin: 6px auto 0; }
+
+  /* Detalhe */
+  .d-topo { display: flex; align-items: center; gap: 12px; padding: 8px 16px 12px; background: var(--superficie); border-bottom: 1px solid var(--borda); }
+  .d-topo h1 { font-size: 1.1rem; flex: 1; }
+  .d-corpo { flex: 1; padding: 16px; display: grid; gap: 12px; align-content: start; }
+  .d-bloco h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--texto-apoio); margin-bottom: 10px; }
+  .d-linha { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; }
+  .d-linha + .d-linha { margin-top: 8px; }
+  .timeline { position: relative; display: grid; gap: 16px; padding-left: 4px; }
+  .t-item { display: flex; gap: 12px; position: relative; }
+  .t-marca { width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--acento); background: var(--superficie); margin-top: 3px; flex: none; position: relative; z-index: 1; }
+  .t-marca.cheia { background: var(--acento); }
+  .t-linha { position: absolute; left: 10px; top: 18px; bottom: 30px; width: 2px; background: var(--borda); }
+  .t-item p { font-size: 14px; }
+  .t-item .quando { color: var(--texto-apoio); font-size: 13px; font-variant-numeric: tabular-nums; }
+  .t-nota { font-size: 12px; color: var(--texto-apoio); background: var(--fundo); border-radius: 8px; padding: 8px 10px; margin-top: 4px; }
+
+  /* Passos */
+  .passos-wrap { padding: 24px 32px 40px; }
+  .stepper { display: flex; align-items: center; gap: 12px; margin: 4px 0 24px; }
+  .passo { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: var(--texto-apoio); }
+  .passo .n { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--borda); background: var(--superficie); font-size: 13px; }
+  .passo.feito .n { background: var(--acento); border-color: var(--acento); color: #fff; }
+  .passo.atual { color: var(--texto); }
+  .passo.atual .n { border-color: var(--acento); color: var(--acento); }
+  .stepper .traco { flex: 0 0 60px; height: 2px; background: var(--borda); }
+  .passos-grade { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start; }
+  .passo-titulo { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--texto-apoio); margin-bottom: 10px; }
+  .passo-titulo span { color: var(--acento); }
+  .rodape-passo { display: flex; justify-content: space-between; gap: 10px; padding-top: 4px; }
+  .banner-erro { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 8px; background: #fdecea; color: #991b1b; font-size: 14px; }
+  .banner-erro ul { margin: 4px 0 0; padding-left: 18px; }
+  .revisao-linha { display: flex; justify-content: space-between; font-size: 14px; padding: 4px 0; }
+  .revisao-total { display: flex; justify-content: space-between; font-weight: 700; padding-top: 10px; border-top: 1px solid var(--borda); font-variant-numeric: tabular-nums; }
+  .catalogo-msgs { margin-top: 28px; }
+  .catalogo-msgs table { width: 100%; border-collapse: collapse; font-size: 14px; background: var(--superficie); border: 1px solid var(--borda); border-radius: var(--raio); overflow: hidden; }
+  .catalogo-msgs th, .catalogo-msgs td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--borda); }
+  .catalogo-msgs th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--texto-apoio); background: #fafbfc; }
+  .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 13px; }
+
+  /* Estados */
+  .estados-wrap { padding: 32px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .estado { display: grid; gap: 12px; }
+  .estado-rotulo { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--texto-apoio); }
+  .estado-tela { background: var(--fundo); border: 1px solid var(--borda); border-radius: 12px; min-height: 300px; position: relative; overflow: hidden; }
+  .vazio { display: grid; justify-items: center; text-align: center; gap: 10px; padding: 56px 24px; }
+  .vazio .ic { width: 56px; height: 56px; border-radius: 16px; background: #eaf1fe; color: var(--acento); display: grid; place-items: center; }
+  .vazio .ic.erro { background: #fdecea; color: var(--perigo); }
+  .vazio .ic.neutro { background: #eef0f3; color: var(--texto-apoio); }
+  .vazio p { color: var(--texto-apoio); font-size: 14px; max-width: 340px; }
+  .colunas-fantasma { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 14px 14px 0; }
+  .colunas-fantasma div { font-size: 12px; font-weight: 600; color: var(--texto-apoio); background: #eef0f3; border-radius: 8px; padding: 6px 8px; }
+  .modal-fundo { position: absolute; inset: 0; background: rgba(15, 17, 21, 0.45); display: grid; place-items: center; padding: 24px; }
+  .modal { width: 360px; background: var(--superficie); border-radius: 12px; padding: 22px; display: grid; gap: 10px; box-shadow: 0 12px 32px rgba(16, 24, 40, 0.25); }
+  .modal .cab { display: flex; gap: 10px; align-items: center; color: var(--perigo); }
+  .modal p { color: var(--texto-apoio); font-size: 14px; }
+  .toast {
+    position: absolute; right: 16px; bottom: 16px; width: 360px;
+    background: #1b1f24; color: #e8eaed; border-radius: 10px; padding: 14px 16px;
+    display: flex; gap: 12px; align-items: flex-start;
+    box-shadow: 0 12px 32px rgba(16, 24, 40, 0.3);
+  }
+  .toast .ic { color: #ff6b5e; margin-top: 2px; }
+  .toast strong { display: block; font-size: 14px; }
+  .toast p { color: #b7bec8; font-size: 13px; margin-top: 2px; }
+  .toast .fechar { color: #9aa4b1; }
+  .mini-quadro { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 14px; }
+  .mini-quadro .coluna { padding: 10px; }
+  .k-card.rollback { box-shadow: 0 0 0 2px #ff6b5e inset, var(--sombra); }
+
+  /* Roadmap */
+  .roadmap { padding: 40px; display: grid; gap: 28px; }
+  .roadmap h1 { font-size: 1.6rem; line-height: 1.25; }
+  .roadmap .lead { color: var(--texto-apoio); font-size: 15px; margin-top: 6px; }
+  .rm-secao h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--texto-apoio); margin: 0 0 12px; }
+  .fatos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .fato { background: var(--superficie); border: 1px solid var(--borda); border-radius: var(--raio); padding: 12px 14px; }
+  .fato b { display: block; font-size: 22px; line-height: 1.2; font-variant-numeric: tabular-nums; }
+  .fato span { color: var(--texto-apoio); font-size: 13px; }
+  .div-lista { display: grid; gap: 8px; }
+  .div-item { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; background: #fff7e6; color: #5c2d07; border-radius: 8px; padding: 10px 12px; }
+  .melhorias { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .melhorias li { display: flex; gap: 12px; align-items: center; background: var(--superficie); border: 1px solid var(--borda); border-radius: var(--raio); padding: 10px 14px; font-size: 14px; }
+  .melhorias .num { width: 26px; height: 26px; border-radius: 50%; background: #eaf1fe; color: var(--acento); display: grid; place-items: center; font-size: 13px; font-weight: 700; flex: none; }
+  .direcoes { display: grid; gap: 12px; }
+  .direcao { background: var(--superficie); border: 1px solid var(--borda); border-radius: 12px; overflow: hidden; display: grid; grid-template-columns: 120px 1fr; }
+  .direcao .capa { min-height: 112px; }
+  .direcao .texto { padding: 14px 16px; display: grid; gap: 4px; align-content: start; }
+  .direcao .texto h3 { font-size: 16px; }
+  .direcao .texto p { color: var(--texto-apoio); font-size: 14px; }
+  .direcao .letra { font-size: 12px; font-weight: 700; color: var(--acento); text-transform: uppercase; letter-spacing: 0.06em; }
+  .assinatura { color: var(--texto-apoio); font-size: 13px; border-top: 1px solid var(--borda); padding-top: 14px; }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <!-- ======================= 1. HOJE ======================= -->
+  <div class="frame-wrap">
+    <p class="frame-label">Hoje — Pedidos <span class="tag-hoje">Atual · 1440</span></p>
+    <p class="frame-note">Fiel ao frontend/src atual (estilos.css, PedidosPage, CardPedido, NovoPedidoForm). Tema claro. Ações vêm de transicoesDisponiveis.</p>
+    <section class="frame" style="width:1440px">
+      <div class="pagina">
+        <header class="cabecalho">
+          <h1>Rastreador de Pedidos</h1>
+          <button type="button" class="btn secundario">Sair</button>
+        </header>
+
+        <div class="colunas">
+          <section>
+            <h2>Pedidos</h2>
+            <div class="lista">
+
+              <article class="cartao pedido">
+                <header class="pedido__topo">
+                  <div>
+                    <h3>Mariana Souza</h3>
+                    <p class="apoio">Rua das Acácias, 245, apto 32 — Vila Mariana</p>
+                  </div>
+                  <span class="etiqueta etiqueta--recebido">Recebido</span>
+                </header>
+                <ul class="pedido__itens">
+                  <li><span>2× Pizza margherita</span><span>R$&nbsp;99,80</span></li>
+                  <li><span>1× Refrigerante 2 L</span><span>R$&nbsp;12,00</span></li>
+                </ul>
+                <footer class="pedido__rodape">
+                  <div>
+                    <strong>R$&nbsp;111,80</strong>
+                    <p class="apoio">Pedido #1047 · 13/11/2026, 19:42</p>
+                  </div>
+                  <div class="pedido__acoes">
+                    <button type="button" class="btn">Iniciar preparo</button>
+                    <button type="button" class="btn secundario">Cancelar pedido</button>
+                  </div>
+                </footer>
+              </article>
+
+              <article class="cartao pedido">
+                <header class="pedido__topo">
+                  <div>
+                    <h3>Lucas Ferreira</h3>
+                    <p class="apoio">Av. Paulista, 1500, bloco B — Bela Vista</p>
+                  </div>
+                  <span class="etiqueta etiqueta--em_preparo">Em preparo</span>
+                </header>
+                <ul class="pedido__itens">
+                  <li><span>1× Yakisoba de frango</span><span>R$&nbsp;42,00</span></li>
+                  <li><span>1× Rolinho primavera</span><span>R$&nbsp;14,00</span></li>
+                </ul>
+                <footer class="pedido__rodape">
+                  <div>
+                    <strong>R$&nbsp;56,00</strong>
+                    <p class="apoio">Pedido #1044 · 13/11/2026, 19:31</p>
+                  </div>
+                  <div class="pedido__acoes">
+                    <button type="button" class="btn">Saiu para entrega</button>
+                    <button type="button" class="btn secundario">Cancelar pedido</button>
+                  </div>
+                </footer>
+              </article>
+
+              <article class="cartao pedido">
+                <header class="pedido__topo">
+                  <div>
+                    <h3>Rafael Almeida</h3>
+                    <p class="apoio">Rua Augusta, 980 — Consolação</p>
+                  </div>
+                  <span class="etiqueta etiqueta--saiu_para_entrega">Saiu para entrega</span>
+                </header>
+                <ul class="pedido__itens">
+                  <li><span>2× Poke de salmão</span><span>R$&nbsp;89,80</span></li>
+                </ul>
+                <footer class="pedido__rodape">
+                  <div>
+                    <strong>R$&nbsp;89,80</strong>
+                    <p class="apoio">Pedido #1042 · 13/11/2026, 19:18</p>
+                  </div>
+                  <div class="pedido__acoes">
+                    <button type="button" class="btn">Marcar como entregue</button>
+                    <button type="button" class="btn secundario">Cancelar pedido</button>
+                  </div>
+                </footer>
+              </article>
+
+              <article class="cartao pedido">
+                <header class="pedido__topo">
+                  <div>
+                    <h3>Bruno Oliveira</h3>
+                    <p class="apoio">Rua Harmonia, 77 — Vila Madalena</p>
+                  </div>
+                  <span class="etiqueta etiqueta--entregue">Entregue</span>
+                </header>
+                <ul class="pedido__itens">
+                  <li><span>1× Hambúrguer artesanal</span><span>R$&nbsp;34,90</span></li>
+                  <li><span>1× Batata frita média</span><span>R$&nbsp;18,50</span></li>
+                  <li><span>1× Milk-shake de chocolate</span><span>R$&nbsp;11,30</span></li>
+                </ul>
+                <footer class="pedido__rodape">
+                  <div>
+                    <strong>R$&nbsp;64,70</strong>
+                    <p class="apoio">Pedido #1040 · 13/11/2026, 18:55</p>
+                  </div>
+                </footer>
+              </article>
+
+            </div>
+          </section>
+
+          <aside>
+            <form class="cartao formulario">
+              <h2>Novo pedido</h2>
+              <div class="campo">
+                <label>Cliente</label>
+                <div class="input"></div>
+              </div>
+              <div class="campo">
+                <label>Endereço de entrega</label>
+                <div class="input"></div>
+              </div>
+              <fieldset class="itens">
+                <legend>Itens</legend>
+                <div class="item">
+                  <div class="campo campo--cresce">
+                    <label>Descrição</label>
+                    <div class="input"></div>
+                  </div>
+                  <div class="campo campo--estreito">
+                    <label>Qtd.</label>
+                    <div class="input">1</div>
+                  </div>
+                  <div class="campo campo--estreito">
+                    <label>Preço</label>
+                    <div class="input">0</div>
+                  </div>
+                  <button type="button" class="btn secundario desabilitado">Remover</button>
+                </div>
+                <button type="button" class="btn link">Adicionar item</button>
+              </fieldset>
+              <p class="total">Total: <strong>R$&nbsp;0,00</strong></p>
+              <p class="erro"></p>
+              <button type="submit" class="btn">Criar pedido</button>
+            </form>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ======================= 2. KANBAN ======================= -->
+  <div class="frame-wrap">
+    <p class="frame-label">Proposta — Quadro operacional (kanban) <span class="tag-proposta">Proposta · 1440</span></p>
+    <p class="frame-note">Persona: operador da loja/central. Colunas pelo status; a ação principal de cada card é a próxima transição de transicoesDisponiveis, e "Cancelar pedido" fica como secundário. Finalizados agrupa Entregue e Cancelado.</p>
+    <section class="frame" style="width:1440px">
+      <header class="topo-app">
+        <div class="marca">
+          <div class="marca-logo"><svg class="i i-20" viewBox="0 0 24 24"><path d="M3 11h18"/><path d="M5 11a7 7 0 0 1 14 0"/><path d="M4 15h16"/><path d="M12 4V3"/></svg></div>
+          <div><strong>Foody</strong><small>Rastreador de Pedidos</small></div>
+        </div>
+        <div class="topo-acoes">
+          <div class="operador"><div class="avatar">OP</div>Operador da loja</div>
+          <button class="btn"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg>Novo pedido</button>
+          <button class="btn secundario"><svg class="i" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>Sair</button>
+        </div>
+      </header>
+
+      <div class="quadro-wrap">
+        <div class="quadro-titulo">
+          <div>
+            <h1>Quadro de pedidos</h1>
+            <p class="apoio">Cada card mostra só as ações que a API permite (transicoesDisponiveis).</p>
+          </div>
+          <div class="resumo-dia">
+            <span><b>7</b> em andamento</span>
+            <span><b>3</b> finalizados</span>
+          </div>
+        </div>
+
+        <div class="quadro">
+          <!-- Recebido -->
+          <div class="coluna">
+            <div class="coluna-cab"><h3><i class="ponto" style="background:#3730a3"></i>Recebido</h3><span class="contagem">3</span></div>
+
+            <article class="cartao k-card">
+              <div class="k-linha"><span class="k-id">#1047</span><span class="k-tempo"><svg class="i" viewBox="0 0 24 24" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>há 2 min</span></div>
+              <p class="k-cliente">Mariana Souza</p>
+              <p class="k-end"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Rua das Acácias, 245, apto 32 — Vila Mariana</span></p>
+              <div class="k-linha"><span class="k-itens">2 itens</span><span class="k-total">R$&nbsp;111,80</span></div>
+              <div class="k-acoes">
+                <button class="btn bloco">Iniciar preparo</button>
+                <button class="k-cancelar">Cancelar pedido</button>
+              </div>
+            </article>
+
+            <article class="cartao k-card">
+              <div class="k-linha"><span class="k-id">#1046</span><span class="k-tempo"><svg class="i" viewBox="0 0 24 24" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>há 5 min</span></div>
+              <p class="k-cliente">Pedro Henrique Lima</p>
+              <p class="k-end"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Av. Brasil, 1890, casa 2 — Jardim América</span></p>
+              <div class="k-linha"><span class="k-itens">3 itens</span><span class="k-total">R$&nbsp;71,40</span></div>
+              <div class="k-acoes">
+                <button class="btn bloco">Iniciar preparo</button>
+                <button class="k-cancelar">Cancelar pedido</button>
+              </div>
+            </article>
+
+            <article class="cartao k-card">
+              <div class="k-linha"><span class="k-id">#1045</span><span class="k-tempo alerta"><svg class="i" viewBox="0 0 24 24" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>há 12 min</span></div>
+              <p class="k-cliente">Ana Beatriz Costa</p>
+              <p class="k-end"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Rua Domingos de Morais, 2100 — Vila Mariana</span></p>
+              <div class="k-linha"><span class="k-itens">2 itens</span><span class="k-total">R$&nbsp;27,50</span></div>
+              <div class="k-acoes">
+                <button class="btn bloco">Iniciar preparo</button>
+                <button class="k-cancelar">Cancelar pedido</button>
+              </div>
+            </article>
+          </div>
+
+          <!-- Em preparo -->
+          <div class="coluna">
+            <div class="coluna-cab"><h3><i class="ponto" style="background:#d97706"></i>Em preparo</h3><span class="contagem">2</span></div>
+
+            <article class="cartao k-card">
+              <div class="k-linha"><span class="k-id">#1044</span><span class="k-tempo"><svg class="i" viewBox="0 0 24 24" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>há 9 min</span></div>
+              <p class="k-cliente">Lucas Ferreira</p>
+              <p class="k-end"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Av. Paulista, 1500, bloco B — Bela Vista</span></p>
+              <div class="k-linha"><span class="k-itens">2 itens</span><span class="k-total">R$&nbsp;56,00</span></div>
+              <div class="k-acoes">
+                <button class="btn bloco">Saiu para entrega</button>
+                <button class="k-cancelar">Cancelar pedido</button>
+              </div>
+            </article>
+
+            <article class="cartao k-card">
+              <div class="k-linha"><span class="k-id">#1043</span><span class="k-tempo"><svg class="i" viewBox="0 0 24 24" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>há 14 min</span></div>
+              <p class="k-cliente">Juliana Rocha</p>
+              <p class="k-end"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Rua Cardeal Arcoverde, 1220, apto 81 — Pinheiros</span></p>
+              <div class="k-linha"><span class="k-itens">3 itens</span><span class="k-total">R$&nbsp;123,80</span></div>
+              <div class="k-acoes">
+                <button class="btn bloco">Saiu para entrega</button>
+                <button class="k-cancelar">Cancelar pedido</button>
+              </div>
+            </article>
+          </div>
+
+          <!-- Saiu para entrega -->
+          <div class="coluna">
+            <div class="coluna-cab"><h3><i class="ponto" style="background:#0284c7"></i>Saiu para entrega</h3><span class="contagem">2</span></div>
+
+            <article class="cartao k-card">
+              <div class="k-linha"><span class="k-id">#1042</span><span class="k-tempo"><svg class="i" viewBox="0 0 24 24" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>há 6 min</span></div>
+              <p class="k-cliente">Rafael Almeida</p>
+              <p class="k-end"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Rua Augusta, 980 — Consolação</span></p>
+              <div class="k-linha"><span class="k-itens">2 itens</span><span class="k-total">R$&nbsp;89,80</span></div>
+              <div class="k-acoes">
+                <button class="btn bloco">Marcar como entregue</button>
+                <button class="k-cancelar">Cancelar pedido</button>
+              </div>
+            </article>
+
+            <article class="cartao k-card">
+              <div class="k-linha"><span class="k-id">#1041</span><span class="k-tempo"><svg class="i" viewBox="0 0 24 24" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>há 11 min</span></div>
+              <p class="k-cliente">Camila Martins</p>
+              <p class="k-end"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Alameda Santos, 455, sala 3 — Cerqueira César</span></p>
+              <div class="k-linha"><span class="k-itens">2 itens</span><span class="k-total">R$&nbsp;40,90</span></div>
+              <div class="k-acoes">
+                <button class="btn bloco">Marcar como entregue</button>
+                <button class="k-cancelar">Cancelar pedido</button>
+              </div>
+            </article>
+          </div>
+
+          <!-- Finalizados -->
+          <div class="coluna">
+            <div class="coluna-cab"><h3><i class="ponto" style="background:#646d78"></i>Finalizados</h3><span class="contagem">3</span></div>
+
+            <article class="cartao k-card final">
+              <div class="k-linha"><span class="k-id">#1040</span><span class="etiqueta etiqueta--entregue">Entregue</span></div>
+              <p class="k-cliente">Bruno Oliveira</p>
+              <p class="k-end"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Rua Harmonia, 77 — Vila Madalena</span></p>
+              <div class="k-linha"><span class="k-tempo">atualizado há 4 min</span><span class="k-total">R$&nbsp;64,70</span></div>
+            </article>
+
+            <article class="cartao k-card final">
+              <div class="k-linha"><span class="k-id">#1039</span><span class="etiqueta etiqueta--cancelado">Cancelado</span></div>
+              <p class="k-cliente">Fernanda Ribeiro</p>
+              <p class="k-end"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Rua Teodoro Sampaio, 1020 — Pinheiros</span></p>
+              <div class="k-linha"><span class="k-tempo">atualizado há 18 min</span><span class="k-total">R$&nbsp;38,00</span></div>
+            </article>
+
+            <article class="cartao k-card final">
+              <div class="k-linha"><span class="k-id">#1038</span><span class="etiqueta etiqueta--entregue">Entregue</span></div>
+              <p class="k-cliente">Gustavo Pereira</p>
+              <p class="k-end"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Rua Oscar Freire, 300, apto 12 — Jardins</span></p>
+              <div class="k-linha"><span class="k-tempo">atualizado há 32 min</span><span class="k-total">R$&nbsp;92,40</span></div>
+            </article>
+          </div>
+        </div>
+
+        <div class="anotacao">
+          <svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <span>Máquina de estados real: Recebido → Em preparo → Saiu para entrega → Entregue; Cancelado a partir de qualquer status não final. Troca otimista com rollback, como já existe hoje.</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ======================= 3. FILA MOBILE ======================= -->
+  <div class="frame-wrap">
+    <p class="frame-label">Proposta — Fila mobile <span class="tag-proposta">Proposta · 390</span></p>
+    <p class="frame-note" style="max-width:390px">Chips de status filtram a fila; a barra fixa traz a próxima ação do pedido selecionado.</p>
+    <section class="frame mobile">
+      <div class="status-bar"><span>19:44</span><span class="dots"><i style="width:18px"></i><i style="width:22px;border-radius:3px"></i></span></div>
+      <div class="m-topo">
+        <h1>Pedidos</h1>
+        <div style="display:flex;gap:8px">
+          <div class="icone-btn" style="background:var(--acento);border-color:var(--acento);color:#fff"><svg class="i i-20" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg></div>
+          <div class="icone-btn"><svg class="i i-20" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg></div>
+        </div>
+      </div>
+      <div class="chips">
+        <span class="chip ativo">Recebido <b>3</b></span>
+        <span class="chip">Em preparo <b>2</b></span>
+        <span class="chip">Saiu para entrega <b>2</b></span>
+        <span class="chip">Finalizados <b>3</b></span>
+      </div>
+
+      <div class="m-lista">
+        <p class="m-secao">Recebido · 3 pedidos</p>
+
+        <article class="cartao m-card selecionado">
+          <div class="corpo">
+            <div class="k-linha"><span class="k-id">#1045</span><span class="k-tempo alerta"><svg class="i" viewBox="0 0 24 24" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>há 12 min</span></div>
+            <p class="k-cliente">Ana Beatriz Costa</p>
+            <p class="k-end"><span>Rua Domingos de Morais, 2100 — Vila Mariana</span></p>
+            <div class="k-linha"><span class="k-itens">2 itens</span><span class="k-total">R$&nbsp;27,50</span></div>
+          </div>
+          <svg class="i i-20" viewBox="0 0 24 24" style="color:var(--texto-apoio)"><path d="m9 18 6-6-6-6"/></svg>
+        </article>
+
+        <article class="cartao m-card">
+          <div class="corpo">
+            <div class="k-linha"><span class="k-id">#1046</span><span class="k-tempo"><svg class="i" viewBox="0 0 24 24" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>há 5 min</span></div>
+            <p class="k-cliente">Pedro Henrique Lima</p>
+            <p class="k-end"><span>Av. Brasil, 1890, casa 2 — Jardim América</span></p>
+            <div class="k-linha"><span class="k-itens">3 itens</span><span class="k-total">R$&nbsp;71,40</span></div>
+          </div>
+          <svg class="i i-20" viewBox="0 0 24 24" style="color:var(--texto-apoio)"><path d="m9 18 6-6-6-6"/></svg>
+        </article>
+
+        <article class="cartao m-card">
+          <div class="corpo">
+            <div class="k-linha"><span class="k-id">#1047</span><span class="k-tempo"><svg class="i" viewBox="0 0 24 24" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>há 2 min</span></div>
+            <p class="k-cliente">Mariana Souza</p>
+            <p class="k-end"><span>Rua das Acácias, 245, apto 32 — Vila Mariana</span></p>
+            <div class="k-linha"><span class="k-itens">2 itens</span><span class="k-total">R$&nbsp;111,80</span></div>
+          </div>
+          <svg class="i i-20" viewBox="0 0 24 24" style="color:var(--texto-apoio)"><path d="m9 18 6-6-6-6"/></svg>
+        </article>
+      </div>
+
+      <div class="barra-fixa">
+        <div class="contexto"><span>Próxima ação · <b>#1045 Ana Beatriz Costa</b></span><span>R$&nbsp;27,50</span></div>
+        <button class="btn bloco">Iniciar preparo</button>
+        <button class="k-cancelar">Cancelar pedido</button>
+        <div class="home-ind"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ======================= 4. DETALHE ======================= -->
+  <div class="frame-wrap">
+    <p class="frame-label">Proposta — Detalhe do pedido <span class="tag-proposta">Proposta · 390</span></p>
+    <p class="frame-note" style="max-width:390px">Timeline só com os dados reais da API: criadoEm e atualizadoEm.</p>
+    <section class="frame mobile">
+      <div class="status-bar"><span>19:45</span><span class="dots"><i style="width:18px"></i><i style="width:22px;border-radius:3px"></i></span></div>
+      <div class="d-topo">
+        <div class="icone-btn"><svg class="i i-20" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg></div>
+        <h1>Pedido #1043</h1>
+        <span class="etiqueta etiqueta--em_preparo">Em preparo</span>
+      </div>
+
+      <div class="d-corpo">
+        <div class="cartao d-bloco">
+          <h3>Entrega</h3>
+          <div class="d-linha"><svg class="i" viewBox="0 0 24 24" style="color:var(--texto-apoio);margin-top:3px"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><b>Juliana Rocha</b></div>
+          <div class="d-linha"><svg class="i" viewBox="0 0 24 24" style="color:var(--texto-apoio);margin-top:3px"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Rua Cardeal Arcoverde, 1220, apto 81 — Pinheiros</span></div>
+        </div>
+
+        <div class="cartao d-bloco">
+          <h3>Itens</h3>
+          <ul class="pedido__itens" style="border-top:none;padding-top:0">
+            <li><span>1× Pizza calabresa</span><span>R$&nbsp;52,90</span></li>
+            <li><span>1× Pizza quatro queijos</span><span>R$&nbsp;58,90</span></li>
+            <li><span>1× Refrigerante 2 L</span><span>R$&nbsp;12,00</span></li>
+          </ul>
+          <div class="k-linha" style="padding-top:10px"><b>Total</b><b class="k-total">R$&nbsp;123,80</b></div>
+        </div>
+
+        <div class="cartao d-bloco">
+          <h3>Linha do tempo</h3>
+          <div class="timeline">
+            <div class="t-linha"></div>
+            <div class="t-item">
+              <span class="t-marca"></span>
+              <div><p><b>Pedido criado</b></p><p class="quando">13/11/2026, 19:31</p></div>
+            </div>
+            <div class="t-item">
+              <span class="t-marca cheia"></span>
+              <div><p><b>Última atualização</b> · Em preparo</p><p class="quando">13/11/2026, 19:38</p></div>
+            </div>
+          </div>
+          <p class="t-nota">A API guarda só criadoEm e atualizadoEm. O histórico de cada status entra com a melhoria 8 do roadmap.</p>
+        </div>
+      </div>
+
+      <div class="barra-fixa">
+        <button class="btn bloco">Saiu para entrega</button>
+        <button class="k-cancelar">Cancelar pedido</button>
+        <div class="home-ind"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ======================= 5. NOVO PEDIDO EM 3 PASSOS ======================= -->
+  <div class="frame-wrap">
+    <p class="frame-label">Proposta — Novo pedido em 3 passos <span class="tag-proposta">Proposta · 1440</span></p>
+    <p class="frame-note">Os três passos lado a lado. As mensagens de erro são as reais da API (CriarPedidoRequest / ItemPedidoRequest), que chegam em detalhes com o código DADOS_INVALIDOS.</p>
+    <section class="frame" style="width:1440px">
+      <header class="topo-app">
+        <div class="marca">
+          <div class="marca-logo"><svg class="i i-20" viewBox="0 0 24 24"><path d="M3 11h18"/><path d="M5 11a7 7 0 0 1 14 0"/><path d="M4 15h16"/><path d="M12 4V3"/></svg></div>
+          <div><strong>Foody</strong><small>Rastreador de Pedidos</small></div>
+        </div>
+        <div class="topo-acoes">
+          <button class="btn secundario"><svg class="i" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>Fechar</button>
+        </div>
+      </header>
+
+      <div class="passos-wrap">
+        <h1 style="font-size:1.35rem">Novo pedido</h1>
+        <div class="stepper">
+          <div class="passo feito"><span class="n"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px;stroke-width:2.5"><path d="M20 6 9 17l-5-5"/></svg></span>Cliente e entrega</div>
+          <span class="traco"></span>
+          <div class="passo atual"><span class="n">2</span>Itens</div>
+          <span class="traco"></span>
+          <div class="passo"><span class="n">3</span>Revisão</div>
+        </div>
+
+        <div class="passos-grade">
+          <!-- Passo 1 -->
+          <div>
+            <p class="passo-titulo"><span>Passo 1</span> · com erro</p>
+            <div class="cartao formulario">
+              <h2 style="margin:0">Cliente e entrega</h2>
+              <div class="campo">
+                <label>Cliente</label>
+                <div class="input invalido"></div>
+                <span class="erro-campo"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>Cliente é obrigatório</span>
+              </div>
+              <div class="campo">
+                <label>Endereço de entrega</label>
+                <div class="input invalido"></div>
+                <span class="erro-campo"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>Endereço de entrega é obrigatório</span>
+              </div>
+              <div class="rodape-passo">
+                <span></span>
+                <button class="btn">Continuar</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Passo 2 -->
+          <div>
+            <p class="passo-titulo"><span>Passo 2</span> · com erro</p>
+            <div class="cartao formulario">
+              <h2 style="margin:0">Itens</h2>
+              <div class="banner-erro">
+                <svg class="i" viewBox="0 0 24 24" style="margin-top:2px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                <div><b>Verifique os campos informados</b></div>
+              </div>
+              <fieldset class="itens">
+                <legend>Item 1</legend>
+                <div class="campo">
+                  <label>Descrição</label>
+                  <div class="input">Pizza calabresa</div>
+                </div>
+                <div class="item">
+                  <div class="campo" style="flex:1">
+                    <label>Qtd.</label>
+                    <div class="input">1</div>
+                  </div>
+                  <div class="campo" style="flex:1">
+                    <label>Preço</label>
+                    <div class="input">R$&nbsp;52,90</div>
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset class="itens">
+                <legend>Item 2</legend>
+                <div class="campo">
+                  <label>Descrição</label>
+                  <div class="input invalido"></div>
+                  <span class="erro-campo"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>Descrição do item é obrigatória</span>
+                </div>
+                <div class="item" style="align-items:start">
+                  <div class="campo" style="flex:1">
+                    <label>Qtd.</label>
+                    <div class="input invalido">0</div>
+                    <span class="erro-campo">Quantidade deve ser maior que zero</span>
+                  </div>
+                  <div class="campo" style="flex:1">
+                    <label>Preço</label>
+                    <div class="input invalido">R$&nbsp;0,00</div>
+                    <span class="erro-campo">Preço unitário deve ser maior que zero</span>
+                  </div>
+                </div>
+                <button class="btn link" style="color:var(--perigo)">Remover item</button>
+              </fieldset>
+              <button class="btn link">Adicionar item</button>
+              <div class="rodape-passo">
+                <button class="btn secundario">Voltar</button>
+                <button class="btn">Continuar</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Passo 3 -->
+          <div>
+            <p class="passo-titulo"><span>Passo 3</span> · pronto para criar</p>
+            <div class="cartao formulario">
+              <h2 style="margin:0">Revisão</h2>
+              <div>
+                <p class="apoio" style="margin:0">Cliente</p>
+                <p><b>Juliana Rocha</b></p>
+                <p class="apoio" style="margin-top:8px">Endereço de entrega</p>
+                <p style="font-size:14px">Rua Cardeal Arcoverde, 1220, apto 81 — Pinheiros</p>
+              </div>
+              <div>
+                <div class="revisao-linha"><span>1× Pizza calabresa</span><span>R$&nbsp;52,90</span></div>
+                <div class="revisao-linha"><span>1× Pizza quatro queijos</span><span>R$&nbsp;58,90</span></div>
+                <div class="revisao-linha"><span>1× Refrigerante 2 L</span><span>R$&nbsp;12,00</span></div>
+                <div class="revisao-total" style="margin-top:6px"><span>Total</span><span>R$&nbsp;123,80</span></div>
+              </div>
+              <p class="apoio" style="margin:0">O pedido entra em Recebido.</p>
+              <div class="rodape-passo">
+                <button class="btn secundario">Voltar</button>
+                <button class="btn">Criar pedido</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="catalogo-msgs">
+          <p class="passo-titulo">Mensagens de validação da API · código DADOS_INVALIDOS (400)</p>
+          <table>
+            <thead><tr><th>Campo</th><th>Regra</th><th>Mensagem exibida</th><th>Passo</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">cliente</td><td class="mono">@NotBlank</td><td>Cliente é obrigatório</td><td>1</td></tr>
+              <tr><td class="mono">enderecoEntrega</td><td class="mono">@NotBlank</td><td>Endereço de entrega é obrigatório</td><td>1</td></tr>
+              <tr><td class="mono">itens</td><td class="mono">@NotEmpty</td><td>Pedido deve ter pelo menos um item</td><td>2</td></tr>
+              <tr><td class="mono">itens[].descricao</td><td class="mono">@NotBlank</td><td>Descrição do item é obrigatória</td><td>2</td></tr>
+              <tr><td class="mono">itens[].quantidade</td><td class="mono">@Positive</td><td>Quantidade deve ser maior que zero</td><td>2</td></tr>
+              <tr><td class="mono">itens[].precoUnitario</td><td class="mono">@NotNull · @DecimalMin 0.01</td><td>Preço unitário é obrigatório · Preço unitário deve ser maior que zero</td><td>2</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ======================= 6. ESTADOS ======================= -->
+  <div class="frame-wrap">
+    <p class="frame-label">Proposta — Estados <span class="tag-proposta">Proposta · 1440</span></p>
+    <p class="frame-note">Textos de PedidosPage e de api/mensagens.ts. Sessão expirada vem de 401; transição inválida vem de 409 TRANSICAO_INVALIDA, com rollback da troca otimista.</p>
+    <section class="frame" style="width:1440px">
+      <div class="estados-wrap">
+
+        <div class="estado">
+          <p class="estado-rotulo">Vazio</p>
+          <div class="estado-tela">
+            <div class="colunas-fantasma"><div>Recebido · 0</div><div>Em preparo · 0</div><div>Saiu para entrega · 0</div><div>Finalizados · 0</div></div>
+            <div class="vazio">
+              <div class="ic"><svg class="i i-24" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div>
+              <h3 style="font-size:1.1rem">Nenhum pedido ainda</h3>
+              <p>Crie o primeiro pedido para ele aparecer em Recebido.</p>
+              <button class="btn"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg>Novo pedido</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="estado">
+          <p class="estado-rotulo">Sem conexão</p>
+          <div class="estado-tela">
+            <div class="vazio" style="padding-top:72px">
+              <div class="ic erro"><svg class="i i-24" viewBox="0 0 24 24"><path d="M12 20h.01"/><path d="M8.5 16.43a5 5 0 0 1 7 0"/><path d="M2 8.82a15 15 0 0 1 4.17-2.65"/><path d="M10.66 5c4.01-.36 8.14.9 11.34 3.76"/><path d="M16.85 11.25a10 10 0 0 1 2.22 1.68"/><path d="M5 13a10 10 0 0 1 5.24-2.76"/><path d="m2 2 20 20"/></svg></div>
+              <h3 style="font-size:1.1rem">Não foi possível carregar</h3>
+              <p>Não foi possível falar com o servidor. Confira se a API está no ar.</p>
+              <button class="btn">Tentar de novo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="estado">
+          <p class="estado-rotulo">Sessão expirada</p>
+          <div class="estado-tela">
+            <div class="colunas-fantasma"><div>Recebido · 3</div><div>Em preparo · 2</div><div>Saiu para entrega · 2</div><div>Finalizados · 3</div></div>
+            <div class="modal-fundo">
+              <div class="modal">
+                <div class="cab"><svg class="i i-20" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><strong>Sua sessão expirou</strong></div>
+                <p>Entre novamente para continuar.</p>
+                <button class="btn bloco">Voltar ao login</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="estado">
+          <p class="estado-rotulo">Toast de transição inválida</p>
+          <div class="estado-tela">
+            <div class="mini-quadro">
+              <div class="coluna">
+                <div class="coluna-cab"><h3><i class="ponto" style="background:#d97706"></i>Em preparo</h3><span class="contagem">1</span></div>
+                <article class="cartao k-card rollback">
+                  <div class="k-linha"><span class="k-id">#1044</span><span class="k-tempo"><svg class="i" viewBox="0 0 24 24" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>há 9 min</span></div>
+                  <p class="k-cliente">Lucas Ferreira</p>
+                  <div class="k-linha"><span class="k-itens">2 itens</span><span class="k-total">R$&nbsp;56,00</span></div>
+                </article>
+              </div>
+              <div class="coluna">
+                <div class="coluna-cab"><h3><i class="ponto" style="background:#0284c7"></i>Saiu para entrega</h3><span class="contagem">0</span></div>
+              </div>
+            </div>
+            <div class="toast">
+              <svg class="i i-20 ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+              <div style="flex:1">
+                <strong>Não foi possível atualizar</strong>
+                <p>Esse pedido não pode ir para esse status.</p>
+              </div>
+              <svg class="i fechar" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- ======================= 7. ROADMAP ======================= -->
+  <div class="frame-wrap">
+    <p class="frame-label">Roadmap de evolução <span class="tag-proposta">Proposta · 640</span></p>
+    <section class="frame" style="width:640px">
+      <div class="roadmap">
+        <div>
+          <h1>Foody — do rastreador ao produto</h1>
+          <p class="lead">Java 21 + Spring Boot 3 + SQLite + JWT no backend; React 19 sem router no front. Persona real hoje: só o operador da loja/central.</p>
+        </div>
+
+        <div class="rm-secao">
+          <h2>Fatos</h2>
+          <div class="fatos">
+            <div class="fato"><b>25</b><span>testes no backend (README diz 24)</span></div>
+            <div class="fato"><b>5</b><span>status na máquina de estados</span></div>
+            <div class="fato"><b>{codigo, mensagem, momento, detalhes}</b><span>contrato de erro</span></div>
+          </div>
+        </div>
+
+        <div class="rm-secao">
+          <h2>Divergências a corrigir</h2>
+          <div class="div-lista">
+            <div class="div-item"><svg class="i" viewBox="0 0 24 24" style="margin-top:2px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>README cita saveAndFlush, que não existe no código.</div>
+            <div class="div-item"><svg class="i" viewBox="0 0 24 24" style="margin-top:2px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>25 testes no código, 24 no README.</div>
+            <div class="div-item"><svg class="i" viewBox="0 0 24 24" style="margin-top:2px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>JSON malformado e status inexistente caem em 500.</div>
+          </div>
+        </div>
+
+        <div class="rm-secao">
+          <h2>Melhorias</h2>
+          <ol class="melhorias">
+            <li><span class="num">1</span>Corrigir o README</li>
+            <li><span class="num">2</span>Handler 400 para JSON malformado + acentos nos 401/403</li>
+            <li><span class="num">3</span>Screenshots + demo publicada</li>
+            <li><span class="num">4</span>Testes de front</li>
+            <li><span class="num">5</span>Logout automático em 401</li>
+            <li><span class="num">6</span>Paginação e filtro</li>
+            <li><span class="num">7</span>Docker Compose + Flyway</li>
+            <li><span class="num">8</span>Histórico de status</li>
+          </ol>
+        </div>
+
+        <div class="rm-secao">
+          <h2>3 direções</h2>
+          <div class="direcoes">
+            <div class="direcao">
+              <div class="capa" style="background:linear-gradient(135deg,#1f6feb 0%,#5a9bff 60%,#a5c8ff 100%)"></div>
+              <div class="texto">
+                <span class="letra">Direção A</span>
+                <h3>Painel de cozinha em tempo real</h3>
+                <p>SSE/WebSocket + design system.</p>
+              </div>
+            </div>
+            <div class="direcao">
+              <div class="capa" style="background:linear-gradient(135deg,#92400e 0%,#d97706 55%,#fcd34d 100%)"></div>
+              <div class="texto">
+                <span class="letra">Direção B</span>
+                <h3>Do pedido à porta</h3>
+                <p>Papéis cliente, loja e entregador — product design.</p>
+              </div>
+            </div>
+            <div class="direcao">
+              <div class="capa" style="background:linear-gradient(135deg,#166534 0%,#22a35a 55%,#a6e4b9 100%)"></div>
+              <div class="texto">
+                <span class="letra">Direção C</span>
+                <h3>Contrato de erro como produto</h3>
+                <p>OpenAPI + tipos TS + catálogo de estados por código.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="assinatura">Claudio Alvarenga · 13/11/2026</p>
+      </div>
+    </section>
+  </div>
+
+</div>
+</body>
+</html>

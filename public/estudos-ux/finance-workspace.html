@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Finance Workspace — telas, estados e achados · Claudio Alvarenga</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: #2a2a2a;
+    font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .canvas {
+    display: flex;
+    gap: 120px;
+    align-items: flex-start;
+    padding: 120px;
+    width: max-content;
+  }
+  .frame-wrap { display: flex; flex-direction: column; gap: 16px; flex: none; }
+  .frame-label {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #f5f5f5;
+    letter-spacing: 0;
+  }
+  .frame-label .tag {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    vertical-align: 3px;
+  }
+  .tag--hoje { background: #3f3f46; color: #e4e4e7; }
+  .tag--proposta { background: #a21caf; color: #fdf4ff; }
+
+  /* ===== Tokens do shell (finance-workspace-shell/src/styles.css) ===== */
+  .frame {
+    flex: none;
+    color: #e2e8f0;
+    background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .w1440 { width: 1440px; min-height: 900px; }
+  .w390 { width: 390px; }
+  .w520 { width: 520px; }
+
+  .app-shell { padding: 24px; }
+  .w390 .app-shell { padding: 16px; }
+
+  .panel {
+    border: 1px solid #1f2a3d; /* rgba(148,163,184,.16) sobre o fundo */
+    background: #0f172a;
+    border-radius: 20px;
+    box-shadow: 0 16px 34px rgba(2, 6, 23, 0.3);
+  }
+
+  .shell-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .w390 .shell-header { flex-direction: column; padding: 20px; }
+  .eyebrow {
+    margin: 0 0 8px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #38bdf8;
+    font-weight: 500;
+  }
+  .shell-header h1 { margin: 0; font-size: 32px; line-height: 1.2; font-weight: 700; color: #e2e8f0; }
+  .w390 .shell-header h1 { font-size: 24px; }
+  .shell-header__copy { margin: 10px 0 0; color: #cbd5e1; max-width: 740px; }
+  .w390 .shell-header__copy { font-size: 14px; }
+  .shell-header__meta {
+    display: flex; flex-direction: column; gap: 8px;
+    color: #7dd3fc; white-space: nowrap;
+  }
+  .w390 .shell-header__meta { flex-direction: row; gap: 16px; font-size: 14px; }
+
+  .workspace-layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 16px; align-items: start; }
+  .w390 .workspace-layout { grid-template-columns: 1fr; }
+
+  .side-nav { padding: 16px; }
+  .side-nav__title {
+    margin: 0 0 16px; color: #94a3b8; text-transform: uppercase;
+    font-size: 13px; letter-spacing: 0.08em; font-weight: 500;
+  }
+  .side-nav ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .side-nav li { padding: 13px 15px; border-radius: 14px; color: #cbd5e1; }
+  .side-nav li.active { background: #0f2a3d; color: #e0f2fe; } /* rgba(56,189,248,.10) achatado */
+
+  .workspace-content { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .overview { display: flex; flex-wrap: wrap; gap: 12px; padding: 16px; }
+  .pill {
+    display: inline-flex; align-items: center;
+    padding: 7px 13px; border-radius: 999px;
+    background: #0f2c42; /* rgba(56,189,248,.12) achatado */
+    color: #7dd3fc; font-size: 15px;
+  }
+  .w390 .pill { font-size: 14px; }
+
+  .state-card { padding: 24px; }
+  .state-card h2 { margin: 0 0 8px; font-size: 24px; font-weight: 700; color: #e2e8f0; }
+  .state-card p { margin: 0; color: #e2e8f0; }
+  .state-card code { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; color: #7dd3fc; font-size: 15px; }
+
+  /* ===== Limite do MFE remoto ===== */
+  .remote-boundary {
+    position: relative;
+    border: 2px dashed #e879f9;
+    border-radius: 26px;
+    padding: 28px 10px 10px;
+  }
+  .remote-tag {
+    position: absolute; top: -13px; left: 20px;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 10px; border-radius: 6px;
+    background: #e879f9; color: #2e0533;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.02em;
+    font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  }
+
+  /* ===== Tokens do MFE (finance-workspace-portfolio-mfe/src/styles.css) ===== */
+  .portfolio-page { display: flex; flex-direction: column; gap: 20px; color: #e5eef8; }
+  .card {
+    background: #0f172a;
+    border: 1px solid #222d40; /* rgba(148,163,184,.18) */
+    border-radius: 18px;
+    box-shadow: 0 14px 30px rgba(2, 6, 23, 0.25);
+  }
+  .hero { display: flex; justify-content: space-between; gap: 16px; padding: 24px; }
+  .w390 .hero { flex-direction: column; padding: 20px; }
+  .hero h2 { margin: 0; font-size: 28px; line-height: 1.25; font-weight: 700; color: #e5eef8; }
+  .w390 .hero h2 { font-size: 22px; }
+  .hero-copy { margin: 12px 0 0; max-width: 680px; color: #cbd5e1; line-height: 1.6; }
+  .w390 .hero-copy { font-size: 14px; }
+  .hero-badge {
+    align-self: flex-start; white-space: nowrap;
+    padding: 10px 14px; border-radius: 999px;
+    background: #0f2639; /* rgba(56,189,248,.10) */
+    border: 1px solid #1c4a66; /* rgba(56,189,248,.25) */
+    color: #7dd3fc; font-size: 15px;
+  }
+  .w390 .hero-badge { font-size: 14px; padding: 8px 12px; }
+
+  .summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .w390 .summary-grid { grid-template-columns: 1fr; gap: 12px; }
+  .summary-card { padding: 18px 19px; display: flex; flex-direction: column; gap: 6px; }
+  .summary-card__label, .summary-card__helper { color: #cbd5e1; }
+  .summary-card__label { font-size: 16px; }
+  .summary-card__value { font-size: 24px; font-weight: 700; color: #e5eef8; line-height: 1.3; }
+  .summary-card__helper { font-size: 13px; }
+
+  .filters { padding: 16px; }
+  .filters-row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr); gap: 16px; }
+  .w390 .filters-row { grid-template-columns: 1fr; }
+  .field { display: flex; flex-direction: column; gap: 8px; font-size: 15px; color: #cbd5e1; }
+  .input {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; height: 48px;
+    border-radius: 12px; border: 1px solid #263246;
+    background: #0c1322; color: #f8fafc;
+    padding: 0 16px; font-size: 15px;
+  }
+  .input .ph { color: #64748b; }
+  .input svg { flex: none; }
+
+  .table-card { padding: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 16px; }
+  th, td { text-align: left; padding: 15px 12px; border-bottom: 1px solid #1a2436; }
+  th { color: #94a3b8; font-weight: 600; }
+  td { color: #e5eef8; }
+  .empty-state { text-align: center; color: #94a3b8; }
+
+  .status-chip { display: inline-flex; padding: 5px 10px; border-radius: 999px; font-size: 14px; line-height: 1.3; white-space: nowrap; }
+  .status-chip--ativo { background: #0f2a26; color: #86efac; }          /* rgba(34,197,94,.12) */
+  .status-chip--observacao { background: #272a22; color: #fde68a; }     /* rgba(250,204,21,.12) */
+  .status-chip--rebalanceando { background: #1b1f45; color: #c7d2fe; }  /* rgba(99,102,241,.15) */
+
+  .positive { color: #86efac; }
+  .negative { color: #fca5a5; }
+  .neutral { color: #e2e8f0; }
+
+  /* ===== Propostas ===== */
+  .proposal-empty { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 40px 24px; text-align: center; }
+  .icon-circle {
+    width: 48px; height: 48px; border-radius: 999px;
+    display: flex; align-items: center; justify-content: center;
+    background: #16213a; color: #94a3b8;
+  }
+  .proposal-empty h3 { margin: 0; font-size: 18px; font-weight: 600; color: #e5eef8; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 40px; padding: 0 16px; border-radius: 12px;
+    border: 1px solid #1c4a66; background: #0f2639; color: #7dd3fc;
+    font-size: 15px; font-weight: 600;
+  }
+  .fallback-pt { display: flex; gap: 16px; align-items: flex-start; padding: 24px; }
+  .fallback-pt .icon-circle { background: #2a1d10; color: #fbbf24; flex: none; }
+  .fallback-pt h2 { margin: 0 0 6px; font-size: 22px; font-weight: 700; color: #e2e8f0; }
+  .fallback-pt p { margin: 0; color: #cbd5e1; max-width: 720px; }
+
+  .asset-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .asset-card { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .asset-card__top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .asset-card__symbol { margin: 0; font-size: 17px; font-weight: 700; color: #e5eef8; }
+  .asset-card__name { margin: 2px 0 0; font-size: 14px; color: #cbd5e1; }
+  .asset-card__meta { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding-top: 12px; border-top: 1px solid #1a2436; }
+  .asset-card__meta dt { font-size: 12px; color: #94a3b8; margin: 0 0 2px; }
+  .asset-card__meta dd { margin: 0; font-size: 15px; font-weight: 600; color: #e5eef8; }
+  .list-count { margin: 0 0 12px; font-size: 13px; color: #94a3b8; }
+
+  /* ===== Achados ===== */
+  .notes { padding: 32px; background: #0f172a; }
+  .notes .eyebrow { margin-bottom: 6px; }
+  .notes h2 { margin: 0 0 6px; font-size: 26px; font-weight: 700; color: #e2e8f0; }
+  .notes .sub { margin: 0 0 24px; font-size: 14px; color: #94a3b8; }
+  .finding { display: flex; gap: 14px; padding: 16px 0; border-top: 1px solid #1f2a3d; }
+  .finding__n {
+    flex: none; width: 28px; height: 28px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    background: #16213a; color: #7dd3fc; font-size: 13px; font-weight: 700;
+  }
+  .finding h3 { margin: 0 0 4px; font-size: 16px; font-weight: 600; color: #e2e8f0; }
+  .finding p { margin: 0; font-size: 14px; line-height: 1.55; color: #cbd5e1; }
+  .finding code { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; font-size: 12.5px; color: #7dd3fc; }
+  .notes .foot { margin: 16px 0 0; padding-top: 16px; border-top: 1px solid #1f2a3d; font-size: 13px; color: #94a3b8; }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+<!-- ============ 1. Desktop — tela completa ============ -->
+<div class="frame-wrap">
+  <p class="frame-label">Finance Workspace · Desktop 1440 — tela completa <span class="tag tag--hoje">Hoje · chips com as cores pretendidas</span></p>
+  <section class="frame w1440">
+    <div class="app-shell">
+      <header class="panel shell-header">
+        <div>
+          <p class="eyebrow">Desenvolvido por: Claudio Alvarenga</p>
+          <h1>Portal de Produtos Financeiros</h1>
+          <p class="shell-header__copy">Aplicação responsável pela navegação, composição de módulos remotos e organização do workspace</p>
+        </div>
+        <div class="shell-header__meta"><span>SHELL: 4174</span><span>MFE : 4173</span></div>
+      </header>
+      <div class="workspace-layout">
+        <aside class="panel side-nav">
+          <p class="side-nav__title">Modules</p>
+          <ul>
+            <li>Visão Geral</li>
+            <li class="active">Carteira do Cliente</li>
+            <li>Monitor de Risco</li>
+            <li>Catálogo de Produtos</li>
+          </ul>
+        </aside>
+        <section class="workspace-content">
+          <section class="panel overview">
+            <span class="pill">Arquitetura Modular</span>
+            <span class="pill">React + TypeScript</span>
+            <span class="pill">Aplicação Container</span>
+          </section>
+
+          <div class="remote-boundary">
+            <span class="remote-tag">remoto: portfolio_mfe</span>
+            <div class="portfolio-page">
+              <header class="card hero">
+                <div>
+                  <p class="eyebrow">Portfólio - Micro-Frontend</p>
+                  <h2>Visão consolidada da carteira</h2>
+                  <p class="hero-copy">Módulo responsável pela visualização da carteira do cliente, com foco em alocação, rentabilidade e acompanhamento de ativos.</p>
+                </div>
+                <div class="hero-badge">MFE: portfolio_mfe</div>
+              </header>
+
+              <section class="summary-grid">
+                <div class="card summary-card"><span class="summary-card__label">Ativos monitorados</span><strong class="summary-card__value">6</strong><small class="summary-card__helper">Quantidade exibida após filtros</small></div>
+                <div class="card summary-card"><span class="summary-card__label">Alocação total</span><strong class="summary-card__value">100.0%</strong><small class="summary-card__helper">Posições consideradas na visualização</small></div>
+                <div class="card summary-card"><span class="summary-card__label">Rentabilidade média</span><strong class="summary-card__value"><span class="positive">8.5%</span></strong><small class="summary-card__helper">Indicador consolidado da carteira</small></div>
+              </section>
+
+              <section class="card filters">
+                <div class="filters-row">
+                  <div class="field">Buscar ativo<div class="input"><span class="ph">Ex.: ITSA4 or Bitcoin</span></div></div>
+                  <div class="field">Status<div class="input"><span>Todos</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div></div>
+                </div>
+              </section>
+
+              <section class="card table-card">
+                <table>
+                  <thead><tr><th>Código</th><th>Ativo</th><th>Categoria</th><th>Alocação</th><th>Rentabilidade</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>ITSA4</td><td>Itaúsa</td><td>Equity</td><td>18.0%</td><td class="positive">12.4%</td><td><span class="status-chip status-chip--ativo">Ativo</span></td></tr>
+                    <tr><td>BOVA11</td><td>Ibovespa ETF</td><td>ETF</td><td>22.0%</td><td class="positive">8.7%</td><td><span class="status-chip status-chip--ativo">Ativo</span></td></tr>
+                    <tr><td>KNRI11</td><td>Kinea Renda Imobiliária</td><td>FII</td><td>16.0%</td><td class="positive">6.3%</td><td><span class="status-chip status-chip--observacao">Observação</span></td></tr>
+                    <tr><td>BTC</td><td>Bitcoin</td><td>Crypto</td><td>10.0%</td><td class="positive">21.5%</td><td><span class="status-chip status-chip--rebalanceando">Rebalanceando</span></td></tr>
+                    <tr><td>PETR4</td><td>Petrobras</td><td>Equity</td><td>14.0%</td><td class="negative">-3.1%</td><td><span class="status-chip status-chip--ativo">Ativo</span></td></tr>
+                    <tr><td>SMAL11</td><td>Small Caps ETF</td><td>ETF</td><td>20.0%</td><td class="positive">5.2%</td><td><span class="status-chip status-chip--observacao">Observação</span></td></tr>
+                  </tbody>
+                </table>
+              </section>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ 2. Desktop — carregando ============ -->
+<div class="frame-wrap">
+  <p class="frame-label">Finance Workspace · Desktop 1440 — Carregando micro frontend… <span class="tag tag--hoje">Hoje</span></p>
+  <section class="frame w1440">
+    <div class="app-shell">
+      <header class="panel shell-header">
+        <div>
+          <p class="eyebrow">Desenvolvido por: Claudio Alvarenga</p>
+          <h1>Portal de Produtos Financeiros</h1>
+          <p class="shell-header__copy">Aplicação responsável pela navegação, composição de módulos remotos e organização do workspace</p>
+        </div>
+        <div class="shell-header__meta"><span>SHELL: 4174</span><span>MFE : 4173</span></div>
+      </header>
+      <div class="workspace-layout">
+        <aside class="panel side-nav">
+          <p class="side-nav__title">Modules</p>
+          <ul>
+            <li>Visão Geral</li>
+            <li class="active">Carteira do Cliente</li>
+            <li>Monitor de Risco</li>
+            <li>Catálogo de Produtos</li>
+          </ul>
+        </aside>
+        <section class="workspace-content">
+          <section class="panel overview">
+            <span class="pill">Arquitetura Modular</span>
+            <span class="pill">React + TypeScript</span>
+            <span class="pill">Aplicação Container</span>
+          </section>
+          <div class="remote-boundary">
+            <span class="remote-tag">remoto: portfolio_mfe</span>
+            <div class="panel state-card"><p>Carregando micro frontend…</p></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ 3. Desktop — remoto indisponível (hoje) ============ -->
+<div class="frame-wrap">
+  <p class="frame-label">Finance Workspace · Desktop 1440 — Remoto indisponível — hoje <span class="tag tag--hoje">Hoje · texto atual em inglês</span></p>
+  <section class="frame w1440">
+    <div class="app-shell">
+      <header class="panel shell-header">
+        <div>
+          <p class="eyebrow">Desenvolvido por: Claudio Alvarenga</p>
+          <h1>Portal de Produtos Financeiros</h1>
+          <p class="shell-header__copy">Aplicação responsável pela navegação, composição de módulos remotos e organização do workspace</p>
+        </div>
+        <div class="shell-header__meta"><span>SHELL: 4174</span><span>MFE : 4173</span></div>
+      </header>
+      <div class="workspace-layout">
+        <aside class="panel side-nav">
+          <p class="side-nav__title">Modules</p>
+          <ul>
+            <li>Visão Geral</li>
+            <li class="active">Carteira do Cliente</li>
+            <li>Monitor de Risco</li>
+            <li>Catálogo de Produtos</li>
+          </ul>
+        </aside>
+        <section class="workspace-content">
+          <section class="panel overview">
+            <span class="pill">Arquitetura Modular</span>
+            <span class="pill">React + TypeScript</span>
+            <span class="pill">Aplicação Container</span>
+          </section>
+          <section class="panel state-card">
+            <h2>Remote module unavailable</h2>
+            <p>The shell is running, but the portfolio micro frontend is not reachable. Start the MFE at<code> http://localhost:4173</code> to load the remote module.</p>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ 4. Desktop — remoto indisponível (proposta) ============ -->
+<div class="frame-wrap">
+  <p class="frame-label">Finance Workspace · Desktop 1440 — Remoto indisponível <span class="tag tag--proposta">Proposta</span></p>
+  <section class="frame w1440">
+    <div class="app-shell">
+      <header class="panel shell-header">
+        <div>
+          <p class="eyebrow">Desenvolvido por: Claudio Alvarenga</p>
+          <h1>Portal de Produtos Financeiros</h1>
+          <p class="shell-header__copy">Aplicação responsável pela navegação, composição de módulos remotos e organização do workspace</p>
+        </div>
+        <div class="shell-header__meta"><span>SHELL: 4174</span><span>MFE : 4173</span></div>
+      </header>
+      <div class="workspace-layout">
+        <aside class="panel side-nav">
+          <p class="side-nav__title">Módulos</p>
+          <ul>
+            <li>Visão Geral</li>
+            <li class="active">Carteira do Cliente</li>
+            <li>Monitor de Risco</li>
+            <li>Catálogo de Produtos</li>
+          </ul>
+        </aside>
+        <section class="workspace-content">
+          <section class="panel overview">
+            <span class="pill">Arquitetura Modular</span>
+            <span class="pill">React + TypeScript</span>
+            <span class="pill">Aplicação Container</span>
+          </section>
+          <section class="panel fallback-pt" role="status">
+            <div class="icon-circle">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m2 2 20 20"/><path d="M5.782 5.782A7 7 0 0 0 9 19h8.5a4.5 4.5 0 0 0 1.307-.193"/><path d="M21.532 16.5A4.5 4.5 0 0 0 17 10h-1.79A7.008 7.008 0 0 0 10 5.07"/></svg>
+            </div>
+            <div>
+              <h2>A carteira está temporariamente fora do ar</h2>
+              <p>O restante do portal continua funcionando. Tente de novo em instantes — seus dados não foram afetados.</p>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ 5. Desktop — vazio de filtros (proposta) ============ -->
+<div class="frame-wrap">
+  <p class="frame-label">Finance Workspace · Desktop 1440 — Vazio de filtros <span class="tag tag--proposta">Proposta</span></p>
+  <section class="frame w1440">
+    <div class="app-shell">
+      <header class="panel shell-header">
+        <div>
+          <p class="eyebrow">Desenvolvido por: Claudio Alvarenga</p>
+          <h1>Portal de Produtos Financeiros</h1>
+          <p class="shell-header__copy">Aplicação responsável pela navegação, composição de módulos remotos e organização do workspace</p>
+        </div>
+        <div class="shell-header__meta"><span>SHELL: 4174</span><span>MFE : 4173</span></div>
+      </header>
+      <div class="workspace-layout">
+        <aside class="panel side-nav">
+          <p class="side-nav__title">Módulos</p>
+          <ul>
+            <li>Visão Geral</li>
+            <li class="active">Carteira do Cliente</li>
+            <li>Monitor de Risco</li>
+            <li>Catálogo de Produtos</li>
+          </ul>
+        </aside>
+        <section class="workspace-content">
+          <section class="panel overview">
+            <span class="pill">Arquitetura Modular</span>
+            <span class="pill">React + TypeScript</span>
+            <span class="pill">Aplicação Container</span>
+          </section>
+          <div class="remote-boundary">
+            <span class="remote-tag">remoto: portfolio_mfe</span>
+            <div class="portfolio-page">
+              <header class="card hero">
+                <div>
+                  <p class="eyebrow">Portfólio - Micro-Frontend</p>
+                  <h2>Visão consolidada da carteira</h2>
+                  <p class="hero-copy">Módulo responsável pela visualização da carteira do cliente, com foco em alocação, rentabilidade e acompanhamento de ativos.</p>
+                </div>
+                <div class="hero-badge">MFE: portfolio_mfe</div>
+              </header>
+              <section class="summary-grid">
+                <div class="card summary-card"><span class="summary-card__label">Ativos monitorados</span><strong class="summary-card__value">0</strong><small class="summary-card__helper">Quantidade exibida após filtros</small></div>
+                <div class="card summary-card"><span class="summary-card__label">Alocação total</span><strong class="summary-card__value">0,0%</strong><small class="summary-card__helper">Posições consideradas na visualização</small></div>
+                <div class="card summary-card"><span class="summary-card__label">Rentabilidade média</span><strong class="summary-card__value"><span class="neutral">0,0%</span></strong><small class="summary-card__helper">Indicador consolidado da carteira</small></div>
+              </section>
+              <section class="card filters">
+                <div class="filters-row">
+                  <div class="field">Buscar ativo<div class="input"><span>VALE3</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></div></div>
+                  <div class="field">Status<div class="input"><span>Rebalanceando</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div></div>
+                </div>
+              </section>
+              <section class="card table-card">
+                <table>
+                  <thead><tr><th>Código</th><th>Ativo</th><th>Categoria</th><th>Alocação</th><th>Rentabilidade</th><th>Status</th></tr></thead>
+                </table>
+                <div class="proposal-empty">
+                  <div class="icon-circle">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m13.5 8.5-5 5"/><path d="m8.5 8.5 5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                  </div>
+                  <h3>Nenhum ativo encontrado para os filtros selecionados.</h3>
+                  <span class="btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                    Limpar filtros
+                  </span>
+                </div>
+              </section>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ 6. Mobile 390 — lista de cartões (proposta) ============ -->
+<div class="frame-wrap">
+  <p class="frame-label">Finance Workspace · Mobile 390 — tabela vira cartões <span class="tag tag--proposta">Proposta</span></p>
+  <section class="frame w390">
+    <div class="app-shell">
+      <header class="panel shell-header">
+        <div>
+          <p class="eyebrow">Desenvolvido por: Claudio Alvarenga</p>
+          <h1>Portal de Produtos Financeiros</h1>
+          <p class="shell-header__copy">Aplicação responsável pela navegação, composição de módulos remotos e organização do workspace</p>
+        </div>
+        <div class="shell-header__meta"><span>SHELL: 4174</span><span>MFE : 4173</span></div>
+      </header>
+      <div class="workspace-layout">
+        <aside class="panel side-nav">
+          <p class="side-nav__title">Módulos</p>
+          <ul>
+            <li>Visão Geral</li>
+            <li class="active">Carteira do Cliente</li>
+            <li>Monitor de Risco</li>
+            <li>Catálogo de Produtos</li>
+          </ul>
+        </aside>
+        <section class="workspace-content">
+          <section class="panel overview">
+            <span class="pill">Arquitetura Modular</span>
+            <span class="pill">React + TypeScript</span>
+            <span class="pill">Aplicação Container</span>
+          </section>
+          <div class="remote-boundary" style="padding: 26px 8px 8px;">
+            <span class="remote-tag" style="left: 14px;">remoto: portfolio_mfe</span>
+            <div class="portfolio-page" style="gap: 16px;">
+              <header class="card hero">
+                <div>
+                  <p class="eyebrow">Portfólio - Micro-Frontend</p>
+                  <h2>Visão consolidada da carteira</h2>
+                  <p class="hero-copy">Módulo responsável pela visualização da carteira do cliente, com foco em alocação, rentabilidade e acompanhamento de ativos.</p>
+                </div>
+                <div class="hero-badge">MFE: portfolio_mfe</div>
+              </header>
+              <section class="summary-grid">
+                <div class="card summary-card"><span class="summary-card__label">Ativos monitorados</span><strong class="summary-card__value">6</strong><small class="summary-card__helper">Quantidade exibida após filtros</small></div>
+                <div class="card summary-card"><span class="summary-card__label">Alocação total</span><strong class="summary-card__value">100,0%</strong><small class="summary-card__helper">Posições consideradas na visualização</small></div>
+                <div class="card summary-card"><span class="summary-card__label">Rentabilidade média</span><strong class="summary-card__value"><span class="positive">8,5%</span></strong><small class="summary-card__helper">Indicador consolidado da carteira</small></div>
+              </section>
+              <section class="card filters">
+                <div class="filters-row">
+                  <div class="field">Buscar ativo<div class="input"><span class="ph">Ex.: ITSA4 ou Bitcoin</span></div></div>
+                  <div class="field">Status<div class="input"><span>Todos</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div></div>
+                </div>
+              </section>
+
+              <section>
+                <ul class="asset-list">
+                  <li class="card asset-card">
+                    <div class="asset-card__top"><div><p class="asset-card__symbol">ITSA4</p><p class="asset-card__name">Itaúsa</p></div><span class="status-chip status-chip--ativo">Ativo</span></div>
+                    <dl class="asset-card__meta"><div><dt>Categoria</dt><dd>Equity</dd></div><div><dt>Alocação</dt><dd>18,0%</dd></div><div><dt>Rentabilidade</dt><dd class="positive">12,4%</dd></div></dl>
+                  </li>
+                  <li class="card asset-card">
+                    <div class="asset-card__top"><div><p class="asset-card__symbol">BOVA11</p><p class="asset-card__name">Ibovespa ETF</p></div><span class="status-chip status-chip--ativo">Ativo</span></div>
+                    <dl class="asset-card__meta"><div><dt>Categoria</dt><dd>ETF</dd></div><div><dt>Alocação</dt><dd>22,0%</dd></div><div><dt>Rentabilidade</dt><dd class="positive">8,7%</dd></div></dl>
+                  </li>
+                  <li class="card asset-card">
+                    <div class="asset-card__top"><div><p class="asset-card__symbol">KNRI11</p><p class="asset-card__name">Kinea Renda Imobiliária</p></div><span class="status-chip status-chip--observacao">Observação</span></div>
+                    <dl class="asset-card__meta"><div><dt>Categoria</dt><dd>FII</dd></div><div><dt>Alocação</dt><dd>16,0%</dd></div><div><dt>Rentabilidade</dt><dd class="positive">6,3%</dd></div></dl>
+                  </li>
+                  <li class="card asset-card">
+                    <div class="asset-card__top"><div><p class="asset-card__symbol">BTC</p><p class="asset-card__name">Bitcoin</p></div><span class="status-chip status-chip--rebalanceando">Rebalanceando</span></div>
+                    <dl class="asset-card__meta"><div><dt>Categoria</dt><dd>Crypto</dd></div><div><dt>Alocação</dt><dd>10,0%</dd></div><div><dt>Rentabilidade</dt><dd class="positive">21,5%</dd></div></dl>
+                  </li>
+                  <li class="card asset-card">
+                    <div class="asset-card__top"><div><p class="asset-card__symbol">PETR4</p><p class="asset-card__name">Petrobras</p></div><span class="status-chip status-chip--ativo">Ativo</span></div>
+                    <dl class="asset-card__meta"><div><dt>Categoria</dt><dd>Equity</dd></div><div><dt>Alocação</dt><dd>14,0%</dd></div><div><dt>Rentabilidade</dt><dd class="negative">−3,1%</dd></div></dl>
+                  </li>
+                  <li class="card asset-card">
+                    <div class="asset-card__top"><div><p class="asset-card__symbol">SMAL11</p><p class="asset-card__name">Small Caps ETF</p></div><span class="status-chip status-chip--observacao">Observação</span></div>
+                    <dl class="asset-card__meta"><div><dt>Categoria</dt><dd>ETF</dd></div><div><dt>Alocação</dt><dd>20,0%</dd></div><div><dt>Rentabilidade</dt><dd class="positive">5,2%</dd></div></dl>
+                  </li>
+                </ul>
+              </section>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ 7. Achados no código ============ -->
+<div class="frame-wrap">
+  <p class="frame-label">Finance Workspace · Achados no código (520)</p>
+  <section class="frame w520">
+    <div class="notes">
+      <p class="eyebrow">Finance Workspace · shell + portfolio MFE</p>
+      <h2>Achados no código</h2>
+      <p class="sub">Leitura do código de finance-workspace-shell e finance-workspace-portfolio-mfe · Claudio Alvarenga</p>
+
+      <div class="finding"><span class="finding__n">1</span><div>
+        <h3>Chips de status sem cor</h3>
+        <p>O componente gera <code>status-chip--ativo</code>, <code>--observação</code> e <code>--rebalanceando</code>; o CSS define <code>--active</code>, <code>--watchlist</code> e <code>--rebalancing</code>. As classes não batem e os chips saem sem cor. As frames mostram as cores pretendidas.</p>
+      </div></div>
+
+      <div class="finding"><span class="finding__n">2</span><div>
+        <h3>Fallback em inglês citando localhost em produção</h3>
+        <p>"Remote module unavailable" pede para iniciar o MFE em <code>http://localhost:4173</code>, texto de desenvolvimento que aparece para quem usa o portal publicado. Proposta: "A carteira está temporariamente fora do ar".</p>
+      </div></div>
+
+      <div class="finding"><span class="finding__n">3</span><div>
+        <h3>PT/EN misturado</h3>
+        <p>"Modules" no menu, placeholder "Ex.: ITSA4 or Bitcoin", vazio "No assets found for the selected filters." e <code>&lt;html lang="en"&gt;</code> numa interface em português.</p>
+      </div></div>
+
+      <div class="finding"><span class="finding__n">4</span><div>
+        <h3>Números sem pt-BR</h3>
+        <p><code>toFixed(1)</code> gera "12.4%" e "-3.1%"; em pt-BR o esperado é "12,4%".</p>
+      </div></div>
+
+      <div class="finding"><span class="finding__n">5</span><div>
+        <h3>URL do remoto fixa</h3>
+        <p>O <code>vite.config.ts</code> do shell aponta para um <code>remoteEntry.js</code> fixo na Vercel. Corrigir o texto do perfil técnico que fala em "descoberta em tempo de execução".</p>
+      </div></div>
+
+      <div class="finding"><span class="finding__n">6</span><div>
+        <h3>Sem testes</h3>
+        <p>Nenhum dos dois repositórios tem testes nem script de teste no <code>package.json</code>.</p>
+      </div></div>
+
+      <div class="finding"><span class="finding__n">7</span><div>
+        <h3>Menu estático</h3>
+        <p>Os itens do menu são uma lista fixa com o segundo item sempre ativo (<code>index === 1</code>); não há navegação.</p>
+      </div></div>
+
+      <div class="finding"><span class="finding__n">8</span><div>
+        <h3>Tabela sem tratamento no mobile</h3>
+        <p>A tabela de 6 colunas não tem regra abaixo de 900px. Proposta: virar lista de cartões (frame Mobile 390).</p>
+      </div></div>
+
+      <p class="foot">Autor: Claudio Alvarenga</p>
+    </div>
+  </section>
+</div>
+
+</div>
+</body>
+</html>

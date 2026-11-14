@@ -3,6 +3,7 @@ import { method } from "@/content/profile";
 import { projects } from "@/content/projects";
 import { contact, site } from "@/content/site";
 import { stack } from "@/content/stack";
+import { uxPractices } from "@/content/ux";
 import { ProjectList } from "./ProjectList";
 import { Container, Section, accentText } from "./primitives";
 import { Icon } from "./icons";
@@ -215,15 +216,6 @@ export function StackSection() {
   );
 }
 
-const praticasUX = [
-  "Teste de usabilidade com usuário final",
-  "Mapa de calor e leitura de funil",
-  "Análise de abandono em produção",
-  "Auditoria de acessibilidade",
-  "Design system e biblioteca de componentes",
-  "Protótipo navegável em código, não só em tela estática",
-];
-
 export function Contact() {
 
   const channels = [
@@ -247,7 +239,7 @@ export function Contact() {
           </p>
 
           <ul className="mt-8 flex flex-wrap gap-2">
-            {praticasUX.map((pratica) => (
+            {uxPractices.map((pratica) => (
               <li
                 key={pratica}
                 className="rounded-sm border border-rule-strong bg-surface px-3 py-1.5 text-sm text-ink-soft"

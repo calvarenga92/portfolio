@@ -30,6 +30,7 @@ export const logo = {
 
 export const nav = [
   { href: "#trabalho", label: "Projetos" },
+  { href: "#ux", label: "UX" },
   { href: "#experiencia", label: "Experiência" },
   { href: "#metodo", label: "Método" },
   { href: "#stack", label: "Stack" },

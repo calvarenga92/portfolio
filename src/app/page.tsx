@@ -8,6 +8,7 @@ import {
   StackSection,
   Work,
 } from "@/components/sections";
+import { UxHighlight } from "@/components/ux";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <main id="conteudo">
         <Hero />
         <Work />
+        <UxHighlight />
         <ExperienceTimeline />
         <Method />
         <StackSection />
