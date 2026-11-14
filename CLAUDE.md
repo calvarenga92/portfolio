@@ -45,6 +45,10 @@ a página do projeto via `node-id`.
 - **Ícones de marca vêm do `simple-icons`.** Nem toda ferramenta tem ícone lá
   (Playwright, por exemplo, não tem). Conferir antes de referenciar.
 
+- **`npm run build` e `npm run dev` brigam pela mesma pasta `.next`.** Rodar o build
+  com o dev ligado (ou subir o dev depois do build sem limpar) faz o dev servir a
+  página sem CSS. Ordem certa: parar o dev, rodar o build, apagar `.next`, subir o dev.
+
 ## Antes de dar push
 
 ```bash
