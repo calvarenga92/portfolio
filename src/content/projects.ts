@@ -250,6 +250,12 @@ export const projects: Project[] = [
       { label: "Perguntas no teste de recomendação", value: "8", numeric: true },
     ],
     links: projectLinks.flutterComparativo,
+    cover: {
+      src: "/projetos/comparativo-plataformas.webp",
+      alt: "Navegador, celular e tablet lado a lado sob um placar de três barras comparando as plataformas",
+      width: 1000,
+      height: 1000,
+    },
     caseStudy: [
       {
         kind: "images",
