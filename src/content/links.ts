@@ -19,7 +19,9 @@ const github = (repo: string) => `https://github.com/${repo}`;
 
 const prod = (href: string, label = "Ver no ar"): ProjectLink => ({ kind: "prod", label, href });
 const code = (href: string, label = "Código no GitHub"): ProjectLink => ({ kind: "code", label, href });
-const design = (href: string, label = "Ver no Figma"): ProjectLink => ({ kind: "figma", label, href });
+const design = (href: string, label = "Telas no Figma"): ProjectLink => ({ kind: "figma", label, href });
+// Fluxos de UX: página "Fluxos de UX" do arquivo Cases de Product Design, uma seção por projeto.
+const flow = (nodeId: string): ProjectLink => design(figma("cases", nodeId), "Fluxo de UX no Figma");
 
 export const projectLinks = {
   kurio: [
@@ -28,6 +30,7 @@ export const projectLinks = {
     code(github("calvarenga92/calvarenga-jungle-nft")),
     code(github("calvarenga92/kurio-mobile"), "Mobile no GitHub"),
     design(figma("cases", "0-1")),
+    flow("25-155"),
   ],
 
   financeWorkspace: [
@@ -35,6 +38,7 @@ export const projectLinks = {
     code(github("calvarenga92/finance-workspace-shell"), "Container no GitHub"),
     code(github("calvarenga92/finance-workspace-portfolio-mfe"), "Módulo no GitHub"),
     design(figma("frontEnd", "3-2")), // página "v2 e v2.1"; a v1 está em 0-1
+    flow("26-271"),
   ],
 
   // Repositório privado: github.com/vic-clau/edit-IA dá 404 para visitante.
@@ -45,16 +49,19 @@ export const projectLinks = {
     prod("https://flutter-comparativo.vercel.app"),
     code(github("calvarenga92/flutter-comparativo")),
     design(figma("evolucao", "2-1900")),
+    flow("26-512"),
   ],
 
   // Sem produção ainda. Quando o deploy subir, entra um prod() aqui.
+  // Atenção: foody-delivery.onrender.com responde, mas NÃO é este projeto (outro título e outro app).
   foody: [
     code(github("calvarenga92/foody-delivery-desafio")),
     design(figma("evolucao", "2-3253")),
+    flow("26-402"),
   ],
 
-  // Sem produção ainda. Quando o deploy subir, entra um prod() aqui.
   rectArchitectureLab: [
+    prod("https://rect-architecture-lab.vercel.app"),
     code(github("calvarenga92/RectArchitectureLab")),
     design(figma("frontEnd", "2-945")),
   ],
