@@ -1,0 +1,92 @@
+/*
+ * Modo leitura dos estudos de UX.
+ * Os arquivos de estudo nascem como canvas de Figma (frames lado a lado).
+ * Aqui eles viram uma página que se lê de cima para baixo: frames empilhados
+ * e reduzidos para caber na largura da tela (o leitor.js calcula o zoom).
+ */
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+body {
+  background: #161616 !important;
+}
+
+.canvas,
+.pagina {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 72px !important;
+  width: auto !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding: 104px 24px 80px !important;
+}
+
+.frame-wrap,
+.frame-col {
+  flex: none;
+  max-width: none;
+}
+
+.estudo-barra {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 60px;
+  padding: 0 24px;
+  border-bottom: 1px solid #2a2a2a;
+  background: rgba(22, 22, 22, 0.92);
+  backdrop-filter: blur(10px);
+  color: #ededed;
+  font: 600 14px/1.2 Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.estudo-barra a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid #3a3a3a;
+  border-radius: 999px;
+  color: #ededed;
+  text-decoration: none;
+}
+
+.estudo-barra a:hover {
+  border-color: #ededed;
+}
+
+.estudo-barra strong {
+  overflow: hidden;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.estudo-barra span {
+  margin-left: auto;
+  color: #8a8a8a;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .estudo-barra span {
+    display: none;
+  }
+
+  .canvas,
+  .pagina {
+    gap: 48px !important;
+    padding: 88px 12px 56px !important;
+  }
+}
