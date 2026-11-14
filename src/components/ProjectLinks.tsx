@@ -30,7 +30,7 @@ const base =
   "group inline-flex items-center rounded-sm font-medium transition-[background-color,border-color,color,transform] duration-150 hover:-translate-y-0.5";
 
 const primary =
-  "bg-signal font-semibold text-base shadow-[0_6px_20px_-6px_rgba(253,121,1,0.55)] hover:bg-ink";
+  "bg-signal font-semibold text-base hover:bg-ink";
 const secondary = "border border-rule-strong text-ink hover:border-ink";
 
 // Padding por tamanho; o secundário desconta 1px de cada lado por causa da borda.
