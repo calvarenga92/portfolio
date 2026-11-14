@@ -1,12 +1,12 @@
 export const site = {
   name: "Claudio Alvarenga",
   shortName: "Claudio Alvarenga",
-  role: "Desenvolvedor Full Stack",
+  role: "Desenvolvedor Front-end Sênior",
 
   url: "https://claudio-alvarenga.vercel.app",
   locale: "pt-BR",
   description:
-    "Desenvolvedor full stack com 12 anos de mercado, profundo em front-end e com origem em design. React, Next.js e TypeScript em produtos de alta carga — XP e Raia Drogasil.",
+    "Desenvolvedor front-end sênior com 12 anos de mercado e origem em UX. React, Next.js e TypeScript em produtos de alta carga — XP e Raia Drogasil. Como PJ, entrego da tela à integração.",
   location: "São Paulo, SP",
 } as const;
 

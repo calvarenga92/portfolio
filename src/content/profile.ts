@@ -3,7 +3,7 @@ import type { Principle, Service } from "./types";
 export const headline = ["Desenho a interface", "e respondo por ela", "em produção."];
 
 export const intro =
-  "Claudio Alvarenga, desenvolvedor full stack. 12 anos de mercado e origem em design. Trabalho em produto onde a tela não pode falhar: investimentos, e-commerce e pagamento.";
+  "Claudio Alvarenga, desenvolvedor front-end sênior. 12 anos de mercado, seis deles atuando direto com UX. Trabalho em produto onde a tela não pode falhar: investimentos, e-commerce e pagamento. Como PJ, também cuido da integração com o back-end quando o projeto pede.";
 
 export const services: Service[] = [
   {

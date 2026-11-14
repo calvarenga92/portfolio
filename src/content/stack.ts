@@ -5,7 +5,7 @@ export const stack: StackGroup[] = [
     title: "Interface",
     accent: "signal",
     icon: "interface",
-    items: ["React", "Next.js", "TypeScript", "Tailwind", "React Native", "Design Systems"],
+    items: ["React", "Next.js", "TypeScript", "Tailwind", "React Native", "Design Systems", "Figma"],
   },
   {
     title: "Dados e estado",
@@ -26,7 +26,7 @@ export const stack: StackGroup[] = [
     items: ["Vercel", "Git e GitHub", "Feature flags", "Micro-frontends"],
   },
   {
-    title: "No back-end",
+    title: "Também no back-end",
     accent: "signal",
     icon: "codigo",
     items: ["Java", "Spring", "Python", "Node.js", "APIs e integrações", "ffmpeg"],
