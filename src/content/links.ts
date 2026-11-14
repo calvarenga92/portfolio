@@ -52,9 +52,9 @@ export const projectLinks = {
     flow("26-512"),
   ],
 
-  // Sem produção ainda. Quando o deploy subir, entra um prod() aqui.
   // Atenção: foody-delivery.onrender.com responde, mas NÃO é este projeto (outro título e outro app).
   foody: [
+    prod("https://foody-rastreador.vercel.app"),
     code(github("calvarenga92/foody-delivery-desafio")),
     design(figma("evolucao", "2-3253")),
     flow("26-402"),
