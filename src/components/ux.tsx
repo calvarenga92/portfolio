@@ -3,6 +3,7 @@ import type { UxCase, UxImage } from "@/content/types";
 import { uxCases, uxCta, uxHome, uxPage, uxStates } from "@/content/ux";
 import { BeforeAfter } from "./BeforeAfter";
 import { Button } from "./Button";
+import { ProjectLinks } from "./ProjectLinks";
 import { Section } from "./primitives";
 
 const compareLabels = {
@@ -119,27 +120,16 @@ export function UxCaseBlock({ item, index }: { item: UxCase; index: number }) {
             {item.name}
           </h3>
           <p className="mt-3 max-w-[56ch] text-lg leading-[1.55] text-ink-soft">{item.tagline}</p>
+          {item.links && item.links.length > 0 && (
+            <div className="mt-5">
+              <ProjectLinks links={item.links} quiet />
+            </div>
+          )}
         </div>
-        <div className="flex shrink-0 flex-col items-start gap-4 lg:items-end">
-          <Button href={item.studyHref} external icon="arrow-up-right">
+        <div className="shrink-0">
+          <Button href={item.studyHref} external icon="arrow-up-right" variant="solid">
             {uxPage.study}
           </Button>
-          {item.links && item.links.length > 0 && (
-            <ul className="flex flex-wrap gap-x-5 gap-y-2 lg:justify-end">
-              {item.links.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="border-b border-rule-strong pb-0.5 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
       </div>
 

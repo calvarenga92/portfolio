@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/Button";
+import { ProjectLinks } from "@/components/ProjectLinks";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/sections";
 import { Container, Ledger } from "@/components/primitives";
@@ -80,18 +81,8 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
           </dl>
 
           {project.links && project.links.length > 0 && (
-            <div className="mt-10 flex flex-wrap justify-center gap-3">
-              {project.links.map((link) => (
-                <Button
-                  key={link.href}
-                  href={link.href}
-                  variant={link.kind === "prod" ? "solid" : "outline"}
-                  external
-                  icon="arrow-up-right"
-                >
-                  {link.label}
-                </Button>
-              ))}
+            <div className="mt-10">
+              <ProjectLinks links={project.links} align="center" size="lg" />
             </div>
           )}
         </Container>

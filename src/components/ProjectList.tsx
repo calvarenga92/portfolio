@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/content/types";
 import { BrandIcon, hasBrand } from "./BrandIcon";
+import { ProjectLinks } from "./ProjectLinks";
 
 export function ProjectList({ projects }: { projects: Project[] }) {
   return (
@@ -116,7 +117,8 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                 </dl>
               )}
 
-              <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <div className="mt-7 flex flex-col items-start gap-4">
+                {project.links && project.links.length > 0 && <ProjectLinks links={project.links} />}
                 {project.caseStudy && (
                   <Link
                     href={`/projetos/${project.slug}`}
@@ -125,17 +127,6 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                     Ler o case
                   </Link>
                 )}
-                {project.links?.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="border-b border-rule-strong pb-0.5 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink"
-                  >
-                    {link.label}
-                  </a>
-                ))}
               </div>
 
               <ul className="mt-7 flex flex-wrap gap-2">

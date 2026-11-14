@@ -28,6 +28,7 @@ const brandKeyByLabel: Record<string, string> = {
   "Node.js": "siNodedotjs",
   GitHub: "siGithub",
   WhatsApp: "siWhatsapp",
+  Figma: "siFigma",
 };
 
 type SimpleIcon = { path: string; title: string; hex: string };
