@@ -109,7 +109,7 @@ export const uxCases: UxCase[] = [
     findings: [
       "Botões “Publicar site” e “Preview” sem função",
       "10 módulos listados, 1 funcionando",
-      "Curtida que se desfazia sozinha",
+      "Documentação marcada como ativa, mas leva a erro",
     ],
     studyHref: "/estudos-ux/rectarchitecturelab.html",
     links: projectLinks.rectArchitectureLab,
