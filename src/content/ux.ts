@@ -84,7 +84,7 @@ export const uxCases: UxCase[] = [
   },
   {
     slug: "foody",
-    name: "Foody",
+    name: "Rango",
     tagline: "Rastreador de pedidos: de uma lista única para um quadro que mostra a operação inteira de relance.",
     before: img("foody-antes", "Tela atual: lista de pedidos com formulário ao lado", 1440, 1000),
     after: img("foody-depois", "Proposta: quadro por etapa, de Recebido a Finalizados", 1440, 1000),
