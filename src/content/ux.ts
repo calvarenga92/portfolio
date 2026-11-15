@@ -131,10 +131,10 @@ export const uxCases: UxCase[] = [
 ];
 
 export const uxStates: UxImage[] = [
-  img("kurio-falha", "Internet caiu depois do pagamento: explica que tentar de novo é seguro", 390, 1130, "Internet caiu no pagamento"),
-  img("kurio-preco", "Preço mudou entre carrinho e pagamento", 390, 1122, "Preço mudou no caminho"),
-  img("kurio-recusado", "Pagamento recusado pela carteira", 390, 1002, "Pagamento recusado"),
-  img("kurio-vazio", "Carrinho vazio com caminho de volta ao mercado", 390, 844, "Carrinho vazio"),
+  img("kudo-falha", "Internet caiu depois do pagamento: explica que tentar de novo é seguro", 390, 844, "Internet caiu no pagamento"),
+  img("kudo-preco", "Preço mudou entre carrinho e pagamento", 390, 844, "Preço mudou no caminho"),
+  img("kudo-recusado", "Pagamento recusado pela carteira", 390, 844, "Pagamento recusado"),
+  img("kudo-vazio", "Carrinho vazio com caminho de volta ao mercado", 390, 844, "Carrinho vazio"),
 ];
 
 export const uxPractices = [

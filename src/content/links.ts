@@ -27,9 +27,9 @@ export const projectLinks = {
   kurio: [
     prod("https://calvarenga-jungle-nft.vercel.app"),
     prod("https://kurio-mobile.vercel.app", "Versão mobile no ar"),
-    code(github("calvarenga92/calvarenga-jungle-nft")),
-    code(github("calvarenga92/kurio-mobile"), "Mobile no GitHub"),
-    design(figma("cases", "0-1")),
+    code(github("calvarenga92/kudo")),
+    code(github("calvarenga92/kudo-mobile"), "Mobile no GitHub"),
+    design(figma("cases", "22-3678")), // seção "v3 (3 temas)": o redesenho; a v1 fica em 0-1
     flow("25-155"),
   ],
 

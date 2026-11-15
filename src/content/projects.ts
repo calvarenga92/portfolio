@@ -5,15 +5,15 @@ export const projects: Project[] = [
   {
     slug: "kurio",
     name: "Marketplace de arte digital",
-    codename: "Kurio",
+    codename: "Kudo",
     tagline:
-      "Front-end de uma loja de arte digital, com pagamento simulado. Resolvi no alicerce os dois erros que custam caro nesse tipo de produto: a sobra de centavo, que some numa venda e aparece quando são milhares, e a cobrança dobrada de quem aperta pagar de novo porque a internet oscilou. Uma bateria de setenta e oito testes percorre a tela real antes de cada entrega, e não só a lógica por baixo dela.",
+      "Front-end de uma loja de arte digital, com pagamento simulado. Resolvi no alicerce os dois erros que custam caro nesse tipo de produto: a sobra de centavo, que some numa venda e aparece quando são milhares, e a cobrança dobrada de quem aperta pagar de novo porque a internet oscilou. Uma bateria de oitenta e oito testes percorre a tela real, no desktop e no celular, antes de cada entrega, e não só a lógica por baixo dela.",
     year: "2026",
     status: { label: "Entregue", tone: "entregue" },
-    role: "Front-end e arquitetura de interface",
+    role: "Redesenho da interface e front-end",
     stack: ["React 19", "TypeScript", "TanStack Query", "Tailwind", "Playwright", "Vite"],
     metrics: [
-      { label: "Testes end-to-end em Playwright", value: "78", numeric: true },
+      { label: "Testes end-to-end em Playwright", value: "88", numeric: true },
       { label: "Defeitos reais pegos antes da entrega", value: "5", numeric: true },
       { label: "Casas decimais no valor, sem float", value: "18", numeric: true },
     ],
@@ -30,23 +30,31 @@ export const projects: Project[] = [
         title: "As telas",
         images: [
           {
-            src: "/projetos/kurio-home.jpg",
-            alt: "Página inicial do Kurio, com a chamada principal e a peça em destaque",
-            width: 942,
-            height: 896,
+            src: "/projetos/kudo-home.jpg",
+            alt: "Página inicial do Kudo, com a chamada principal em bloco colorido e a peça em destaque",
+            width: 1440,
+            height: 1000,
           },
           {
-            src: "/projetos/kurio-mercado.jpg",
-            alt: "Tela de mercado do Kurio: filtros por coleção, faixa de preço e disponibilidade",
-            width: 942,
-            height: 896,
+            src: "/projetos/kudo-mercado.jpg",
+            alt: "Tela de mercado do Kudo: filtros por coleção, faixa de preço e cartões tingidos com a cor de cada arte",
+            width: 1440,
+            height: 1000,
           },
           {
-            src: "/projetos/kurio-grid.jpg",
-            alt: "Grade de peças do Kurio, cada uma com nome, preço em ETH e criador",
-            width: 942,
-            height: 896,
+            src: "/projetos/kudo-detalhe.jpg",
+            alt: "Detalhe de uma peça do Kudo: arte, preço, escolha de edição e botão de compra",
+            width: 1440,
+            height: 1000,
           },
+        ],
+      },
+      {
+        kind: "prose",
+        title: "O redesenho",
+        body: [
+          "A primeira versão nasceu sobre um layout pronto, escuro e todo em fonte mono. Redesenhei a interface inteira: Plus Jakarta Sans no texto e mono só nos preços, cantos arredondados, cartões tingidos com a cor de cada arte e o preço numa pílula fácil de achar.",
+          "As cores viraram tokens por tema. São três temas trocados no cabeçalho, sem mexer em nenhum componente, e a escolha fica salva no navegador. A versão mobile segue os mesmos tokens.",
         ],
       },
       {
@@ -70,7 +78,7 @@ export const projects: Project[] = [
         kind: "prose",
         title: "O que os testes acharam",
         body: [
-          "A suíte de 78 testes end-to-end pegou cinco defeitos reais antes da entrega. O mais interessante não foi funcional: um estouro de layout em que a tela se comportava exatamente como o esperado e, ainda assim, ficava ilegível. Teste de comportamento dava verde.",
+          "A suíte end-to-end pegou cinco defeitos reais antes da entrega. O mais interessante não foi funcional: um estouro de layout em que a tela se comportava exatamente como o esperado e, ainda assim, ficava ilegível. Teste de comportamento dava verde.",
           "É o argumento prático para E2E rodar na tela de verdade e não só na lógica: correto e utilizável não são a mesma propriedade.",
         ],
       },
