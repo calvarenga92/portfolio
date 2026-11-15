@@ -138,8 +138,8 @@ export const uxStates: UxImage[] = [
 ];
 
 export const uxPractices = [
-  "Teste de usabilidade com usuário final",
-  "Mapa de calor e leitura de funil",
+  "Acompanhamento de teste com usuário real",
+  "Mapa de calor (Hotjar e Clarity) e leitura de funil",
   "Análise de abandono em produção",
   "Auditoria de acessibilidade",
   "Design system e biblioteca de componentes",

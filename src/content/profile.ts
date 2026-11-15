@@ -52,7 +52,7 @@ export const method: { title: string; principles: Principle[] } = {
     },
     {
       title: "Interface se defende com dado",
-      body: "Acho que a tela ficou melhor não é argumento. Eu meço onde a pessoa desiste no meio do caminho, coloco a versão nova no ar para uma parte dos usuários e comparo o comportamento real das duas antes de abrir para todos. Número encerra discussão que reunião não encerra.",
+      body: "Acho que a tela ficou melhor não é argumento. Eu meço onde a pessoa desiste no meio do caminho, com funil e mapa de calor, libero a versão nova primeiro para uma parte dos usuários e acompanho os números antes de abrir para todos. Número encerra discussão que reunião não encerra.",
       accent: "signal" as const,
       icon: "metodo" as const,
       result: "Onde o usuário desiste deixa de ser suposição e vira medida do uso real.",

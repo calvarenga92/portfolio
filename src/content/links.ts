@@ -60,8 +60,9 @@ export const projectLinks = {
     flow("26-402"),
   ],
 
+  // Sem link de produção: rect-architecture-lab.vercel.app ainda tem os botões
+  // "Publicar site" e "Preview" sem função. Volta quando a v2 estiver no ar.
   rectArchitectureLab: [
-    prod("https://rect-architecture-lab.vercel.app"),
     code(github("calvarenga92/RectArchitectureLab")),
     design(figma("frontEnd", "2-945")),
   ],
