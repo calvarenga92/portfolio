@@ -65,5 +65,6 @@ export const projectLinks = {
   rectArchitectureLab: [
     code(github("calvarenga92/RectArchitectureLab")),
     design(figma("frontEnd", "2-945")),
+    flow("37-294"),
   ],
 } satisfies Record<string, ProjectLink[]>;
