@@ -17,26 +17,30 @@ const figma = (file: keyof typeof FIGMA_FILES, nodeId: string) =>
 
 const github = (repo: string) => `https://github.com/${repo}`;
 
+// Rotulos curtos de proposito: o ProjectLinks desenha o icone da marca ao lado,
+// entao repetir o nome dela no texto diz a mesma coisa duas vezes e ainda faz o
+// botao quebrar em duas linhas. "Ver no ar" fica por extenso porque e o unico
+// sem icone de marca, e precisa dizer sozinho para onde leva.
 const prod = (href: string, label = "Ver no ar"): ProjectLink => ({ kind: "prod", label, href });
-const code = (href: string, label = "Código no GitHub"): ProjectLink => ({ kind: "code", label, href });
-const design = (href: string, label = "Telas no Figma"): ProjectLink => ({ kind: "figma", label, href });
+const code = (href: string, label = "Código"): ProjectLink => ({ kind: "code", label, href });
+const design = (href: string, label = "Telas"): ProjectLink => ({ kind: "figma", label, href });
 // Fluxos de UX: página "Fluxos de UX" do arquivo Cases de Product Design, uma seção por projeto.
-const flow = (nodeId: string): ProjectLink => design(figma("cases", nodeId), "Fluxo de UX no Figma");
+const flow = (nodeId: string): ProjectLink => design(figma("cases", nodeId), "Fluxo de UX");
 
 export const projectLinks = {
   kurio: [
     prod("https://calvarenga-jungle-nft.vercel.app"),
     prod("https://kurio-mobile.vercel.app", "Versão mobile no ar"),
     code(github("calvarenga92/kudo")),
-    code(github("calvarenga92/kudo-mobile"), "Mobile no GitHub"),
+    code(github("calvarenga92/kudo-mobile"), "Mobile"),
     design(figma("cases", "22-3678")), // seção "v3 (3 temas)": o redesenho; a v1 fica em 0-1
     flow("25-155"),
   ],
 
   financeWorkspace: [
     prod("https://finance-workspace-shell.vercel.app"),
-    code(github("calvarenga92/finance-workspace-shell"), "Container no GitHub"),
-    code(github("calvarenga92/finance-workspace-portfolio-mfe"), "Módulo no GitHub"),
+    code(github("calvarenga92/finance-workspace-shell"), "Container"),
+    code(github("calvarenga92/finance-workspace-portfolio-mfe"), "Módulo"),
     design(figma("frontEnd", "3-2")), // página "v2 e v2.1"; a v1 está em 0-1
     flow("26-271"),
   ],
@@ -60,18 +64,10 @@ export const projectLinks = {
     flow("26-402"),
   ],
 
-  // Sem link de produção: rect-architecture-lab.vercel.app ainda tem os botões
-  // "Publicar site" e "Preview" sem função. Volta quando a v2 estiver no ar.
-  rectArchitectureLab: [
-    code(github("calvarenga92/RectArchitectureLab")),
-    design(figma("frontEnd", "2-945")),
-    flow("37-294"),
-  ],
-
   // Caso da XP: sem produção nem código (produto de instituição financeira).
   // Só as telas genéricas redesenhadas e o fluxo, no arquivo Cases.
   xpFundos: [
-    design(figma("cases", "45-969"), "Telas no Figma"), // página "Busca de fundos (XP) — telas"
+    design(figma("cases", "45-969"), "Telas"), // página "Busca de fundos — telas"
     flow("44-118"),
   ],
 } satisfies Record<string, ProjectLink[]>;

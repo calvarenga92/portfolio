@@ -133,9 +133,9 @@ export const projects: Project[] = [
         images: [
           {
             src: "/projetos/finance-workspace.webp",
-            alt: "Portal de produtos financeiros com menu de módulos à esquerda e a carteira do cliente carregada como módulo remoto",
-            width: 1000,
-            height: 442,
+            alt: "Portal de produtos financeiros: menu de módulos à esquerda, carteira do cliente carregada como módulo remoto, com rentabilidade ponderada, alocação por classe e a tabela de ativos",
+            width: 1600,
+            height: 931,
           },
         ],
       },
@@ -175,6 +175,73 @@ export const projects: Project[] = [
           { label: "Carregamento do módulo", value: "sob demanda, por rota" },
           { label: "Falha do remoto", value: "aviso no lugar do bloco" },
           { label: "Empacotamento", value: "Docker nas duas pontas" },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "rango",
+    name: "Rastreador de pedidos de delivery",
+    codename: "Rango",
+    tagline:
+      "Nasceu como desafio técnico e virou projeto próprio: API em Java com Spring Boot e interface em React acompanhando o pedido de Recebido a Entregue. Quem decide qual transição de status é válida é o servidor — a interface desenha só as ações que ele devolve, então estado impossível não chega a aparecer na tela.",
+    year: "2026",
+    status: { label: "Entregue", tone: "entregue" },
+    role: "Design, front-end e API",
+    stack: ["Java", "Spring", "SQLite", "JWT", "React", "TypeScript", "Vite", "Vercel"],
+    metrics: [
+      { label: "Testes automatizados, unitários e de integração", value: "27", numeric: true },
+      { label: "Status no ciclo do pedido, validados no servidor", value: "5", numeric: true },
+      { label: "Passos no novo pedido, com erro apontado por campo", value: "3", numeric: true },
+    ],
+    links: projectLinks.foody,
+    caseStudy: [
+      {
+        kind: "images",
+        title: "O produto no ar",
+        images: [
+          {
+            src: "/estudos-ux/img/foody-depois.jpg",
+            alt: "Quadro de pedidos dividido por etapa, de Recebido a Finalizados, com as ações permitidas em cada cartão",
+            width: 1440,
+            height: 1000,
+          },
+          {
+            src: "/estudos-ux/img/foody-estados.jpg",
+            alt: "Telas de estado: fila vazia, sem conexão e sessão expirada",
+            width: 1440,
+            height: 781,
+          },
+        ],
+      },
+      {
+        kind: "prose",
+        title: "O problema",
+        body: [
+          "O desafio pedia um rastreador de pedidos, e a primeira versão resolvia com uma lista única e um formulário ao lado. Dava para criar e listar, mas quem opera não enxergava em que etapa cada pedido estava.",
+          "Num fluxo de delivery a pergunta não é quais pedidos existem, é o que está parado e há quanto tempo. Lista não responde isso. Quadro por etapa responde, e foi para onde a segunda versão foi.",
+        ],
+      },
+      {
+        kind: "prose",
+        title: "As decisões",
+        body: [
+          "Transição válida é regra do servidor. O enum de status conhece as transições possíveis e a API devolve, junto do pedido, quais ações cabem naquele momento. A interface desenha só essas. O cliente não precisa conhecer a regra e não tem como inventar uma.",
+          "Atualização otimista, com volta. O status muda na tela assim que a pessoa clica e se desfaz sozinho quando a API recusa. Troca espera por correção: o caso comum fica instantâneo e o caso raro se conserta sozinho.",
+          "Erro padronizado por código. A API devolve um código, não uma frase, e o front escolhe a mensagem. Mudar a redação não exige tocar no backend, e traduzir depois é só mais um mapa.",
+          "Custo assumido: a API roda no plano gratuito do Render, que hiberna. A primeira chamada depois de um tempo ocioso demora. É o preço de manter o projeto no ar sem custo fixo, e foi escolha, não descuido.",
+        ],
+      },
+      {
+        kind: "ledger",
+        title: "Resumo",
+        lines: [
+          { label: "API", value: "Java 21 e Spring Boot 3" },
+          { label: "Interface", value: "React, TypeScript e Vite" },
+          { label: "Banco", value: "SQLite com JPA" },
+          { label: "Autenticação", value: "JWT, senha com BCrypt" },
+          { label: "Testes", value: "27", numeric: true },
+          { label: "Deploy", value: "Vercel e Render" },
         ],
       },
     ],

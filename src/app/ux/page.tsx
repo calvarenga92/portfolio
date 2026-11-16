@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/sections";
 import { Container } from "@/components/primitives";
 import { StatesStrip, UxCaseBlock, UxCollage, UxJumpNav } from "@/components/ux";
+import { site } from "@/content/site";
 import { uxCases, uxHome, uxPage, uxPractices, uxProcess, uxStates } from "@/content/ux";
 
 export const metadata: Metadata = {
@@ -50,7 +51,11 @@ export default function UxPage() {
               <h1 className="rise mt-5 text-balance text-[clamp(2.5rem,5.5vw,4.25rem)] font-semibold leading-[0.98] tracking-[-0.04em]">
                 {uxPage.title}
               </h1>
-              <p className="rise mt-6 max-w-[46ch] text-lg leading-[1.6] text-ink-soft" style={{ animationDelay: "120ms" }}>
+              <p className="rise mt-5 text-base text-ink-soft" style={{ animationDelay: "80ms" }}>
+                <span className="font-medium text-ink">{site.name}</span> · {uxPage.role}
+              </p>
+
+              <p className="rise mt-4 max-w-[52ch] text-lg leading-[1.6] text-ink-soft" style={{ animationDelay: "120ms" }}>
                 {uxPage.intro}
               </p>
 
@@ -71,9 +76,13 @@ export default function UxPage() {
             </div>
           </div>
 
-          <div className="mt-20">
-            <UxJumpNav />
-          </div>
+          <section className="mt-24">
+            <Heading>{uxPage.jumpTitle}</Heading>
+            <p className="mt-4 text-lg leading-[1.6] text-ink-soft">{uxPage.jumpLead}</p>
+            <div className="mt-10">
+              <UxJumpNav />
+            </div>
+          </section>
 
           <section className="mt-28">
             <Heading>{uxPage.processTitle}</Heading>

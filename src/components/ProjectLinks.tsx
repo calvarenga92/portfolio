@@ -48,12 +48,19 @@ export function ProjectLinks({
   align = "start",
   size = "md",
   quiet = false,
+  fill = false,
 }: {
   links: ProjectLink[];
   align?: "start" | "center";
   size?: "md" | "lg";
   /** Quando a página já tem outra ação principal, todos os links ficam secundários. */
   quiet?: boolean;
+  /**
+   * Distribui os links pela largura inteira, em vez de deixar cada um do
+   * tamanho do proprio texto. O min-w evita botao espremido: com muitos
+   * links a linha quebra em blocos iguais em vez de sobrar um sozinho.
+   */
+  fill?: boolean;
 }) {
   const ordered = [...links].sort((a, b) => Number(b.kind === "prod") - Number(a.kind === "prod"));
   const justify =
@@ -67,12 +74,12 @@ export function ProjectLinks({
         const isPrimary = !quiet && link.kind === "prod" && index === 0;
         const dot = isPrimary ? "bg-base" : "bg-live";
         return (
-          <li key={link.href}>
+          <li key={link.href} className={fill ? "min-w-[12rem] flex-1" : undefined}>
             <a
               href={link.href}
               target="_blank"
               rel="noreferrer noopener"
-              className={`${base} ${isPrimary ? `${primary} ${sizing[size].primary}` : `${secondary} ${sizing[size].secondary}`}`}
+              className={`${base} ${fill ? "w-full justify-center" : ""} ${isPrimary ? `${primary} ${sizing[size].primary}` : `${secondary} ${sizing[size].secondary}`}`}
             >
               {link.kind === "prod" && (
                 <span aria-hidden="true" className="relative flex size-2">

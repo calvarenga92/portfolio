@@ -1,7 +1,9 @@
 import Image from "next/image";
 import type { UxCase, UxImage } from "@/content/types";
+import { projectBySlug } from "@/content/projects";
 import { uxCases, uxCollageSlugs, uxCta, uxHome, uxPage, uxStates } from "@/content/ux";
 import { BeforeAfter } from "./BeforeAfter";
+import { BrandIcon } from "./BrandIcon";
 import { Button } from "./Button";
 import { ProjectLinks } from "./ProjectLinks";
 import { Section } from "./primitives";
@@ -73,37 +75,85 @@ export function UxCollage() {
   );
 }
 
+/**
+ * Marcas de recurso no card de navegacao. Sao so dois icones, na mesma
+ * linha do numero, para nao custar altura: sinalizam que o estudo la
+ * embaixo tem telas no Figma e codigo aberto. Nao sao links — o card
+ * inteiro e um ancora so — e ficam aria-hidden porque a frase acima da
+ * grade ja diz isso em palavras. Saem de item.links, nunca da mao.
+ *
+ * O selo esta DENTRO do <a> do card, entao o hover dele dispara o hover do
+ * card tambem. Para os dois serem alvos visuais separados, o card so acende
+ * quando nenhum selo esta sob o cursor: :hover:not(:has(.marca:hover)).
+ * E por isso que a classe .marca existe — ela nao estiliza nada, serve de
+ * ponto de ancoragem para esse seletor. Nao renomear sem olhar os dois usos.
+ */
+const brandByKind = {
+  code: { brand: "GitHub", label: "código" },
+  figma: { brand: "Figma", label: "Figma" },
+} as const;
+
+type MarkKind = keyof typeof brandByKind;
+
+function caseMarks(links?: UxCase["links"]): MarkKind[] {
+  if (!links) return [];
+  const kinds = new Set(links.map((link) => link.kind));
+  return (Object.keys(brandByKind) as MarkKind[]).filter((kind) => kinds.has(kind));
+}
+
 export function UxJumpNav() {
   return (
     <nav aria-label={uxPage.jump} className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-      {uxCases.map((item, i) => (
-        <a
-          key={item.slug}
-          href={`#${item.slug}`}
-          className="group relative block aspect-[16/9] overflow-hidden rounded-xl border border-rule bg-surface transition-colors hover:border-signal"
-        >
-          <Image
-            src={item.after.src}
-            alt=""
-            width={item.after.width}
-            height={item.after.height}
-            unoptimized
-            className="absolute inset-0 size-full object-cover object-top opacity-50 transition-transform duration-500 group-hover:scale-[1.04]"
-          />
-          <span
-            aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-b from-base/10 to-base/95"
-          />
-          <p className="absolute inset-x-4 bottom-3">
-            <span className="tnum block text-sm text-signal">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <span className="mt-0.5 block text-base leading-tight font-semibold text-ink transition-colors group-hover:text-signal">
-              {item.name}
-            </span>
-          </p>
-        </a>
-      ))}
+      {uxCases.map((item, i) => {
+        const marks = caseMarks(item.links);
+
+        return (
+          <a
+            key={item.slug}
+            href={`#${item.slug}`}
+            className="group relative block aspect-[16/9] overflow-hidden rounded-xl border border-rule bg-surface transition-colors [&:hover:not(:has(.marca:hover))]:border-ink/40"
+          >
+            <Image
+              src={item.after.src}
+              alt=""
+              width={item.after.width}
+              height={item.after.height}
+              unoptimized
+              className="absolute inset-0 size-full object-cover object-top opacity-50 transition-transform duration-500 [.group:hover:not(:has(.marca:hover))_&]:scale-[1.04]"
+            />
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 bg-gradient-to-b from-base/10 to-base/95"
+            />
+            <p className="absolute inset-x-4 bottom-3">
+              <span className="tnum block text-sm text-signal">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="mt-0.5 block text-base leading-tight font-semibold text-ink">
+                {item.name}
+              </span>
+              {item.subtitle && (
+                <span className="block text-sm leading-tight font-medium text-ink-soft">
+                  {item.subtitle}
+                </span>
+              )}
+              {marks.length > 0 && (
+                <span aria-hidden="true" className="mt-2.5 flex flex-wrap items-center gap-1.5">
+                  {marks.map((kind) => (
+                    <span
+                      key={kind}
+                      className="marca inline-flex items-center gap-1.5 rounded-sm border border-ink/15 bg-base/35 px-2 py-1 text-xs font-medium text-ink-soft backdrop-blur-sm transition-colors hover:border-ink/60 hover:text-ink"
+                    >
+                      <BrandIcon label={brandByKind[kind].brand} size={14} />
+                      {brandByKind[kind].label}
+                    </span>
+                  ))}
+                </span>
+              )}
+            </p>
+          </a>
+        );
+      })}
     </nav>
   );
 }
@@ -117,22 +167,37 @@ export function UxCaseBlock({ item, index }: { item: UxCase; index: number }) {
       id={item.slug}
       className="scroll-mt-36 rounded-3xl border border-rule bg-surface/60 p-5 sm:p-8 lg:p-10"
     >
-      {/* Numero e titulo de um lado, acao do outro: o items-start alinha o botao
-          com o numero, sem margem chutada. Fora dessa linha, a tagline e os
-          links do projeto ficam com a largura inteira do card. */}
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+      {/* O numero fica fora do flex de proposito: assim a linha comeca no titulo
+          e o items-center centraliza a acao com ele, e nao com o conjunto
+          numero+titulo. Fora dessa linha, a tagline e os links do projeto ficam
+          com a largura inteira do card. */}
+      <p className="tnum text-sm font-medium text-signal">
+        {String(index + 1).padStart(2, "0")} / {String(uxCases.length).padStart(2, "0")}
+      </p>
+
+      <div className="mt-2 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <p className="tnum text-sm font-medium text-signal">
-            {String(index + 1).padStart(2, "0")} / {String(uxCases.length).padStart(2, "0")}
-          </p>
-          <h3 className="mt-2 text-3xl font-semibold tracking-[-0.025em] sm:text-[2.5rem]">
+          <h3 className="text-3xl font-semibold tracking-[-0.025em] sm:text-[2.5rem]">
             {item.name}
           </h3>
+          {item.subtitle && (
+            <p className="mt-1 text-xl leading-tight font-medium text-ink-soft sm:text-2xl">
+              {item.subtitle}
+            </p>
+          )}
         </div>
-        <div className="shrink-0">
+        {/* O case do projeto so aparece quando ele existe E tem caseStudy — a
+            rota /projetos/[slug] da 404 sem isso. Confere no projects.ts em vez
+            de confiar no projectSlug, entao slug errado nao vira link quebrado. */}
+        <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
           <Button href={item.studyHref} external icon="arrow-up-right" variant="solid">
             {uxPage.study}
           </Button>
+          {item.projectSlug && projectBySlug(item.projectSlug)?.caseStudy && (
+            <Button href={`/projetos/${item.projectSlug}`} variant="outline">
+              {uxPage.projectCase}
+            </Button>
+          )}
         </div>
       </div>
 

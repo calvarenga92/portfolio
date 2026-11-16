@@ -1,9 +1,9 @@
 import type { Principle, Service } from "./types";
 
-export const headline = ["Desenho a interface", "e respondo por ela", "em produção."];
+export const headline = ["Desenho a tela,", "escrevo a API,", "e respondo pelas duas."];
 
 export const intro =
-  "Claudio Alvarenga, desenvolvedor front-end sênior. 12 anos de mercado, seis deles atuando direto com UX. Trabalho em produto onde a tela não pode falhar: investimentos, e-commerce e pagamento. Como PJ, também cuido da integração com o back-end quando o projeto pede.";
+  "Claudio Alvarenga, desenvolvedor full-stack com 12 anos de mercado e origem em UX. No front, React, Next.js e TypeScript em produto onde a tela não pode falhar: investimentos, e-commerce e pagamento. No back, Java com Spring Boot — modelo o domínio, escrevo a API e publico.";
 
 export const services: Service[] = [
   {

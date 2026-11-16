@@ -2,7 +2,7 @@ import { experiences } from "@/content/experience";
 import { method } from "@/content/profile";
 import { projects } from "@/content/projects";
 import { contact, site } from "@/content/site";
-import { stack } from "@/content/stack";
+import { stack, stackLead } from "@/content/stack";
 import { uxPractices } from "@/content/ux";
 import { ProjectList } from "./ProjectList";
 import { Container, Section, accentText } from "./primitives";
@@ -168,13 +168,7 @@ export function Method() {
 export function StackSection() {
   return (
     <Section id="stack" title="Stack" icon="stack" accent="signal">
-      <p className="mb-12 max-w-[72ch] text-lg leading-[1.6] text-ink">
-        Front-end é onde eu sou profundo: arquitetura, interface e qualidade do
-        que vai para o usuário. No back-end eu entrego integração, automação e
-        manutenção de legado — Java e Spring no e-commerce da Raia Drogasil,
-        Python em automação própria, Node no nível de ferramenta. Arquitetura de
-        serviço é terreno que eu acompanho, não que eu desenho sozinho.
-      </p>
+      <p className="mb-12 text-lg leading-[1.6] text-ink">{stackLead}</p>
 
       <div className="grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
         {stack.map((group) => {

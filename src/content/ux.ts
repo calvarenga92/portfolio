@@ -26,19 +26,24 @@ export const uxHome = {
 export const uxPage = {
   eyebrow: "Portfólio UX",
   title: "Antes de mexer na tela, entendo por que ela falha.",
+  role: "desenvolvedor front-end, origem em UX",
   intro:
-    "Cada estudo parte da tela real, aponta o que atrapalha quem usa e propõe a versão nova no mesmo sistema visual do produto.",
+    "Quatro produtos reais, auditados e redesenhados. Cada estudo parte da tela que está no ar, aponta o que atrapalha quem usa e propõe a versão nova.",
   stats: [
     { value: "+12", unit: "anos", label: "construindo produto em time de tecnologia" },
-    { value: "4", unit: "estudos", label: "com tela real, diagnóstico e versão nova" },
-    { value: "4", unit: "estados", label: "vazio, erro, offline e sessão expirada" },
+    { value: "4", unit: "estudos", label: "com antes, depois e o que mudou" },
+    { value: "3", unit: "no ar", label: "com link de produção aberto" },
   ],
+  jumpTitle: "Os estudos",
+  jumpLead:
+    "Cada um tem o antes e o depois lado a lado, as telas no Figma, o código no GitHub e, quando existe, o produto no ar.",
   jump: "Ir para o estudo",
   findingsTitle: "O que encontrei",
-  processTitle: "Como eu conduzo",
-  casesTitle: "Estudos",
+  processTitle: "Como eu conduzo um estudo",
+  casesTitle: "Os estudos em detalhe",
   practicesTitle: "Também faço parte do dia a dia",
-  study: "Abrir o estudo completo",
+  study: "Abrir o estudo de usabilidade",
+  projectCase: "Ler o case do projeto",
   before: "Antes",
   after: "Depois",
   compareLabel: "Comparar antes e depois",
@@ -68,7 +73,8 @@ export const uxProcess: UxStep[] = [
 export const uxCases: UxCase[] = [
   {
     slug: "busca-fundos",
-    name: "Portal de investimentos · busca de fundos",
+    name: "Portal de investimentos",
+    subtitle: "Busca de fundos",
     tagline:
       "Catálogo de fundos de investimento: a lista piscava e mostrava o resultado de um termo que a pessoa já tinha passado.",
     before: img("xp-antes", "Antes: digitando “renda”, a lista mostra fundos de um termo anterior e linhas somem a cada tecla", 1440, 900),
@@ -102,6 +108,7 @@ export const uxCases: UxCase[] = [
       "Tabela de 6 colunas quebrando no celular",
     ],
     studyHref: "/estudos-ux/finance-workspace.html",
+    projectSlug: "finance-workspace",
     links: projectLinks.financeWorkspace,
   },
   {
@@ -120,12 +127,14 @@ export const uxCases: UxCase[] = [
       "Novo pedido em 3 passos, com erro apontado por campo",
     ],
     studyHref: "/estudos-ux/foody.html",
+    projectSlug: "rango",
     links: projectLinks.foody,
   },
   {
     slug: "flutter-comparativo",
     name: "Trilema",
-    tagline: "Guia de tecnologia: um teste que recomendava sem explicar por quê.",
+    tagline:
+      "Comparativo entre Web, React Native e Flutter: 34 aspectos com o código dos dois lados e um veredito em cada, mais um teste de 8 perguntas que recomenda uma das três para o seu projeto. O próprio site é a demonstração — roda em Flutter, com cada pixel desenhado pelo motor e nenhum DOM.",
     before: img("flutter-antes", "Tela atual: aspecto de SEO sem endereço próprio", 1440, 1000),
     after: img("flutter-depois", "Proposta: resultado do teste com a pontuação de cada opção à vista", 1440, 1000),
     findings: [
@@ -134,6 +143,7 @@ export const uxCases: UxCase[] = [
       "Pergunta do teste com viés para uma das respostas",
     ],
     studyHref: "/estudos-ux/flutter-comparativo.html",
+    projectSlug: "flutter-comparativo",
     links: projectLinks.flutterComparativo,
   },
 ];

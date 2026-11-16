@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/Button";
+import { BrandIcon, hasBrand } from "@/components/BrandIcon";
 import { ProjectLinks } from "@/components/ProjectLinks";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/sections";
@@ -63,26 +64,41 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
             {project.tagline}
           </p>
 
-          <dl className="mt-12 grid gap-x-10 gap-y-8 border-t border-rule pt-8 sm:grid-cols-3">
-            <div>
-              <dt className="text-sm text-ink-faint">Ano</dt>
-              <dd className="tnum mt-2 text-lg text-ink">{project.year}</dd>
+          {/* Ano e papel sao curtos e cabem lado a lado; a stack precisa da linha
+              inteira porque virou lista de selos, nao texto corrido. */}
+          <dl className="mt-12 border-t border-rule pt-8">
+            <div className="grid gap-x-10 gap-y-8 sm:grid-cols-[auto_minmax(0,1fr)]">
+              <div>
+                <dt className="text-sm text-ink-faint">Ano</dt>
+                <dd className="tnum mt-2 text-lg text-ink">{project.year}</dd>
+              </div>
+              <div>
+                <dt className="text-sm text-ink-faint">Papel</dt>
+                <dd className="mt-2 text-lg leading-snug text-ink">{project.role}</dd>
+              </div>
             </div>
-            <div>
-              <dt className="text-sm text-ink-faint">Papel</dt>
-              <dd className="mt-2 text-lg leading-snug text-ink">{project.role}</dd>
-            </div>
-            <div>
+
+            <div className="mt-8">
               <dt className="text-sm text-ink-faint">Stack</dt>
-              <dd className="mt-2 text-lg leading-snug text-ink">
-                {project.stack.join(", ")}
+              <dd className="mt-3">
+                <ul className="flex flex-wrap gap-2">
+                  {project.stack.map((tool) => (
+                    <li
+                      key={tool}
+                      className="flex items-center gap-2 rounded-sm border border-rule-strong bg-surface px-3 py-1.5 text-sm text-ink-soft"
+                    >
+                      {hasBrand(tool) && <BrandIcon label={tool} size={16} useBrandColor />}
+                      {tool}
+                    </li>
+                  ))}
+                </ul>
               </dd>
             </div>
           </dl>
 
           {project.links && project.links.length > 0 && (
             <div className="mt-10">
-              <ProjectLinks links={project.links} align="center" size="lg" />
+              <ProjectLinks links={project.links} size="lg" fill />
             </div>
           )}
         </Container>
@@ -106,8 +122,12 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
 
                   {block.kind === "ledger" && <Ledger lines={block.lines} />}
 
+                  {/* Uma imagem sozinha ocupa a linha inteira: screenshot de pagina
+                      espremido em meia coluna nao se le. Duas ou mais voltam ao par. */}
                   {block.kind === "images" && (
-                    <div className="grid gap-6 sm:grid-cols-2">
+                    <div
+                      className={`grid gap-6 ${block.images.length > 1 ? "sm:grid-cols-2" : ""}`}
+                    >
                       {block.images.map((image) => (
                         <figure
                           key={image.src}

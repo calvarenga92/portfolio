@@ -98,6 +98,8 @@ export type UxImage = {
 export type UxCase = {
   slug: string;
   name: string;
+  /** Segunda linha do titulo, quando o nome fica longo demais numa so. */
+  subtitle?: string;
   tagline: string;
 
   before: UxImage;
@@ -108,6 +110,8 @@ export type UxCase = {
 
   findings: string[];
   studyHref: string;
+  /** Slug do projeto em projects.ts, quando o estudo tambem tem pagina de case. */
+  projectSlug?: string;
   links?: ProjectLink[];
 };
 
