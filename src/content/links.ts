@@ -70,5 +70,8 @@ export const projectLinks = {
 
   // Caso da XP: sem produção nem código (produto de instituição financeira).
   // Só as telas genéricas redesenhadas e o fluxo, no arquivo Cases.
-  xpFundos: [],
+  xpFundos: [
+    design(figma("cases", "45-969"), "Telas no Figma"), // página "Busca de fundos (XP) — telas"
+    flow("44-118"),
+  ],
 } satisfies Record<string, ProjectLink[]>;
