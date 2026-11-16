@@ -80,21 +80,27 @@ export function UxJumpNav() {
         <a
           key={item.slug}
           href={`#${item.slug}`}
-          className="group overflow-hidden rounded-xl border border-rule bg-surface transition-colors hover:border-signal"
+          className="group relative block aspect-[16/9] overflow-hidden rounded-xl border border-rule bg-surface transition-colors hover:border-signal"
         >
-          <div className="overflow-hidden">
-            <Image
-              src={item.after.src}
-              alt=""
-              width={item.after.width}
-              height={item.after.height}
-              unoptimized
-              className="block aspect-[16/9] h-auto w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
-            />
-          </div>
-          <p className="flex items-baseline gap-2 px-4 py-3 text-base font-medium">
-            <span className="tnum text-sm text-signal">{String(i + 1).padStart(2, "0")}</span>
-            <span className="text-ink transition-colors group-hover:text-signal">{item.name}</span>
+          <Image
+            src={item.after.src}
+            alt=""
+            width={item.after.width}
+            height={item.after.height}
+            unoptimized
+            className="absolute inset-0 size-full object-cover object-top opacity-50 transition-transform duration-500 group-hover:scale-[1.04]"
+          />
+          <span
+            aria-hidden="true"
+            className="absolute inset-0 bg-gradient-to-b from-base/10 to-base/95"
+          />
+          <p className="absolute inset-x-4 bottom-3">
+            <span className="tnum block text-sm text-signal">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <span className="mt-0.5 block text-base leading-tight font-semibold text-ink transition-colors group-hover:text-signal">
+              {item.name}
+            </span>
           </p>
         </a>
       ))}
@@ -111,7 +117,10 @@ export function UxCaseBlock({ item, index }: { item: UxCase; index: number }) {
       id={item.slug}
       className="scroll-mt-36 rounded-3xl border border-rule bg-surface/60 p-5 sm:p-8 lg:p-10"
     >
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+      {/* Numero e titulo de um lado, acao do outro: o items-start alinha o botao
+          com o numero, sem margem chutada. Fora dessa linha, a tagline e os
+          links do projeto ficam com a largura inteira do card. */}
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
         <div>
           <p className="tnum text-sm font-medium text-signal">
             {String(index + 1).padStart(2, "0")} / {String(uxCases.length).padStart(2, "0")}
@@ -119,12 +128,6 @@ export function UxCaseBlock({ item, index }: { item: UxCase; index: number }) {
           <h3 className="mt-2 text-3xl font-semibold tracking-[-0.025em] sm:text-[2.5rem]">
             {item.name}
           </h3>
-          <p className="mt-3 max-w-[56ch] text-lg leading-[1.55] text-ink-soft">{item.tagline}</p>
-          {item.links && item.links.length > 0 && (
-            <div className="mt-5">
-              <ProjectLinks links={item.links} quiet />
-            </div>
-          )}
         </div>
         <div className="shrink-0">
           <Button href={item.studyHref} external icon="arrow-up-right" variant="solid">
@@ -133,8 +136,21 @@ export function UxCaseBlock({ item, index }: { item: UxCase; index: number }) {
         </div>
       </div>
 
+      <p className="mt-4 text-lg leading-[1.55] text-ink-soft">{item.tagline}</p>
+
+      {item.links && item.links.length > 0 && (
+        <div className="mt-6">
+          <ProjectLinks links={item.links} quiet />
+        </div>
+      )}
+
       <div className="mt-8">
         <BeforeAfter before={item.before} after={item.after} labels={compareLabels} />
+        {item.compareNote && (
+          <p className="mt-3 max-w-[80ch] text-sm leading-[1.5] text-ink-faint">
+            {item.compareNote}
+          </p>
+        )}
       </div>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">

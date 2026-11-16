@@ -4,6 +4,12 @@ import { logo, nav, site } from "@/content/site";
 import { Logo } from "./Logo";
 import { Container } from "./primitives";
 
+// Itens de ancora (#secao) sao sempre resolvidos a partir da home, para
+// funcionarem tambem de dentro de outra rota. Itens que ja sao uma rota
+// (/ux) passam direto: prefixar geraria "//ux", que o navegador le como
+// outro dominio.
+const hrefFor = (href: string) => (href.startsWith("#") ? `/${href}` : href);
+
 export function SiteHeader() {
   return (
     <header className="fixed inset-x-0 top-0 z-40 border-b border-rule bg-base/85 backdrop-blur-md">
@@ -31,7 +37,7 @@ export function SiteHeader() {
           {nav.map((item) => (
             <Link
               key={item.href}
-              href={`/${item.href}`}
+              href={hrefFor(item.href)}
               className="text-base text-ink-soft transition-colors hover:text-ink"
             >
               {item.label}
@@ -56,7 +62,7 @@ export function SiteHeader() {
         <ul className="flex gap-6 overflow-x-auto px-6 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {nav.map((item) => (
             <li key={item.href} className="shrink-0">
-              <Link href={`/${item.href}`} className="text-base text-ink-soft">
+              <Link href={hrefFor(item.href)} className="text-base text-ink-soft">
                 {item.label}
               </Link>
             </li>

@@ -29,9 +29,9 @@ export const uxPage = {
   intro:
     "Cada estudo parte da tela real, aponta o que atrapalha quem usa e propõe a versão nova no mesmo sistema visual do produto.",
   stats: [
-    { value: "6 anos", label: "atuando direto com UX" },
-    { value: "5", label: "estudos com antes e depois" },
-    { value: "12 anos", label: "levando a tela até produção" },
+    { value: "+12", unit: "anos", label: "construindo produto em time de tecnologia" },
+    { value: "4", unit: "estudos", label: "com tela real, diagnóstico e versão nova" },
+    { value: "4", unit: "estados", label: "vazio, erro, offline e sessão expirada" },
   ],
   jump: "Ir para o estudo",
   findingsTitle: "O que encontrei",
@@ -49,7 +49,7 @@ export const uxPage = {
 export const uxProcess: UxStep[] = [
   {
     title: "Medir onde a pessoa desiste",
-    body: "Funil, eventos e mapa de calor antes de opinião. Na XP, instrumentei os eventos da jornada de fundos com dataLayer e Google Tag Manager.",
+    body: "Funil, eventos e mapa de calor antes de opinião. Num portal de investimentos, instrumentei os eventos da jornada de fundos com dataLayer e Google Tag Manager.",
   },
   {
     title: "Auditar a tela que existe",
@@ -67,8 +67,8 @@ export const uxProcess: UxStep[] = [
 
 export const uxCases: UxCase[] = [
   {
-    slug: "xp-fundos",
-    name: "Busca de fundos · XP",
+    slug: "busca-fundos",
+    name: "Portal de investimentos · busca de fundos",
     tagline:
       "Catálogo de fundos de investimento: a lista piscava e mostrava o resultado de um termo que a pessoa já tinha passado.",
     before: img("xp-antes", "Antes: digitando “renda”, a lista mostra fundos de um termo anterior e linhas somem a cada tecla", 1440, 900),
@@ -82,13 +82,16 @@ export const uxCases: UxCase[] = [
       "Resultado de termo antigo sobrescrevendo o atual",
       "Debounce de ~300 ms atrás de feature flag: 5 buscas viraram 1",
     ],
-    studyHref: "/estudos-ux/xp-fundos.html",
+    studyHref: "/estudos-ux/busca-fundos.html",
     links: projectLinks.xpFundos,
   },
   {
     slug: "finance-workspace",
     name: "Finance Workspace",
-    tagline: "Portal financeiro: quando um módulo cai, o cliente não pode ver uma mensagem de desenvolvedor.",
+    tagline:
+      "Portal financeiro em micro-frontends: um container React consome módulos com deploy independente — quando um módulo cai, o resto do portal segue no ar.",
+    compareNote:
+      "As duas telas são do mesmo momento de falha: à esquerda o erro de desenvolvedor que estava no ar, à direita o que o cliente deveria ver.",
     before: img("finance-antes", "Antes (v1): erro em inglês citando localhost, já corrigido no ar", 1440, 560),
     after: img("finance-depois", "Proposta v2: aviso em português com ações para tentar de novo e status dos módulos que seguem no ar", 1440, 560),
     extras: [img("finance-mobile", "Proposta mobile v2: rentabilidade em destaque, filtros por status e a tabela de seis colunas vira lista de cartões", 390, 1237, "Mobile: tabela vira cartões")],
@@ -120,22 +123,8 @@ export const uxCases: UxCase[] = [
     links: projectLinks.foody,
   },
   {
-    slug: "rectarchitecturelab",
-    name: "Architecture Lab",
-    tagline: "Hub técnico: de uma lista de módulos “planejados” para uma vitrine que diz o que é em cinco segundos.",
-    before: img("rect-antes", "Tela atual: dez módulos listados, quase todos planejados", 1440, 1000),
-    after: img("rect-depois", "Proposta: página com promessa clara e demonstração ao vivo", 1440, 1000),
-    findings: [
-      "Botões “Publicar site” e “Preview” sem função",
-      "10 módulos listados, 1 funcionando",
-      "Documentação marcada como ativa, mas leva a erro",
-    ],
-    studyHref: "/estudos-ux/rectarchitecturelab.html",
-    links: projectLinks.rectArchitectureLab,
-  },
-  {
     slug: "flutter-comparativo",
-    name: "comparativo.",
+    name: "Trilema",
     tagline: "Guia de tecnologia: um teste que recomendava sem explicar por quê.",
     before: img("flutter-antes", "Tela atual: aspecto de SEO sem endereço próprio", 1440, 1000),
     after: img("flutter-depois", "Proposta: resultado do teste com a pontuação de cada opção à vista", 1440, 1000),
@@ -150,7 +139,7 @@ export const uxCases: UxCase[] = [
 ];
 
 // Telas empilhadas na colagem da home (a "depois" de cada estudo).
-export const uxCollageSlugs = ["rectarchitecturelab", "flutter-comparativo", "foody"];
+export const uxCollageSlugs = ["busca-fundos", "flutter-comparativo", "foody"];
 
 export const uxStates: UxImage[] = [
   img("kudo-falha", "Internet caiu depois do pagamento: explica que tentar de novo é seguro", 390, 844, "Internet caiu no pagamento"),

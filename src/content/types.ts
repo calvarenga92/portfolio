@@ -102,6 +102,8 @@ export type UxCase = {
 
   before: UxImage;
   after: UxImage;
+  /** Nota curta sob o comparador, quando o par antes/depois precisa de contexto. */
+  compareNote?: string;
   extras?: UxImage[];
 
   findings: string[];

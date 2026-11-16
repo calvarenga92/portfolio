@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Button } from "@/components/Button";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/sections";
@@ -29,14 +30,24 @@ export default function UxPage() {
         <Container>
           <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-10">
             <div>
-              <Button href="/" variant="ghost" icon="arrow-left">
-                {uxPage.back}
-              </Button>
+              {/* Trilha: um elemento so faz os dois trabalhos que antes estavam
+                  separados — levar de volta para a home e dizer onde voce esta. */}
+              <nav
+                aria-label="Trilha de navegação"
+                className="flex items-center gap-2.5 text-sm font-medium tracking-[0.14em] uppercase"
+              >
+                <Link href="/" className="text-ink-faint transition-colors hover:text-ink">
+                  {uxPage.back}
+                </Link>
+                <span aria-hidden="true" className="text-rule-strong">
+                  /
+                </span>
+                <span aria-current="page" className="text-signal">
+                  {uxPage.eyebrow}
+                </span>
+              </nav>
 
-              <p className="mt-8 text-sm font-medium tracking-[0.14em] text-signal uppercase">
-                {uxPage.eyebrow}
-              </p>
-              <h1 className="rise mt-4 text-balance text-[clamp(2.5rem,5.5vw,4.25rem)] font-semibold leading-[0.98] tracking-[-0.04em]">
+              <h1 className="rise mt-5 text-balance text-[clamp(2.5rem,5.5vw,4.25rem)] font-semibold leading-[0.98] tracking-[-0.04em]">
                 {uxPage.title}
               </h1>
               <p className="rise mt-6 max-w-[46ch] text-lg leading-[1.6] text-ink-soft" style={{ animationDelay: "120ms" }}>
@@ -46,7 +57,9 @@ export default function UxPage() {
               <dl className="rise mt-10 grid grid-cols-3 gap-6 border-t border-rule pt-6" style={{ animationDelay: "220ms" }}>
                 {uxPage.stats.map((stat) => (
                   <div key={stat.label}>
-                    <dd className="tnum whitespace-nowrap text-xl font-semibold sm:text-2xl text-signal">{stat.value}</dd>
+                    <dd className="whitespace-nowrap text-xl font-semibold sm:text-2xl text-signal">
+                      <span className="tnum">{stat.value}</span> {stat.unit}
+                    </dd>
                     <dt className="mt-1.5 text-sm leading-snug text-ink-faint">{stat.label}</dt>
                   </div>
                 ))}

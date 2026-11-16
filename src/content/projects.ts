@@ -245,7 +245,7 @@ export const projects: Project[] = [
   {
     slug: "flutter-comparativo",
     name: "Guia comparativo Web, React Native e Flutter",
-    codename: "comparativo.",
+    codename: "Trilema",
     tagline:
       "Guia interativo que compara, aspecto por aspecto, uma aplicação web com Flutter e o React Native com Flutter: quem desenha a tela, como o código roda, até onde se chega no aparelho e como o produto chega ao usuário. São trinta e quatro aspectos com código lado a lado e um veredito em cada, uma tabela com as três tecnologias e um teste que recomenda uma delas para o projeto. O próprio site é a demonstração: roda no navegador, mas cada pixel é desenhado pelo motor do Flutter, não pelo HTML.",
     year: "2026",
