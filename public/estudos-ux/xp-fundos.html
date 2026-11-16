@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Busca de fundos (XP) — o caso, as telas e a decisão · Claudio Alvarenga</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: #2a2a2a;
+    font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .canvas { display: flex; gap: 120px; align-items: flex-start; padding: 120px; width: max-content; }
+  .frame-wrap { display: flex; flex-direction: column; gap: 16px; flex: none; }
+  .frame-label { margin: 0; font-size: 20px; font-weight: 600; color: #f5f5f5; }
+  .frame-label .tag {
+    display: inline-block; margin-left: 10px; padding: 3px 10px; border-radius: 999px;
+    font-size: 13px; font-weight: 600; vertical-align: 3px;
+  }
+  .tag--hoje { background: #3f3f46; color: #e4e4e7; }
+  .tag--proposta { background: #a21caf; color: #fdf4ff; }
+
+  /* ===== Catálogo genérico (sem marca) ===== */
+  .frame { flex: none; background: #f6f7f9; color: #14181f; font-size: 15px; line-height: 1.5; }
+  .w1440 { width: 1440px; height: 900px; overflow: hidden; }
+  .w390 { width: 390px; height: 844px; overflow: hidden; }
+  .w520 { width: 520px; background: #111418; color: #e6e8eb; }
+
+  .topo { display: flex; align-items: center; gap: 32px; height: 64px; padding: 0 48px; background: #fff; border-bottom: 1px solid #e3e6ea; }
+  .marca { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; }
+  .marca i { width: 26px; height: 26px; border-radius: 7px; background: #14181f; display: block; }
+  .topo nav { display: flex; gap: 24px; font-size: 14px; color: #5b6572; }
+  .topo nav b { color: #14181f; font-weight: 600; }
+  .topo .conta { margin-left: auto; width: 32px; height: 32px; border-radius: 50%; background: #dfe3e8; }
+
+  .pagina { padding: 32px 48px; display: grid; grid-template-columns: 1fr 360px; gap: 32px; }
+  .w1440 .pagina.cheia { grid-template-columns: 1fr; }
+  h1 { margin: 0 0 4px; font-size: 26px; letter-spacing: -0.02em; }
+  .sub { margin: 0 0 20px; color: #5b6572; font-size: 14px; }
+
+  .busca { position: relative; display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 16px; background: #fff; border: 1.5px solid #cfd5dc; border-radius: 12px; font-size: 16px; }
+  .busca.ativa { border-color: #1b6ef3; box-shadow: 0 0 0 4px rgb(27 110 243 / 0.12); }
+  .busca .lupa { width: 18px; height: 18px; border: 2px solid #8a94a1; border-radius: 50%; position: relative; flex: none; }
+  .busca .lupa::after { content: ""; position: absolute; width: 7px; height: 2px; background: #8a94a1; right: -6px; bottom: -3px; transform: rotate(45deg); }
+  .busca .termo { color: #14181f; }
+  .busca .cursor { display: inline-block; width: 1.5px; height: 20px; background: #1b6ef3; vertical-align: -4px; margin-left: 1px; }
+  .busca .estado { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 13px; color: #5b6572; }
+  .giro { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #c7d4ea; border-top-color: #1b6ef3; }
+
+  .chips { display: flex; gap: 8px; margin: 16px 0 20px; flex-wrap: wrap; }
+  .chip { padding: 6px 14px; border-radius: 999px; background: #fff; border: 1px solid #d9dee4; font-size: 13px; color: #3a434e; }
+  .chip.on { background: #14181f; color: #fff; border-color: #14181f; }
+
+  .contagem { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; font-size: 13px; color: #5b6572; }
+  .contagem b { color: #14181f; }
+
+  .lista { background: #fff; border: 1px solid #e3e6ea; border-radius: 14px; overflow: hidden; }
+  .cab, .linha { display: grid; grid-template-columns: 2.4fr 1.2fr 1fr 1.1fr 0.9fr 110px; align-items: center; gap: 12px; padding: 0 20px; }
+  .cab { height: 40px; font-size: 12px; color: #6b7480; text-transform: uppercase; letter-spacing: 0.04em; background: #fafbfc; border-bottom: 1px solid #eceff2; }
+  .linha { height: 64px; border-bottom: 1px solid #f0f2f4; font-size: 14px; }
+  .linha:last-child { border-bottom: 0; }
+  .nome b { display: block; font-weight: 600; }
+  .nome span { font-size: 12px; color: #6b7480; }
+  .num { font-variant-numeric: tabular-nums; }
+  .pos { color: #0f8a4f; font-weight: 600; }
+  .risco { display: inline-flex; gap: 3px; }
+  .risco i { width: 8px; height: 14px; border-radius: 2px; background: #e3e6ea; display: block; }
+  .risco i.f { background: #e0a400; }
+  .btn { height: 34px; border-radius: 8px; border: 1px solid #14181f; background: #fff; font: inherit; font-size: 13px; font-weight: 600; }
+  mark { background: #fff1b8; color: inherit; border-radius: 3px; padding: 0 1px; }
+
+  .lista.esmaecida .linha { opacity: 0.45; }
+  .lista.piscando { position: relative; }
+  .esqueleto { height: 64px; border-bottom: 1px solid #f0f2f4; padding: 0 20px; display: flex; align-items: center; gap: 16px; }
+  .esqueleto i { display: block; height: 12px; border-radius: 6px; background: #eceff2; }
+
+  .aviso-vivo { display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px; border-radius: 999px; background: #e9f1ff; color: #1446a8; font-size: 12px; font-weight: 600; }
+
+  /* Painel lateral de anotação (faz parte do estudo, não da tela) */
+  .anota { background: #111418; color: #e6e8eb; border-radius: 16px; padding: 22px; font-size: 13.5px; line-height: 1.55; align-self: start; }
+  .anota h3 { margin: 0 0 4px; font-size: 15px; }
+  .anota .lead { margin: 0 0 16px; color: #a3abb5; }
+  .tl { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .tl li { display: grid; grid-template-columns: 64px 1fr; gap: 10px; align-items: center; padding: 8px 10px; border-radius: 10px; background: #1a1f25; }
+  .tl code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12.5px; color: #f8d77a; }
+  .tl .ok { color: #6fdc9e; }
+  .tl .mal { color: #ff8a8a; }
+  .tl .neutro { color: #a3abb5; }
+  .anota .tese { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid #262c33; color: #cfd4da; }
+
+  .vazio { padding: 56px 24px; text-align: center; }
+  .vazio h2 { margin: 0 0 6px; font-size: 18px; }
+  .vazio p { margin: 0 0 18px; color: #5b6572; font-size: 14px; }
+  .sugs { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+
+  /* Mobile */
+  .w390 .topo { padding: 0 16px; height: 56px; }
+  .w390 .topo nav { display: none; }
+  .w390 .pagina { padding: 16px; display: block; }
+  .w390 h1 { font-size: 22px; }
+  .cartao { background: #fff; border: 1px solid #e3e6ea; border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+  .cartao .l1 { display: flex; justify-content: space-between; gap: 8px; }
+  .cartao .l1 b { font-size: 14px; }
+  .cartao .l2 { display: flex; gap: 14px; margin-top: 8px; font-size: 12px; color: #5b6572; }
+
+  /* Notas */
+  .notes { padding: 40px; }
+  .notes .eyebrow { margin: 0 0 8px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #8a94a1; }
+  .notes h2 { margin: 0 0 6px; font-size: 24px; letter-spacing: -0.02em; }
+  .notes .sub { color: #a3abb5; margin-bottom: 24px; }
+  .bloco { margin: 0 0 22px; }
+  .bloco h3 { margin: 0 0 6px; font-size: 15px; color: #fff; }
+  .bloco p, .bloco li { margin: 0 0 8px; font-size: 14px; line-height: 1.6; color: #cfd4da; }
+  .bloco ul { margin: 0; padding-left: 18px; }
+  .bloco strong { color: #fff; }
+  .notes .foot { margin: 16px 0 0; padding-top: 16px; border-top: 1px solid #262c33; font-size: 13px; color: #8a94a1; }
+</style>
+  <link rel="stylesheet" href="/estudos-ux/leitor.css" />
+  <script src="/estudos-ux/leitor.js" defer></script>
+</head>
+<body>
+<div class="canvas">
+
+<!-- ============ 0. O caso ============ -->
+<div class="frame-wrap">
+  <p class="frame-label">Busca de fundos · O caso (520)</p>
+  <section class="frame w520">
+    <div class="notes">
+      <p class="eyebrow">XP Inc. · jornada de fundos · 2018–2024</p>
+      <h2>A lista que piscava enquanto a pessoa digitava</h2>
+      <p class="sub">Telas genéricas, redesenhadas para representar o fluxo. As originais são de instituição financeira e não podem ser mostradas.</p>
+
+      <div class="bloco">
+        <h3>Contexto</h3>
+        <p>A jornada de fundos de investimento ia da busca no catálogo até a contratação, com o checkout integrado ao gateway de pagamento. Era uma das jornadas de maior custódia da casa, acompanhada de perto por Produto, comercial e diretoria.</p>
+      </div>
+
+      <div class="bloco">
+        <h3>O que quem usava via</h3>
+        <p>Ao digitar na busca, a lista piscava e às vezes mostrava o resultado de um termo que a pessoa já tinha passado: a resposta de "ren" chegava depois da de "renda" e sobrescrevia a lista. Num catálogo de investimento, um resultado que não bate com o que se digitou faz a pessoa desconfiar do que está vendo.</p>
+        <p>A causa estava na rede: uma requisição à API a cada tecla, com respostas voltando fora de ordem.</p>
+      </div>
+
+      <div class="bloco">
+        <h3>Meu papel</h3>
+        <p>Eu era desenvolvedor front-end na squad. O desenho de tela não era meu. A implementação e as decisões técnicas foram minhas; priorização e aceite, do PM e do time. <strong>Esse problema eu trouxe, não recebi pronto.</strong></p>
+      </div>
+
+      <div class="bloco">
+        <h3>Como investiguei</h3>
+        <p>Abri a aba de rede com a busca aberta e vi uma chamada por caractere, com respostas voltando fora de ordem. O sinal foi volume de chamada. Não tive dado de comportamento de usuário nesse caso, nem funil nem gravação.</p>
+      </div>
+
+      <div class="bloco">
+        <h3>A decisão</h3>
+        <p>Debounce: a busca só sai quando a pessoa para de digitar, na ordem de 300 ms, abaixo do intervalo natural de quem digita corrido.</p>
+        <ul>
+          <li><strong>Throttle</strong>, descartado: dispara em intervalo fixo. Em busca importa o termo final, não amostras do caminho.</li>
+          <li><strong>Buscar só ao enviar</strong>, descartado: resolvia o volume, mas acabava com a busca enquanto se digita, que é o que se espera de um catálogo.</li>
+          <li><strong>Cache no navegador</strong>, descartado: ataca a repetição, não o tecla a tecla.</li>
+        </ul>
+        <p><strong>O custo:</strong> debounce cria espera. Mal calibrado, faz a lista parecer travada. Troquei requisição desperdiçada por um atraso que precisei dimensionar.</p>
+      </div>
+
+      <div class="bloco">
+        <h3>O que a tela mostra durante a espera</h3>
+        <p>Na época, a decisão foi de comportamento. O que eu desenho hoje para esses 300 ms está nas telas ao lado: a lista anterior continua no lugar, um pouco esmaecida, e o campo avisa que está buscando. Nada some e nada pisca. Resposta de termo antigo é descartada.</p>
+      </div>
+
+      <div class="bloco">
+        <h3>Como validei</h3>
+        <p>Subiu atrás de feature flag, como já fazíamos nas jornadas da boleta: liberação gradual e reversão sem deploy. Ficou na flag até o comportamento estabilizar em produção, acompanhando o volume de chamadas.</p>
+      </div>
+
+      <div class="bloco">
+        <h3>Resultado</h3>
+        <p>A lista parou de piscar e o resultado parou de chegar fora de ordem, que era o que a pessoa sentia. O volume de chamadas caiu junto: digitar "renda" gerava 5 requisições e passou a gerar 1.</p>
+      </div>
+
+      <div class="bloco">
+        <h3>O que levei disso</h3>
+        <p>Na migração das jornadas para fora do monolito, apareceu resolvido um problema que ninguém tinha mapeado: campos chegavam truncados ao painel de BI, e o painel passou a bater com a fonte. Não havia ticket nem reclamação. Num legado assim existe uma classe de problema que não entra no backlog porque ninguém consegue enxergar, e isso é um argumento a favor da migração que não estava no plano original.</p>
+      </div>
+
+      <p class="foot">Autor: Claudio Alvarenga</p>
+    </div>
+  </section>
+</div>
+
+<!-- ============ 1. Catálogo ============ -->
+<div class="frame-wrap">
+  <p class="frame-label">Busca de fundos · Desktop 1440 — catálogo <span class="tag tag--hoje">Ponto de partida</span></p>
+  <section class="frame w1440">
+    <header class="topo">
+      <span class="marca"><i></i>Investimentos</span>
+      <nav><span>Carteira</span><b>Fundos</b><span>Renda fixa</span><span>Ações</span><span>Previdência</span></nav>
+      <span class="conta"></span>
+    </header>
+    <div class="pagina cheia">
+      <div>
+        <h1>Fundos de investimento</h1>
+        <p class="sub">312 fundos disponíveis · rentabilidade dos últimos 12 meses</p>
+        <div class="busca"><span class="lupa"></span><span style="color:#8a94a1">Buscar por nome, gestora ou categoria</span></div>
+        <div class="chips"><span class="chip on">Todos</span><span class="chip">Renda fixa</span><span class="chip">Multimercado</span><span class="chip">Ações</span><span class="chip">Previdência</span><span class="chip">Aplicação até R$ 500</span></div>
+        <div class="contagem"><span><b>312 fundos</b></span><span>Ordenar: rentabilidade 12m</span></div>
+        <div class="lista">
+          <div class="cab"><span>Fundo</span><span>Categoria</span><span>Rent. 12m</span><span>Aplicação mín.</span><span>Risco</span><span></span></div>
+          <div class="linha"><span class="nome"><b>Atlas Crédito Privado</b><span>Gestora Atlas</span></span><span>Renda fixa</span><span class="num pos">13,8%</span><span class="num">R$ 500,00</span><span class="risco"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span><button class="btn">Ver fundo</button></div>
+          <div class="linha"><span class="nome"><b>Horizonte Multiestratégia</b><span>Horizonte Capital</span></span><span>Multimercado</span><span class="num pos">12,1%</span><span class="num">R$ 1.000,00</span><span class="risco"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></span><button class="btn">Ver fundo</button></div>
+          <div class="linha"><span class="nome"><b>Referência DI Simples</b><span>Gestora Prumo</span></span><span>Renda fixa</span><span class="num pos">11,9%</span><span class="num">R$ 100,00</span><span class="risco"><i class="f"></i><i></i><i></i><i></i><i></i></span><button class="btn">Ver fundo</button></div>
+          <div class="linha"><span class="nome"><b>Vértice Ações Brasil</b><span>Vértice Investimentos</span></span><span>Ações</span><span class="num pos">9,4%</span><span class="num">R$ 500,00</span><span class="risco"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span><button class="btn">Ver fundo</button></div>
+          <div class="linha"><span class="nome"><b>Prumo Previdência RF</b><span>Gestora Prumo</span></span><span>Previdência</span><span class="num pos">11,2%</span><span class="num">R$ 300,00</span><span class="risco"><i class="f"></i><i></i><i></i><i></i><i></i></span><button class="btn">Ver fundo</button></div>
+          <div class="linha"><span class="nome"><b>Rendimento Inflação Longo</b><span>Atlas</span></span><span>Renda fixa</span><span class="num pos">10,7%</span><span class="num">R$ 1.000,00</span><span class="risco"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span><button class="btn">Ver fundo</button></div>
+          <div class="linha"><span class="nome"><b>Global Tecnologia FIA</b><span>Horizonte Capital</span></span><span>Ações</span><span class="num pos">8,3%</span><span class="num">R$ 1.000,00</span><span class="risco"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></span><button class="btn">Ver fundo</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ 2. Antes: digitando ============ -->
+<div class="frame-wrap">
+  <p class="frame-label">Busca de fundos · Desktop 1440 — digitando "renda" <span class="tag tag--hoje">Antes · uma requisição por tecla</span></p>
+  <section class="frame w1440">
+    <header class="topo">
+      <span class="marca"><i></i>Investimentos</span>
+      <nav><span>Carteira</span><b>Fundos</b><span>Renda fixa</span><span>Ações</span><span>Previdência</span></nav>
+      <span class="conta"></span>
+    </header>
+    <div class="pagina">
+      <div>
+        <h1>Fundos de investimento</h1>
+        <p class="sub">312 fundos disponíveis · rentabilidade dos últimos 12 meses</p>
+        <div class="busca ativa"><span class="lupa"></span><span class="termo">renda</span><span class="cursor"></span></div>
+        <div class="chips"><span class="chip on">Todos</span><span class="chip">Renda fixa</span><span class="chip">Multimercado</span><span class="chip">Ações</span><span class="chip">Previdência</span></div>
+        <div class="contagem"><span>Resultados para <b>"renda"</b> · 41 fundos</span><span>Ordenar: rentabilidade 12m</span></div>
+        <div class="lista piscando">
+          <div class="cab"><span>Fundo</span><span>Categoria</span><span>Rent. 12m</span><span>Aplicação mín.</span><span>Risco</span><span></span></div>
+          <div class="linha"><span class="nome"><b><mark>Re</mark>ferência DI Simples</b><span>Gestora Prumo</span></span><span>Renda fixa</span><span class="num pos">11,9%</span><span class="num">R$ 100,00</span><span class="risco"><i class="f"></i><i></i><i></i><i></i><i></i></span><button class="btn">Ver fundo</button></div>
+          <div class="linha"><span class="nome"><b>Gestão <mark>Re</mark>al Imobiliário</b><span>Vértice Investimentos</span></span><span>Multimercado</span><span class="num pos">7,2%</span><span class="num">R$ 1.000,00</span><span class="risco"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></span><button class="btn">Ver fundo</button></div>
+          <div class="esqueleto"><i style="width:220px"></i><i style="width:90px"></i><i style="width:60px"></i></div>
+          <div class="esqueleto"><i style="width:260px"></i><i style="width:90px"></i><i style="width:60px"></i></div>
+          <div class="esqueleto"><i style="width:200px"></i><i style="width:90px"></i><i style="width:60px"></i></div>
+        </div>
+      </div>
+      <aside class="anota">
+        <h3>O que acontece por trás</h3>
+        <p class="lead">Cada tecla dispara uma busca. As respostas voltam na ordem em que o servidor termina, não na ordem em que foram pedidas.</p>
+        <ol class="tl">
+          <li><code>r</code><span class="neutro">busca 1 · 41 ms</span></li>
+          <li><code>re</code><span class="neutro">busca 2 · demorou 620 ms</span></li>
+          <li><code>ren</code><span class="neutro">busca 3 · 90 ms</span></li>
+          <li><code>rend</code><span class="neutro">busca 4 · 85 ms</span></li>
+          <li><code>renda</code><span class="ok">busca 5 · chega primeiro</span></li>
+          <li><code>re</code><span class="mal">busca 2 chega por último e sobrescreve a lista</span></li>
+        </ol>
+        <p class="tese">Para quem usa: o título diz "renda", a lista mostra fundos com "Re", e as linhas somem e voltam a cada tecla.</p>
+      </aside>
+    </div>
+  </section>
+</div>
+
+<!-- ============ 3. Proposta: digitando ============ -->
+<div class="frame-wrap">
+  <p class="frame-label">Busca de fundos · Desktop 1440 — digitando "renda" <span class="tag tag--proposta">Proposta · espera de 300 ms</span></p>
+  <section class="frame w1440">
+    <header class="topo">
+      <span class="marca"><i></i>Investimentos</span>
+      <nav><span>Carteira</span><b>Fundos</b><span>Renda fixa</span><span>Ações</span><span>Previdência</span></nav>
+      <span class="conta"></span>
+    </header>
+    <div class="pagina">
+      <div>
+        <h1>Fundos de investimento</h1>
+        <p class="sub">312 fundos disponíveis · rentabilidade dos últimos 12 meses</p>
+        <div class="busca ativa"><span class="lupa"></span><span class="termo">renda</span><span class="cursor"></span><span class="estado"><span class="giro"></span>Buscando…</span></div>
+        <div class="chips"><span class="chip on">Todos</span><span class="chip">Renda fixa</span><span class="chip">Multimercado</span><span class="chip">Ações</span><span class="chip">Previdência</span></div>
+        <div class="contagem"><span class="aviso-vivo" role="status">Atualizando resultados para "renda"</span><span>Ordenar: rentabilidade 12m</span></div>
+        <div class="lista esmaecida">
+          <div class="cab"><span>Fundo</span><span>Categoria</span><span>Rent. 12m</span><span>Aplicação mín.</span><span>Risco</span><span></span></div>
+          <div class="linha"><span class="nome"><b>Atlas Crédito Privado</b><span>Gestora Atlas</span></span><span>Renda fixa</span><span class="num pos">13,8%</span><span class="num">R$ 500,00</span><span class="risco"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span><button class="btn">Ver fundo</button></div>
+          <div class="linha"><span class="nome"><b>Horizonte Multiestratégia</b><span>Horizonte Capital</span></span><span>Multimercado</span><span class="num pos">12,1%</span><span class="num">R$ 1.000,00</span><span class="risco"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></span><button class="btn">Ver fundo</button></div>
+          <div class="linha"><span class="nome"><b>Referência DI Simples</b><span>Gestora Prumo</span></span><span>Renda fixa</span><span class="num pos">11,9%</span><span class="num">R$ 100,00</span><span class="risco"><i class="f"></i><i></i><i></i><i></i><i></i></span><button class="btn">Ver fundo</button></div>
+          <div class="linha"><span class="nome"><b>Vértice Ações Brasil</b><span>Vértice Investimentos</span></span><span>Ações</span><span class="num pos">9,4%</span><span class="num">R$ 500,00</span><span class="risco"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span><button class="btn">Ver fundo</button></div>
+          <div class="linha"><span class="nome"><b>Prumo Previdência RF</b><span>Gestora Prumo</span></span><span>Previdência</span><span class="num pos">11,2%</span><span class="num">R$ 300,00</span><span class="risco"><i class="f"></i><i></i><i></i><i></i><i></i></span><button class="btn">Ver fundo</button></div>
+        </div>
+      </div>
+      <aside class="anota">
+        <h3>O que muda</h3>
+        <p class="lead">A busca espera a pessoa parar de digitar. Enquanto isso, a tela não esvazia.</p>
+        <ol class="tl">
+          <li><code>r…renda</code><span class="neutro">digitando: nenhuma busca sai</span></li>
+          <li><code>300 ms</code><span class="neutro">parou de digitar</span></li>
+          <li><code>renda</code><span class="ok">1 busca · 1 resposta</span></li>
+          <li><code>antiga</code><span class="ok">resposta de termo anterior é descartada</span></li>
+        </ol>
+        <p class="tese">Na tela: a lista anterior fica no lugar, esmaecida; o campo diz "Buscando…"; leitores de tela ouvem "Atualizando resultados". A espera fica visível, e nada pisca.</p>
+      </aside>
+    </div>
+  </section>
+</div>
+
+<!-- ============ 4. Resultado ============ -->
+<div class="frame-wrap">
+  <p class="frame-label">Busca de fundos · Desktop 1440 — resultado <span class="tag tag--proposta">Proposta</span></p>
+  <section class="frame w1440">
+    <header class="topo">
+      <span class="marca"><i></i>Investimentos</span>
+      <nav><span>Carteira</span><b>Fundos</b><span>Renda fixa</span><span>Ações</span><span>Previdência</span></nav>
+      <span class="conta"></span>
+    </header>
+    <div class="pagina cheia">
+      <div>
+        <h1>Fundos de investimento</h1>
+        <p class="sub">312 fundos disponíveis · rentabilidade dos últimos 12 meses</p>
+        <div class="busca"><span class="lupa"></span><span class="termo">renda</span><span class="estado" style="color:#0f8a4f">Limpar</span></div>
+        <div class="chips"><span class="chip on">Todos</span><span class="chip">Renda fixa</span><span class="chip">Multimercado</span><span class="chip">Ações</span><span class="chip">Previdência</span></div>
+        <div class="contagem"><span><b>6 fundos</b> para "renda"</span><span>Ordenar: rentabilidade 12m</span></div>
+        <div class="lista">
+          <div class="cab"><span>Fundo</span><span>Categoria</span><span>Rent. 12m</span><span>Aplicação mín.</span><span>Risco</span><span></span></div>
+          <div class="linha"><span class="nome"><b>Atlas <mark>Renda</mark> Fixa Ativa</b><span>Gestora Atlas</span></span><span><mark>Renda</mark> fixa</span><span class="num pos">12,6%</span><span class="num">R$ 500,00</span><span class="risco"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span><button class="btn">Ver fundo</button></div>
+          <div class="linha"><span class="nome"><b>Prumo <mark>Renda</mark> Mensal</b><span>Gestora Prumo</span></span><span><mark>Renda</mark> fixa</span><span class="num pos">11,9%</span><span class="num">R$ 100,00</span><span class="risco"><i class="f"></i><i></i><i></i><i></i><i></i></span><button class="btn">Ver fundo</button></div>
+          <div class="linha"><span class="nome"><b><mark>Renda</mark> Inflação Longo</b><span>Atlas</span></span><span><mark>Renda</mark> fixa</span><span class="num pos">10,7%</span><span class="num">R$ 1.000,00</span><span class="risco"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span><button class="btn">Ver fundo</button></div>
+          <div class="linha"><span class="nome"><b>Horizonte <mark>Renda</mark> Variável</b><span>Horizonte Capital</span></span><span>Ações</span><span class="num pos">9,1%</span><span class="num">R$ 1.000,00</span><span class="risco"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span><button class="btn">Ver fundo</button></div>
+          <div class="linha"><span class="nome"><b>Previdência <mark>Renda</mark> Fixa Prumo</b><span>Gestora Prumo</span></span><span>Previdência</span><span class="num pos">11,2%</span><span class="num">R$ 300,00</span><span class="risco"><i class="f"></i><i></i><i></i><i></i><i></i></span><button class="btn">Ver fundo</button></div>
+          <div class="linha"><span class="nome"><b>Vértice <mark>Renda</mark> e Dividendos</b><span>Vértice Investimentos</span></span><span>Ações</span><span class="num pos">8,8%</span><span class="num">R$ 500,00</span><span class="risco"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></span><button class="btn">Ver fundo</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ 5. Sem resultado ============ -->
+<div class="frame-wrap">
+  <p class="frame-label">Busca de fundos · Desktop 1440 — sem resultado <span class="tag tag--proposta">Proposta · estado vazio</span></p>
+  <section class="frame w1440">
+    <header class="topo">
+      <span class="marca"><i></i>Investimentos</span>
+      <nav><span>Carteira</span><b>Fundos</b><span>Renda fixa</span><span>Ações</span><span>Previdência</span></nav>
+      <span class="conta"></span>
+    </header>
+    <div class="pagina cheia">
+      <div>
+        <h1>Fundos de investimento</h1>
+        <p class="sub">312 fundos disponíveis · rentabilidade dos últimos 12 meses</p>
+        <div class="busca"><span class="lupa"></span><span class="termo">rendaa varivel</span><span class="estado" style="color:#0f8a4f">Limpar</span></div>
+        <div class="chips"><span class="chip on">Todos</span><span class="chip">Renda fixa</span><span class="chip">Multimercado</span><span class="chip">Ações</span><span class="chip">Previdência</span></div>
+        <div class="lista">
+          <div class="vazio" role="status">
+            <h2>Nenhum fundo para "rendaa varivel"</h2>
+            <p>Confira a grafia ou comece por uma categoria. Os filtros continuam valendo.</p>
+            <div class="sugs"><span class="chip">Você quis dizer "renda variável"?</span><span class="chip">Ver Renda fixa</span><span class="chip">Ver Ações</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ 6. Mobile ============ -->
+<div class="frame-wrap">
+  <p class="frame-label">Busca de fundos · Mobile 390 — digitando <span class="tag tag--proposta">Proposta</span></p>
+  <section class="frame w390">
+    <header class="topo"><span class="marca"><i></i>Investimentos</span><span class="conta"></span></header>
+    <div class="pagina">
+      <h1>Fundos</h1>
+      <p class="sub">312 fundos disponíveis</p>
+      <div class="busca ativa"><span class="lupa"></span><span class="termo">renda</span><span class="cursor"></span><span class="estado"><span class="giro"></span></span></div>
+      <div class="chips"><span class="chip on">Todos</span><span class="chip">Renda fixa</span><span class="chip">Ações</span></div>
+      <div class="contagem"><span class="aviso-vivo" role="status">Atualizando resultados</span></div>
+      <div style="opacity:.45">
+        <div class="cartao"><div class="l1"><b>Atlas Crédito Privado</b><span class="num pos">13,8%</span></div><div class="l2"><span>Renda fixa</span><span>mín. R$ 500</span><span>risco 2/5</span></div></div>
+        <div class="cartao"><div class="l1"><b>Horizonte Multiestratégia</b><span class="num pos">12,1%</span></div><div class="l2"><span>Multimercado</span><span>mín. R$ 1.000</span><span>risco 3/5</span></div></div>
+        <div class="cartao"><div class="l1"><b>Referência DI Simples</b><span class="num pos">11,9%</span></div><div class="l2"><span>Renda fixa</span><span>mín. R$ 100</span><span>risco 1/5</span></div></div>
+        <div class="cartao"><div class="l1"><b>Vértice Ações Brasil</b><span class="num pos">9,4%</span></div><div class="l2"><span>Ações</span><span>mín. R$ 500</span><span>risco 4/5</span></div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</div>
+</body>
+</html>

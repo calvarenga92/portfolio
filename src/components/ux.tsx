@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { UxCase, UxImage } from "@/content/types";
-import { uxCases, uxCta, uxHome, uxPage, uxStates } from "@/content/ux";
+import { uxCases, uxCollageSlugs, uxCta, uxHome, uxPage, uxStates } from "@/content/ux";
 import { BeforeAfter } from "./BeforeAfter";
 import { Button } from "./Button";
 import { ProjectLinks } from "./ProjectLinks";
@@ -45,7 +45,7 @@ export function StatesStrip({ states }: { states: UxImage[] }) {
 }
 
 export function UxCollage() {
-  const layers = [uxCases[2].after, uxCases[3].after, uxCases[1].after];
+  const layers = uxCollageSlugs.map((slug) => uxCases.find((c) => c.slug === slug)!.after);
   const placement = [
     "left-0 top-0 w-[78%] -rotate-3",
     "right-0 top-[18%] w-[78%] rotate-2",

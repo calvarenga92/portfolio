@@ -30,7 +30,7 @@ export const uxPage = {
     "Cada estudo parte da tela real, aponta o que atrapalha quem usa e propõe a versão nova no mesmo sistema visual do produto.",
   stats: [
     { value: "6 anos", label: "atuando direto com UX" },
-    { value: "4", label: "estudos com antes e depois" },
+    { value: "5", label: "estudos com antes e depois" },
     { value: "12 anos", label: "levando a tela até produção" },
   ],
   jump: "Ir para o estudo",
@@ -49,7 +49,7 @@ export const uxPage = {
 export const uxProcess: UxStep[] = [
   {
     title: "Medir onde a pessoa desiste",
-    body: "Funil, eventos e mapa de calor antes de opinião. Na XP, os eventos da jornada de fundos alimentavam um painel em tempo real.",
+    body: "Funil, eventos e mapa de calor antes de opinião. Na XP, instrumentei os eventos da jornada de fundos com dataLayer e Google Tag Manager.",
   },
   {
     title: "Auditar a tela que existe",
@@ -66,6 +66,25 @@ export const uxProcess: UxStep[] = [
 ];
 
 export const uxCases: UxCase[] = [
+  {
+    slug: "xp-fundos",
+    name: "Busca de fundos · XP",
+    tagline:
+      "Catálogo de fundos de investimento: a lista piscava e mostrava o resultado de um termo que a pessoa já tinha passado.",
+    before: img("xp-antes", "Antes: digitando “renda”, a lista mostra fundos de um termo anterior e linhas somem a cada tecla", 1440, 900),
+    after: img("xp-depois", "Proposta: a lista anterior fica no lugar, esmaecida, e o campo avisa que está buscando", 1440, 900),
+    extras: [
+      img("xp-mobile", "Proposta mobile: mesma espera visível, com aviso de atualização para leitores de tela", 390, 844, "Espera no celular"),
+      img("xp-vazio", "Proposta de estado vazio: nenhum fundo encontrado, com sugestão de grafia e categorias", 1440, 900, "Busca sem resultado"),
+    ],
+    findings: [
+      "Uma requisição por tecla, com respostas fora de ordem",
+      "Resultado de termo antigo sobrescrevendo o atual",
+      "Debounce de ~300 ms atrás de feature flag: 5 buscas viraram 1",
+    ],
+    studyHref: "/estudos-ux/xp-fundos.html",
+    links: projectLinks.xpFundos,
+  },
   {
     slug: "finance-workspace",
     name: "Finance Workspace",
@@ -129,6 +148,9 @@ export const uxCases: UxCase[] = [
     links: projectLinks.flutterComparativo,
   },
 ];
+
+// Telas empilhadas na colagem da home (a "depois" de cada estudo).
+export const uxCollageSlugs = ["rectarchitecturelab", "flutter-comparativo", "foody"];
 
 export const uxStates: UxImage[] = [
   img("kudo-falha", "Internet caiu depois do pagamento: explica que tentar de novo é seguro", 390, 844, "Internet caiu no pagamento"),

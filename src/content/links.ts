@@ -67,4 +67,8 @@ export const projectLinks = {
     design(figma("frontEnd", "2-945")),
     flow("37-294"),
   ],
+
+  // Caso da XP: sem produção nem código (produto de instituição financeira).
+  // Só as telas genéricas redesenhadas e o fluxo, no arquivo Cases.
+  xpFundos: [],
 } satisfies Record<string, ProjectLink[]>;
