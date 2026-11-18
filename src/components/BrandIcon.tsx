@@ -25,6 +25,8 @@ const brandKeyByLabel: Record<string, string> = {
   Spring: "siSpring",
   NestJS: "siNestjs",
   Prisma: "siPrisma",
+  PostgreSQL: "siPostgresql",
+  "Socket.IO": "siSocketdotio",
   "Node.js": "siNodedotjs",
   GitHub: "siGithub",
   WhatsApp: "siWhatsapp",
