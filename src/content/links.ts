@@ -37,6 +37,7 @@ export const projectLinks = {
     code(github("calvarenga92/kudo-api"), "API"),
     code(github("calvarenga92/kudo-mobile"), "Mobile"),
     design(figma("cases", "22-3678")), // seção "v3 (3 temas)": o redesenho; a v1 fica em 0-1
+    design(figma("cases", "62-112"), "Arquitetura"), // seção "Kudo — arquitetura full-stack · 18/11/2026"
     flow("25-155"),
   ],
 
