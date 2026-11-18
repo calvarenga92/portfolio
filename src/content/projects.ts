@@ -7,14 +7,14 @@ export const projects: Project[] = [
     name: "Marketplace de arte digital",
     codename: "Kudo",
     tagline:
-      "Front-end de uma loja de arte digital, com pagamento simulado. Resolvi no alicerce os dois erros que custam caro nesse tipo de produto: a sobra de centavo, que some numa venda e aparece quando são milhares, e a cobrança dobrada de quem aperta pagar de novo porque a internet oscilou. Uma bateria de oitenta e oito testes percorre a tela real, no desktop e no celular, antes de cada entrega, e não só a lógica por baixo dela.",
+      "Loja de arte digital de ponta a ponta, com pagamento simulado: a interface, a API em NestJS e o banco PostgreSQL, no ar e conversando em tempo real. Resolvi no alicerce os dois erros que custam caro nesse tipo de produto: a sobra de centavo, que some numa venda e aparece quando são milhares, e a cobrança dobrada de quem aperta pagar de novo porque a internet oscilou. A API entrou no lugar de uma simulação sem mudar uma linha da tela, e a prova é a mesma bateria de testes passando contra as duas.",
     year: "2026",
     status: { label: "Entregue", tone: "entregue" },
-    role: "Redesenho da interface e front-end",
-    stack: ["React 19", "TypeScript", "TanStack Query", "Tailwind", "Playwright", "Vite"],
+    role: "Redesenho, front-end e API",
+    stack: ["React 19", "TypeScript", "TanStack Query", "NestJS", "PostgreSQL", "Socket.IO", "Docker", "Playwright"],
     metrics: [
-      { label: "Testes end-to-end em Playwright", value: "88", numeric: true },
-      { label: "Defeitos reais pegos antes da entrega", value: "5", numeric: true },
+      { label: "Testes de tela em Playwright, desktop e celular", value: "88", numeric: true },
+      { label: "Testes da API, com compras simultâneas", value: "86", numeric: true },
       { label: "Casas decimais no valor, sem float", value: "18", numeric: true },
     ],
     links: projectLinks.kurio,
@@ -75,21 +75,45 @@ export const projects: Project[] = [
         ],
       },
       {
+        kind: "images",
+        title: "A arquitetura",
+        images: [
+          {
+            src: "/projetos/kudo-arquitetura.webp",
+            alt: "Diagrama do Kudo: o navegador baixa o front-end estático da Vercel e fala com a API em NestJS no Render por HTTPS e por websocket; a API guarda tudo num PostgreSQL 17 no Neon; um pacote npm com o contrato é usado pela web, pelo app e pela API",
+            width: 2000,
+            height: 1520,
+          },
+        ],
+      },
+      {
+        kind: "prose",
+        title: "O back-end",
+        body: [
+          "O front nasceu falando com uma simulação completa, que guarda estado e reproduz cenários de falha. Isso deixou o contrato pronto antes do servidor existir: vinte e cinco rotas, o formato de cada erro e os eventos em tempo real. A API em NestJS foi escrita para cumprir esse contrato à risca. Para falar com ela, o front troca uma variável de ambiente; nenhuma tela mudou, só a camada que conversa com o servidor ganhou dois ajustes: o carrinho de quem ainda não entrou e a identificação do socket.",
+          "A disputa pela última unidade é resolvida no banco: as edições são travadas numa ordem fixa, o estoque é conferido de novo antes de cobrar, e uma conta compra enquanto a outra é avisada. Três cliques em pagar com a mesma chave viram um pedido só. Isso não fica na teoria: a suíte da API roda num PostgreSQL 17 de verdade, com dez conexões disputando ao mesmo tempo.",
+          "A sessão é um token assinado que o servidor consegue derrubar na hora, coisa que um token puro não faz: sair desliga o token no mesmo instante. A senha é guardada com scrypt, e um freio por IP e por e-mail segura quem tenta adivinhar senha. Quando alguém compra, o estoque cai na tela de todo mundo; o aviso do pedido vai só para a conta dona, e quem decide isso é o servidor, pelo token.",
+        ],
+      },
+      {
         kind: "prose",
         title: "O que os testes acharam",
         body: [
           "A suíte end-to-end pegou cinco defeitos reais antes da entrega. O mais interessante não foi funcional: um estouro de layout em que a tela se comportava exatamente como o esperado e, ainda assim, ficava ilegível. Teste de comportamento dava verde.",
           "É o argumento prático para E2E rodar na tela de verdade e não só na lógica: correto e utilizável não são a mesma propriedade.",
+          "Na troca para a API, a mesma suíte voltou a servir de rede. Ao atualizar o pacote de regras compartilhado, o teste do resumo pegou a tela mostrando 0,0.042 ETH: a formatação brasileira passou a ser aplicada duas vezes. Nenhum teste de lógica teria visto.",
         ],
       },
       {
         kind: "ledger",
         title: "Resumo",
         lines: [
-          { label: "Testes end-to-end", value: "78", numeric: true },
+          { label: "Testes de tela (Playwright)", value: "88", numeric: true },
+          { label: "Testes da API (Postgres real)", value: "86", numeric: true },
           { label: "Defeitos encontrados antes da entrega", value: "5", numeric: true },
           { label: "Representação de valor", value: "inteiro, 18 casas" },
           { label: "Retry de pagamento", value: "idempotente por tentativa" },
+          { label: "No ar", value: "Vercel, Render e Neon" },
         ],
       },
     ],

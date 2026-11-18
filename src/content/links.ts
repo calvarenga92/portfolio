@@ -30,8 +30,11 @@ const flow = (nodeId: string): ProjectLink => design(figma("cases", nodeId), "Fl
 export const projectLinks = {
   kurio: [
     prod("https://calvarenga-jungle-nft.vercel.app"),
-    prod("https://kurio-mobile.vercel.app", "Versão mobile no ar"),
+    prod("https://kurio-mobile.vercel.app", "Mobile no ar"),
+    // Health check da API: no plano gratuito do Render a primeira chamada acorda o servidor (~50 s).
+    prod("https://kudo-api-2va3.onrender.com/api/saude", "API no ar"),
     code(github("calvarenga92/kudo")),
+    code(github("calvarenga92/kudo-api"), "API"),
     code(github("calvarenga92/kudo-mobile"), "Mobile"),
     design(figma("cases", "22-3678")), // seção "v3 (3 temas)": o redesenho; a v1 fica em 0-1
     flow("25-155"),

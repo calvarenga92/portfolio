@@ -18,7 +18,7 @@ export const stack: StackGroup[] = [
     title: "Back-end",
     accent: "signal",
     icon: "codigo",
-    items: ["Java", "Spring", "JPA e Hibernate", "SQL", "JWT e autenticação", "Python", "Node.js"],
+    items: ["Java", "Spring", "JPA e Hibernate", "SQL", "JWT e autenticação", "Docker", "Python", "Node.js"],
   },
   {
     title: "Dados e estado",
@@ -40,7 +40,7 @@ export const stack: StackGroup[] = [
   },
   {
     title: "Aprendendo agora",
-    items: ["PostgreSQL", "Docker", "NestJS", "Prisma", "Inglês falado"],
+    items: ["PostgreSQL", "NestJS", "Prisma", "Inglês falado"],
     muted: true,
   },
 ];
