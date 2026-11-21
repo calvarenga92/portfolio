@@ -48,6 +48,10 @@ export const projectLinks = {
     flow("25-155"),
   ],
 
+  // Repositórios privados: só o site no ar.
+  gengi: [prod("https://www.gengi.com.br")],
+  clara: [prod("https://clara-rodrigues.vercel.app")],
+
   financeWorkspace: [
     prod("https://finance-workspace-shell.vercel.app"),
     code(github("calvarenga92/finance-workspace-shell"), "Container"),

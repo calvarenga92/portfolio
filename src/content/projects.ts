@@ -285,6 +285,141 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "gengi",
+    name: "Site de agência que vende criação digital",
+    codename: "Gengi",
+    tagline:
+      "Site da Gengi, a agência: oito serviços (site, landing page, loja virtual, portfólio, catálogo, robô com IA, sistemas e redesign) apresentados para quem não é da área. Cada botão abre o WhatsApp com a mensagem do serviço já escrita, e a página inteira foi pensada para levar a pessoa até essa conversa. Identidade visual própria, do zero ao domínio no ar no mesmo dia.",
+    year: "2026",
+    status: { label: "No ar", tone: "ativo" },
+    role: "Identidade visual, texto, design e front-end",
+    stack: ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS 4", "Vercel"],
+    metrics: [
+      { label: "Serviços no cardápio", value: "8", numeric: true },
+      { label: "Chamadas para o WhatsApp com mensagem pronta", value: "12", numeric: true },
+      { label: "JavaScript na primeira carga", value: "113 KB" },
+    ],
+    links: projectLinks.gengi,
+    caseStudy: [
+      {
+        kind: "images",
+        title: "O site no ar",
+        images: [
+          {
+            src: "/projetos/gengi-topo.jpg",
+            alt: "Topo do site da Gengi: fundo preto, título com a expressão tão bom em marca-texto laranja, botão de orçamento e uma loja virtual com balão de atendimento ao lado",
+            width: 1440,
+            height: 1000,
+          },
+          {
+            src: "/projetos/gengi-servicos.jpg",
+            alt: "Cardápio de serviços: cards brancos com contorno preto e sombra sólida, cada um com ícone colorido, público, promessa e botão",
+            width: 1440,
+            height: 1000,
+          },
+          {
+            src: "/projetos/gengi-trabalhos.jpg",
+            alt: "Seção de trabalhos: cada projeto num card próprio com etiqueta Job, imagem, resultados e botão; no destaque, um robô de atendimento com IA",
+            width: 1440,
+            height: 1000,
+          },
+        ],
+      },
+      {
+        kind: "prose",
+        title: "O problema",
+        body: [
+          "Quem procura um site para o próprio negócio não compra tecnologia, compra resultado: aparecer no Google, responder cliente de madrugada, vender pelo celular. Uma página que fala de framework e arquitetura perde essa pessoa no primeiro parágrafo.",
+          "A agência também oferece muita coisa diferente. Listar oito serviços sem virar um catálogo cansativo, e sem parecer que faz qualquer coisa, era o desafio de desenho.",
+        ],
+      },
+      {
+        kind: "prose",
+        title: "As decisões",
+        body: [
+          "Cada serviço responde três perguntas em ordem: para quem é, que dor resolve e o que entrega. O botão de cada card abre o WhatsApp com a mensagem daquele serviço já escrita, para a pessoa não precisar pensar no que dizer.",
+          "A primeira versão usava tons pastel e ficou sem vida. A identidade foi refeita com preto, laranja e amarelo, contorno preto e sombra sólida deslocada em cards e botões, e uma palavra de cada título em marca-texto. A faixa inclinada que corria na página parecia defeito para quem não é designer, então voltou a ficar reta.",
+          "Nenhum número sobre a trajetória de quem faz entrou na página: o site fala da empresa e do que o cliente ganha. A oferta de entrada é um diagnóstico gratuito, que transforma quem ainda está em dúvida numa conversa.",
+          "O antes e depois de um redesenho faz uma varredura sozinho quando aparece na tela, para mostrar que dá para arrastar, e fica parado para quem pediu menos movimento no sistema.",
+        ],
+      },
+      {
+        kind: "ledger",
+        title: "Resumo",
+        lines: [
+          { label: "Front-end", value: "Next.js 15, React 19 e Tailwind CSS 4" },
+          { label: "Conteúdo", value: "todo texto e link num arquivo só" },
+          { label: "Serviços", value: "8", numeric: true },
+          { label: "Contato", value: "WhatsApp com mensagem pronta" },
+          { label: "No ar", value: "Vercel, domínio próprio" },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "clara-rodrigues",
+    name: "Site para personal trainer",
+    codename: "Clara Rodrigues",
+    tagline:
+      "Uma personal que vendia só pelo Instagram ganhou um site que apresenta o método, mostra os planos com preço e fecha a contratação pelo WhatsApp. Oito planos entre online e presencial, escolhidos num seletor que funciona como botão no celular. É cliente real, e o projeto segue crescendo com ela.",
+    year: "2026",
+    status: { label: "Em evolução", tone: "ativo" },
+    role: "Design, texto e front-end",
+    stack: ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS 4", "Vercel"],
+    metrics: [
+      { label: "Planos com preço, online e presencial", value: "8", numeric: true },
+      { label: "Modalidades: online e presencial", value: "2", numeric: true },
+      { label: "Do primeiro commit ao site no ar, em dias", value: "1", numeric: true },
+    ],
+    links: projectLinks.clara,
+    caseStudy: [
+      {
+        kind: "images",
+        title: "O site no ar",
+        images: [
+          {
+            src: "/projetos/clara-topo.jpg",
+            alt: "Topo do site da personal Clara Rodrigues: título Treino feito para o seu corpo, foto dela na praia e botão Falar com a Clara",
+            width: 1440,
+            height: 1000,
+          },
+          {
+            src: "/projetos/clara-planos.jpg",
+            alt: "Seção de planos: o que todos incluem, seletor entre online e presencial e os planos mensal, trimestral, semestral e anual",
+            width: 1440,
+            height: 1000,
+          },
+        ],
+      },
+      {
+        kind: "prose",
+        title: "O problema",
+        body: [
+          "No Instagram, a aluna interessada precisava mandar mensagem para descobrir o básico: como funciona, quanto custa, se tem presencial. Cada pergunta era uma conversa a mais, e parte das pessoas desistia antes da resposta.",
+        ],
+      },
+      {
+        kind: "prose",
+        title: "As decisões",
+        body: [
+          "O preço fica à vista. Os oito planos aparecem com valor total, parcelado e por mês, e um seletor troca entre online e presencial. No celular, o seletor ganhou cara de botão depois que ficou claro que, como aba, ninguém percebia que dava para tocar.",
+          "Toda chamada leva ao WhatsApp dela, porque é ali que ela já atende. O site não tenta substituir a conversa, só faz a pessoa chegar nela sabendo o que quer.",
+          "Números de resultado, depoimentos e formação saíram da página pública até chegarem dados reais dela. Fotos só entraram depois da autorização. Um site de cliente não pode afirmar o que ela não confirmou.",
+        ],
+      },
+      {
+        kind: "ledger",
+        title: "Resumo",
+        lines: [
+          { label: "Front-end", value: "Next.js 15 e Tailwind CSS 4" },
+          { label: "Planos", value: "8", numeric: true },
+          { label: "Contratação", value: "WhatsApp" },
+          { label: "Publicação", value: "push na main vai para produção" },
+        ],
+      },
+    ],
+  },
+  {
     slug: "rango",
     name: "Rastreador de pedidos de delivery",
     codename: "Rango",
