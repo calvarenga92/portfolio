@@ -18,6 +18,9 @@ export const projects: Project[] = [
       { label: "Tamanho do widget, sem dependências", value: "14 KB" },
     ],
     links: projectLinks.atendeAi,
+    summary:
+      "Assistente com IA que responde os visitantes do site só com o que a empresa cadastrou, recusa o que foge do assunto e entrega os interessados num painel.",
+    cover: { src: "/projetos/capa-atende-ai.webp", alt: "Site de exemplo de uma padaria com a assistente aberta respondendo um visitante", width: 1600, height: 1000 },
     caseStudy: [
       {
         kind: "images",
@@ -99,12 +102,9 @@ export const projects: Project[] = [
       { label: "Casas decimais no valor, sem float", value: "18", numeric: true },
     ],
     links: projectLinks.kurio,
-    cover: {
-      src: "/projetos/kurio-marketplace.webp",
-      alt: "Vitrine de loja em miniatura com três telas expondo peças de arte digital",
-      width: 1000,
-      height: 1000,
-    },
+    summary:
+      "Loja de arte digital de ponta a ponta, com interface, API em NestJS e PostgreSQL, sem cobrança dobrada nem centavo perdido no caminho.",
+    cover: { src: "/projetos/capa-kudo.webp", alt: "Página inicial da loja Kudo com o destaque Seja dono do futuro da arte digital", width: 1600, height: 1000 },
     caseStudy: [
       {
         kind: "images",
@@ -225,12 +225,9 @@ export const projects: Project[] = [
       },
     ],
     links: projectLinks.financeWorkspace,
-    cover: {
-      src: "/projetos/micro-frontend.webp",
-      alt: "Tela de um sistema com um módulo separado encaixando dentro dela por um conector",
-      width: 1000,
-      height: 1000,
-    },
+    summary:
+      "Duas aplicações publicadas de forma independente que aparecem como uma tela só. Se uma cair, a outra segue no ar.",
+    cover: { src: "/projetos/capa-finance.webp", alt: "Carteira do cliente no portal financeiro, com rentabilidade, alocação por classe e lista de ativos", width: 1600, height: 1000 },
     caseStudy: [
       {
         kind: "images",
@@ -300,6 +297,9 @@ export const projects: Project[] = [
       { label: "JavaScript na primeira carga", value: "113 KB" },
     ],
     links: projectLinks.gengi,
+    summary:
+      "Site da agência: oito serviços explicados para quem não é da área, e cada botão abre o WhatsApp com a mensagem pronta.",
+    cover: { src: "/projetos/capa-gengi.webp", alt: "Topo do site da Gengi com o título Seu negócio merece parecer tão bom quanto ele é", width: 1600, height: 1000 },
     caseStudy: [
       {
         kind: "images",
@@ -372,6 +372,9 @@ export const projects: Project[] = [
       { label: "Do primeiro commit ao site no ar, em dias", value: "1", numeric: true },
     ],
     links: projectLinks.clara,
+    summary:
+      "Site de personal trainer para cliente real: método, oito planos com preço à vista e contratação pelo WhatsApp.",
+    cover: { src: "/projetos/capa-clara.webp", alt: "Topo do site da personal Clara Rodrigues com o título Treino feito para o seu corpo", width: 1600, height: 1000 },
     caseStudy: [
       {
         kind: "images",
@@ -435,6 +438,9 @@ export const projects: Project[] = [
       { label: "Passos no novo pedido, com erro apontado por campo", value: "3", numeric: true },
     ],
     links: projectLinks.foody,
+    summary:
+      "Quadro de pedidos de delivery em que o servidor decide quais ações aparecem, então estado impossível não chega à tela.",
+    cover: { src: "/projetos/capa-rango.webp", alt: "Quadro de pedidos do Rango dividido por etapa, de Recebido a Finalizados", width: 1600, height: 1000 },
     caseStudy: [
       {
         kind: "images",
@@ -504,13 +510,10 @@ export const projects: Project[] = [
       { label: "Testes, sendo 4 de integração", value: "26", numeric: true },
     ],
     links: projectLinks.editIa,
+    summary:
+      "Esteira que transcreve o vídeo bruto e devolve a linha do tempo já cortada. Caiu de 93 para 6 pontos de revisão e roda todo dia.",
+    cover: { src: "/projetos/capa-edit-ia.webp", alt: "Terminal com o resultado da esteira: pontos de revisão caindo de 93 para 6 e a timeline pronta para o editor", width: 1600, height: 1000 },
 
-    cover: {
-      src: "/projetos/esteira-video.webp",
-      alt: "Esteira industrial levando quadros de filme, com braços robóticos cortando e iluminando as cenas e um monitor mostrando a timeline montada",
-      width: 1000,
-      height: 1000,
-    },
     caseStudy: [
       {
         kind: "prose",
@@ -565,12 +568,9 @@ export const projects: Project[] = [
       { label: "Perguntas no teste de recomendação", value: "8", numeric: true },
     ],
     links: projectLinks.flutterComparativo,
-    cover: {
-      src: "/projetos/comparativo-plataformas.webp",
-      alt: "Navegador, celular e tablet lado a lado sob um placar de três barras comparando as plataformas",
-      width: 1000,
-      height: 1000,
-    },
+    summary:
+      "Guia que compara Web, React Native e Flutter em 34 aspectos, com código lado a lado e um teste que recomenda uma delas.",
+    cover: { src: "/projetos/capa-trilema.webp", alt: "Página inicial do guia comparativo Web, React Native ou Flutter", width: 1600, height: 1000 },
     caseStudy: [
       {
         kind: "images",

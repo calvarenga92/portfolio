@@ -47,6 +47,8 @@ export type Project = {
   codename?: string;
 
   tagline: string;
+  /** Resumo de uma ou duas frases para o card da lista; o tagline fica na página do case. */
+  summary: string;
   year: string;
 
   status?: { label: string; tone: "ativo" | "entregue" };
