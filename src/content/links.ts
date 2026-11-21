@@ -28,6 +28,13 @@ const design = (href: string, label = "Telas"): ProjectLink => ({ kind: "figma",
 const flow = (nodeId: string): ProjectLink => design(figma("cases", nodeId), "Fluxo de UX");
 
 export const projectLinks = {
+  atendeAi: [
+    prod("https://padaria-pao-de-ouro-demo.vercel.app"), // site fictício com a assistente
+    prod("https://calvarenga-atende-ai.vercel.app", "Painel no ar"), // botão "Entrar na conta demo", só leitura
+    code(github("calvarenga92/atende-ai")),
+    flow("60-160"), // "Atende AI — fluxo da conversa e do lead · 17/11/2026"
+  ],
+
   kurio: [
     prod("https://calvarenga-jungle-nft.vercel.app"),
     prod("https://kurio-mobile.vercel.app", "Mobile no ar"),

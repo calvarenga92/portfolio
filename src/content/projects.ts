@@ -3,6 +3,87 @@ import type { Project } from "./types";
 
 export const projects: Project[] = [
   {
+    slug: "atende-ai",
+    name: "Assistente com IA para o site de pequenas empresas",
+    codename: "Atende AI",
+    tagline:
+      "A empresa cadastra o que sabe (horários, preços, regras) e cola uma linha no site. Dali em diante uma assistente responde os visitantes só com essas informações, recusa o que foge do assunto e, quando alguém quer comprar, pega nome e contato e entrega para a equipe num painel. O exemplo no ar é uma padaria fictícia: dá para conversar com a Lia e ver o lead chegar no painel.",
+    year: "2026",
+    status: { label: "No ar", tone: "ativo" },
+    role: "Produto, design, front-end, API e IA",
+    stack: ["NestJS", "PostgreSQL", "TypeORM", "React 19", "TypeScript", "Vite", "LLM (Groq)", "Vercel"],
+    metrics: [
+      { label: "Testes automatizados: API, widget e painel", value: "105", numeric: true },
+      { label: "Linha de código para instalar no site do cliente", value: "1", numeric: true },
+      { label: "Tamanho do widget, sem dependências", value: "14 KB" },
+    ],
+    links: projectLinks.atendeAi,
+    caseStudy: [
+      {
+        kind: "images",
+        title: "O produto no ar",
+        images: [
+          {
+            src: "/projetos/atende-ai-site.jpg",
+            alt: "Site da padaria fictícia com a janela da assistente Lia aberta, respondendo o horário de domingo e o preço do bolo de red velvet",
+            width: 1440,
+            height: 1000,
+          },
+          {
+            src: "/projetos/atende-ai-leads.jpg",
+            alt: "Painel com os contatos deixados no chat: números do dia, filtros por telefone ou e-mail e o interesse de cada pessoa",
+            width: 1440,
+            height: 1000,
+          },
+          {
+            src: "/projetos/atende-ai-bot.jpg",
+            alt: "Tela de configuração da assistente: nome, cor, tom de voz, sugestões e base de conhecimento, com prévia ao vivo do chat",
+            width: 1440,
+            height: 1000,
+          },
+        ],
+      },
+      {
+        kind: "prose",
+        title: "O problema",
+        body: [
+          "Negócio pequeno perde cliente em pergunta simples: que horas abre, quanto custa, entrega no meu bairro. Ninguém responde de madrugada, e quem queria encomendar desiste antes de alguém ver a mensagem.",
+          "Um chatbot genérico resolve pela metade e cria outro risco: inventa preço, promete o que a loja não faz e fala de qualquer assunto. Para servir, a assistente precisa responder só com o que a empresa escreveu e saber a hora de passar a conversa para uma pessoa.",
+        ],
+      },
+      {
+        kind: "prose",
+        title: "As decisões",
+        body: [
+          "A base de conhecimento vai inteira no prompt, e o texto que muda a cada pedido (a data de hoje) fica fora dele, para o cache do provedor continuar valendo. Busca vetorial só entra quando a base passar de uns cem mil caracteres; antes disso é complexidade sem ganho.",
+          "O contato é salvo por uma ferramenta que a IA chama, mas empresa e conversa vêm do servidor, nunca do modelo, e a entrada é validada antes de gravar: telefone sem DDD volta para a IA pedir de novo. Ao salvar, a confirmação para o visitante sai pronta do servidor, sem outra rodada da IA. Nos testes, era justamente nessa resposta que o modelo às vezes degenerava.",
+          "A IA fica atrás de uma interface: simulada nos testes, local na máquina de desenvolvimento e o Groq no ar, no plano gratuito. Quando o limite por minuto estoura, a API espera o que o provedor pede e cai para um modelo reserva, em vez de devolver erro para o visitante.",
+          "O widget é TypeScript puro dentro de Shadow DOM, com 14 KB: o CSS do site do cliente não quebra o chat e o do chat não vaza para o site. Se a API estiver fora, ele simplesmente não aparece, em vez de mostrar um chat quebrado.",
+        ],
+      },
+      {
+        kind: "prose",
+        title: "O que o teste com gente achou",
+        body: [
+          "No primeiro teste de verdade, a assistente acertou horário e recusou assunto fora, mas tropeçou no resto: tratou um \"isso\" como conversa nova, aceitou uma data que já tinha passado e respondeu \"seu bolo está na lista\", como se o pedido estivesse fechado. Nenhum teste automatizado pegaria isso.",
+          "Cada falha virou regra: continuar de onde parou, comparar datas com o dia de hoje, nunca confirmar pedido nem calcular preço que não está escrito. A mesma conversa foi repetida contra a IA de produção até sair limpa.",
+        ],
+      },
+      {
+        kind: "ledger",
+        title: "Resumo",
+        lines: [
+          { label: "API", value: "NestJS 12, TypeORM e PostgreSQL" },
+          { label: "Widget", value: "TypeScript puro, Shadow DOM, 14 KB" },
+          { label: "Painel", value: "React 19, Vite e React Router" },
+          { label: "IA", value: "Groq (gpt-oss-120b) com modelo reserva" },
+          { label: "Testes", value: "105", numeric: true },
+          { label: "No ar", value: "Vercel e Neon, custo zero" },
+        ],
+      },
+    ],
+  },
+  {
     slug: "kurio",
     name: "Marketplace de arte digital",
     codename: "Kudo",
