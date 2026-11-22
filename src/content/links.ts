@@ -50,7 +50,7 @@ export const projectLinks = {
 
   // Repositórios privados: só o site no ar.
   gengi: [prod("https://www.gengi.com.br")],
-  clara: [prod("https://clara-rodrigues.vercel.app")],
+  clara: [prod("https://clarapersonal.com.br")],
 
   financeWorkspace: [
     prod("https://finance-workspace-shell.vercel.app"),
